@@ -1,0 +1,96 @@
+.l-header {
+    background-color: var(--color-primary);
+    color: var(--color-light);
+    box-shadow: var(--box-shadow-md);
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 auto;
+    padding: var(--spacing-md) 0;
+}
+
+.header__logo {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+}
+
+#header__search {
+    display: flex;
+    align-items: center;
+    flex-grow: 2;
+    padding: var(--spacing-md);
+    margin: 0 var(--spacing-lg);
+    border-radius: var(--border-radius-xl);
+    background-color: var(--color-light);
+    padding: var(--spacing-sm) var(--spacing-md);
+    box-shadow: var(--box-shadow-md);
+}
+#header__search #header__search_input {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    padding: var(--spacing-sm) 0;
+    font-family: var(--font-family-sans);
+    font-size: var(--font-size-md);
+    color: var(--color-dark);
+}
+
+#header__search #header__search_input::placeholder {
+    color: var(--color-secondary);
+}
+
+#header__search .search-icon {
+    width: var(--font-size-xl);
+    height: var(--font-size-xl);
+    margin-left: var(--spacing-sm);
+    fill: var(--color-secondary);
+    cursor: pointer;
+}
+
+.header__actions {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--spacing-xl);
+}
+
+.header__actions .header__cart,
+.header__actions .header__user {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    color: var(--color-light);
+    font-size: var(--font-size-sm);
+    position: relative;
+    cursor: pointer;
+}
+
+@media (max-width: var(--breakpoint-sm)) {
+    .header__content {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .header__logo {
+        justify-content: flex-start;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    #header__search {
+        margin: var(--spacing-sm) 0;
+    }
+
+    .header__actions {
+        justify-content: space-between;
+        margin-top: var(--spacing-sm);
+    }
+}

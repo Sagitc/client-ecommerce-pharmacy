@@ -1,11 +1,37 @@
-@import 'tailwindcss';
+/* Base */
+@import './base/_variables.css';
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
+/* Layouts */
+@import './layouts/_header.css';
+@import './layouts/_footer.css';
 
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+/* Components */
+@import './components/_modal-cart.css';
+
+
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #ededed;
+    font-family: var(--font-family-sans);
+    font-size: var(--font-size-md);
+    color: var(--color-dark);
+
+    line-height: 1.5;
+}
+
+.max-width {
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+
+.mobile-touch {
+    width: 44px;
+    height: 44px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
 }

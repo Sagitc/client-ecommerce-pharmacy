@@ -1,0 +1,1 @@
+<p>&copy; 2024 Drogarias Camargo. Todos os direitos reservados.</p>

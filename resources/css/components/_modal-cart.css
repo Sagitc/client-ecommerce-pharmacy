@@ -1,0 +1,151 @@
+/* Container que cobre toda a tela */
+.modal__container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal {
+    background-color: var(--color-light);
+    box-shadow: var(--box-shadow-md);
+    height: 95%;
+    max-width: 90%;
+    border-radius: var(--border-radius-lg);
+    position: relative;
+    margin-right: var(--spacing-md);
+}
+
+.modal__header,
+.modal__body,
+.modal__footer {
+    padding: var(--spacing-md);
+}
+
+.modal__header-close-btn {
+    padding: var(--spacing-md);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.modal__close-btn {
+    margin-top: var(--spacing-sm);
+    margin-right: var(--spacing-sm);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.modal__header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.modal__title {
+    font-size: var(--font-size-xl);
+}
+
+.modal__item-count {
+    font-size: var(--font-size-sm);
+    color: var(--color-secondary);
+}
+
+/* Estilo geral para o card do item */
+.modal__item-card {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--color-secondary); /* Linha divisória para separar itens */
+}
+
+/* Estilo da imagem */
+.item-card__image-wrapper {
+    flex-shrink: 0;
+}
+.item-card__image {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+/* Estilo para as informações e o botão de exclusão */
+.item-card__details {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+}
+.item-card__info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+.item-card__name {
+    font-size: var(--font-size-md);
+    font-weight: bold;
+    color: var(--color-dark);
+}
+.item-card__brand {
+    font-size: var(--font-size-sm);
+    color: var(--color-secondary);
+}
+.item-card__delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    fill: var(--color-secondary);
+    padding: 0;
+    margin-top: -5px; /* Ajuste para alinhar com o topo do texto */
+}
+
+/* Estilo para o preço e o seletor de quantidade */
+.item-card__bottom {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--spacing-sm);
+}
+
+.item-card__price {
+    font-size: var(--font-size-lg);
+    font-weight: bold;
+    color: var(--color-primary);
+}
+
+.item-card__quantity {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--color-secondary);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-sm) var(--spacing-md);
+    gap: var(--spacing-sm);
+}
+.item-card__quantity input {
+    border: none;
+    outline: none;
+    width: 30px; /* Largura do input */
+    text-align: center;
+    font-size: var(--font-size-md);
+}
+.item-card__quantity .quantity__icon {
+    fill: var(--color-secondary);
+}
+
+@media (max-width: var(--breakpoint-sm)) {
+    .modal {
+        width: 100%; /* O modal ocupa toda a largura em telas pequenas */
+        height: 100vh; /* 100% da altura da viewport, garantindo que ele cubra a tela inteira */
+    }
+}
