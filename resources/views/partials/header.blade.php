@@ -13,7 +13,7 @@
 
         <div class="header__actions">
             <div class="header__cart">
-                <span class="cart__icon"><img src="{{ asset('images/icon_cart.svg') }}" alt="Ícone de carrinho de compra"></span>
+                <span class="cart__icon-wrapper"><img src="{{ asset('images/icon_cart.svg') }}" alt="Ícone de carrinho de compra"></span>
                 <span>
                     Carrinho<br>
                     <span id="cart__count"><strong>0,00</strong></span>
@@ -21,7 +21,7 @@
                 <span class="mobile-touch"></span>
             </div>
             <div class="header__user">
-                <span class="user__icon"><img src="{{ asset('images/icon_user.svg') }}" alt="Ícone de usuário"></span>
+                <span class="user__icon-wrapper"><img src="{{ asset('images/icon_user.svg') }}" alt="Ícone de usuário"></span>
                 <span>Login <br>ou <strong>Cadastro</strong></span>
                 <span class="mobile-touch"></span>
             </div>
@@ -29,4 +29,4 @@
     </div>
 </div>
 
-@include('partials.modal_cart')
+@include('components.modal_cart')

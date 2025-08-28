@@ -41,6 +41,7 @@
     font-family: var(--font-family-sans);
     font-size: var(--font-size-md);
     color: var(--color-dark);
+    background-color: var(--color-light);
 }
 
 #header__search #header__search_input::placeholder {
@@ -67,11 +68,17 @@
 .header__actions .header__user {
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-md);
     color: var(--color-light);
     font-size: var(--font-size-sm);
     position: relative;
     cursor: pointer;
+}
+
+.cart__icon-wrapper,
+.user__icon-wrapper {
+    display: flex;
+    align-items: center;
 }
 
 @media (max-width: var(--breakpoint-sm)) {

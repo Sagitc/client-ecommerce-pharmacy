@@ -51,6 +51,13 @@
     --breakpoint-lg: 992px;
     --breakpoint-xl: 1200px;
 
+    /* Image Sizes */
+    --image-xs: 2.5rem;
+    --image-sm: 5rem;
+    --image-md: 10rem;
+    --image-lg: 20rem;
+    --image-xl: 40rem;
+
     /* Others */
     --max-width: 1280px;
 }
