@@ -4,9 +4,9 @@
 /* Layouts */
 @import './layouts/_header.css';
 @import './layouts/_footer.css';
+@import './layouts/_modal-cart.css';
 
 /* Components */
-@import './components/_modal-cart.css';
 
 
 
@@ -33,5 +33,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    background-color: var(--color-dark);
+    cursor: pointer;
     display: none;
 }

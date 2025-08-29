@@ -1,7 +1,7 @@
 <div class="l-header">
     <div class="header__content max-width">
         <a href="/" class="header__logo">
-            <img src="{{ asset('images/logo_light.svg') }}" alt="Logo da Farmácia">
+            <img src="{{ asset('images/logo_white.svg') }}" alt="Logo da Farmácia">
         </a>
 
         <div id="header__search">
@@ -13,20 +13,31 @@
 
         <div class="header__actions">
             <div class="header__cart">
-                <span class="cart__icon-wrapper"><img src="{{ asset('images/icon_cart.svg') }}" alt="Ícone de carrinho de compra"></span>
+                <span class="cart__icon-wrapper"><img src="{{ asset('images/icon_cart_white.svg') }}" alt="Ícone de carrinho de compra"></span>
                 <span>
                     Carrinho<br>
                     <span id="cart__count"><strong>0,00</strong></span>
                 </span>
-                <span class="mobile-touch"></span>
             </div>
             <div class="header__user">
-                <span class="user__icon-wrapper"><img src="{{ asset('images/icon_user.svg') }}" alt="Ícone de usuário"></span>
+                <span class="user__icon-wrapper"><img src="{{ asset('images/icon_user_white.svg') }}" alt="Ícone de usuário"></span>
                 <span>Login <br>ou <strong>Cadastro</strong></span>
+            </div>
+        </div>
+
+        <div id="header__mobile">
+            <button id="header__mobile-search_icon">
+                <img src="{{ asset('images/icon_magnifier_white.svg') }}" alt="Ícone de busca">
+                <span class="mobile-touch"></span>
+            </button>
+
+            <div id="header__mobile-menu">
+                <img src="{{ asset('images/icon_mobile-menu_white.svg') }}" alt="Ícone de menu mobile">
                 <span class="mobile-touch"></span>
             </div>
         </div>
+
     </div>
 </div>
 
-@include('components.modal_cart')
+@include('partials.modal_cart')
