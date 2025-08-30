@@ -13,7 +13,7 @@
     align-items: center;
     justify-content: space-between;
     margin: 0 auto;
-    padding: var(--spacing-md) 0;
+    padding: var(--spacing-md) var(--site-margin);
 }
 
 .header__logo {
@@ -49,7 +49,7 @@
     color: var(--color-secondary);
 }
 
-#header__search .search-icon {
+.search-icon {
     width: var(--font-size-xl);
     height: var(--font-size-xl);
     margin-left: var(--spacing-sm);
@@ -87,6 +87,7 @@
     align-items: center;
     justify-content: center;
     gap: var(--spacing-lg);
+    display: none;
 }
 
 #header__mobile-menu {
@@ -116,10 +117,36 @@
     transform: scale(0.95);
 }
 
+#header__mobile-search {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-sm) var(--site-margin);
+    background-color: var(--color-light);
+    display: none;
+}
+
+#header__mobile-search button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+}
+
+#header__mobile-search_input {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    padding: var(--spacing-sm) 0;
+    font-family: var(--font-family-sans);
+    font-size: var(--font-size-sm);
+    color: var(--color-dark);
+    background-color: var(--color-light);
+}
+
 @media (max-width: 576px) {
 
     .header__content {
-        padding: var(--spacing-md) var(--mobile-margin);
+        padding: var(--spacing-md) var(--site-margin);
     }
 
     .header__actions {
@@ -128,6 +155,62 @@
     #header__search {
         display: none;
     }
+    .header__logo img {
+        width: var(--image-md);
+    }
+}
+
+@media (min-width: 577px) and (max-width: 768px) {
+    .header__content {
+        padding: var(--spacing-md) var(--site-margin);
+    }
+
+    .header__logo img {
+        width: var(--image-md);
+    }
+
+    .header__actions .header__user {
+        display: none;
+    }
+
+    #header__mobile {
+        display: flex;
+        margin-left: var(--spacing-lg);
+    }
+
+    #header__mobile-search_icon {
+        display: none;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 992px) {
+    .header__content {
+        padding: var(--spacing-md) var(--site-margin);
+    }
+
+    .header__logo img {
+        width: var(--image-md);
+    }
+
+    .header__actions .header__user {
+        display: none;
+    }
+
+    #header__mobile {
+        display: flex;
+        margin-left: var(--spacing-xl);
+    }
+    
+    #header__mobile-search_icon {
+        display: none;
+    }
+}
+
+@media (min-width: 993px) and (max-width: 1200px) {
+    .header__content {
+        padding: var(--spacing-md) var(--site-margin);
+    }
+
     .header__logo img {
         width: var(--image-md);
     }
