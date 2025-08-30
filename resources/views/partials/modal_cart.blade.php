@@ -1,5 +1,5 @@
-<div class="modal__container" style="display: none;">
-  <div class="modal">
+<div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal__title">
+  <div class="modal" aria-describedby="Área do carrinho de compras">
 
     <div class="modal__header-close-btn">
       <button aria-label="Fechar" class="modal__close-btn">
@@ -33,7 +33,7 @@
           </div>
 
           <button aria-label="Remover item" class="item-card__delete-btn">
-            <img src="{{ asset('images/icon_trash.svg') }}" alt="Ícone de remover item">
+            <img src="{{ asset('images/icon_trash_black.svg') }}" alt="Ícone de remover item">
           </button>
 
         </div>
@@ -42,9 +42,9 @@
         <!-- ITEM'S BOTTOM -->
         <div class="item-card__bottom">
 
-          <span aria-label="Preço" class="item-card__price">R$ 3.770,00</span>
-          <div class="item-card__quantity">
-            <span aria-label="Quantidade" class="quantity__value">1</span>
+          <span class="item-card__price">R$ 3.770,00</span>
+          <div class="item-card__quantity" role="button">
+            <span class="quantity__value">1</span>
             <svg aria-label="Ícone de quantidade" class="quantity__icon" fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
               <path d="M7 10l5 5 5-5z" />
             </svg>
