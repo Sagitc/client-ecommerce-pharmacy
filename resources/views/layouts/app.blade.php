@@ -6,7 +6,7 @@
 
     @stack('styles')
 
-    @vite(['resources/css/app.css'])
+    @vite(['resources/css/app.css', 'resources/js/app.ts'])
 
     <title>@yield('title', 'Drogarias Camargo')</title>
 

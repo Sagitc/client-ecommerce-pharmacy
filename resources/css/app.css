@@ -37,3 +37,11 @@ body {
     cursor: pointer;
     display: none;
 }
+
+.is-active {
+    display: flex;
+}
+
+.is-disabled {
+    display: none;
+}

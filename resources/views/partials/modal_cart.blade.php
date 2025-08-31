@@ -1,4 +1,4 @@
-<div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal__title">
+<div class="modal__container is-disabled" role="dialog" aria-modal="true" aria-labelledby="modal__title">
   <div class="modal" aria-describedby="Área do carrinho de compras">
 
     <div class="modal__header-close-btn">
@@ -43,12 +43,24 @@
         <div class="item-card__bottom">
 
           <span class="item-card__price">R$ 3.770,00</span>
-          <div class="item-card__quantity" role="button">
+
+          <select name="item-quantity" id="item-card__quantity">
+            <option value="1" selected>1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="selectQuantity">Selecionar quantidade</option>
+          </select>
+
+          <input type="number" class="is-disabled" id="custom-quantity-input" min="1" max="99" value="1" aria-label="Quantidade personalizada">
+
+          <!-- <div class="item-card__quantity" role="button">
             <span class="quantity__value">1</span>
             <svg aria-label="Ícone de quantidade" class="quantity__icon" fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
               <path d="M7 10l5 5 5-5z" />
             </svg>
-          </div>
+          </div> -->
 
         </div>
       </div>
