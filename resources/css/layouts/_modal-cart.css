@@ -62,7 +62,7 @@
 }
 
 .modal__close-btn:hover {
-    background-color: #dee2e6;
+    background-color: var(--color-bg);
     border-radius: 50%;
 }
 
@@ -141,7 +141,7 @@
 }
 
 .item-card__delete-btn:hover {
-    background-color: #dee2e6;
+    background-color: var(--color-bg);
     border-radius: 50%;
 }
 

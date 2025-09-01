@@ -54,3 +54,5 @@
 </div>
 
     @include('partials.modal_cart')
+
+    @include('partials.modal_login')

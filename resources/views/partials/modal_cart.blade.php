@@ -53,7 +53,7 @@
             <option value="selectQuantity">Selecionar quantidade</option>
           </select>
 
-          <input type="number" class="is-disabled" id="custom-quantity-input" min="1" max="99" value="1" aria-label="Quantidade personalizada">
+          <input type="number" class="is-disabled" id="custom-quantity-input" min="1" max="99" value="0" aria-label="Quantidade personalizada">
 
           <!-- <div class="item-card__quantity" role="button">
             <span class="quantity__value">1</span>

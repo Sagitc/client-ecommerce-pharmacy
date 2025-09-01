@@ -1,7 +1,9 @@
 import './bootstrap';
 
-import { initModelCart } from './components/model_cart';
+import { initModalCart } from './components/modal_cart';
+import { initModalLogin } from './components/modal_login';
 
 document.addEventListener('DOMContentLoaded', () => {
-    initModelCart();
+    initModalCart();
+    initModalLogin();
 });

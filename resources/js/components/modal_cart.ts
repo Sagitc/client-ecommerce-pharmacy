@@ -1,4 +1,4 @@
-export function initModelCart() {
+export function initModalCart() {
     // Declarations
     const cartBtn = document.querySelector('.header__actions .header__cart') as HTMLButtonElement;
     const cartBtnClose = document.querySelector('.modal__header-close-btn .modal__close-btn') as HTMLButtonElement;
