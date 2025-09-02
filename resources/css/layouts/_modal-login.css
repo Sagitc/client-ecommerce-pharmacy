@@ -9,41 +9,29 @@
     justify-content: center;
     align-items: center;
     z-index: 9999;
+    display: none;
 }
 
 .modal-login__container {
-    position: relative;
     background-color: #fff;
     border-radius: var(--border-radius-lg);
-    padding: var(--spacing-lg);
-}
-
-.modal-login__close {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-#modal-login__close-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: var(--spacing-xl);
 }
 
 .modal-login__body {
     display: flex;
 }
 
+.modal-login__left,
+.modal-login__right {
+    padding: var(--spacing-xl);
+    flex-basis: 50%;
+    flex-shrink: 0;
+}
+
 .modal-login__left {
-    flex-grow: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: var(--spacing-md) var(--spacing-xl);
 }
 
 .modal-login__title {
@@ -132,23 +120,54 @@
 }
 
 .modal-login__right {
-    flex-grow: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: var(--spacing-md) var(--spacing-xl);
-    background-color: var(--color-primary);
-    color: var(--color-light);
     text-wrap: nowrap;
+    position: relative;
+}
+
+.modal-login__close {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    position: absolute;
+    top: var(--spacing-sm);
+    right: var(--spacing-md);
+}
+
+#modal-login__close-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: var(--spacing-xl);
 }
 
 .modal-login__right .signIn__submit {
     background-color: transparent;
     color: var(--color-light);
     border: 2px solid var(--color-light);
+    margin-top: var(--spacing-xl);
 }
 
 .modal-login__right .signIn__submit:hover {
     background-color: var(--color-light);
     color: var(--color-primary);
+}
+
+.modal-login__left.is-red{
+    background-color: var(--color-primary);
+    color: var(--color-light);
+    border-top-right-radius: 3rem;
+    border-bottom-right-radius: 3rem;
+}
+
+.modal-login__right.is-red{
+    background-color: var(--color-primary);
+    color: var(--color-light);
+    border-top-left-radius: 3rem;
+    border-bottom-left-radius: 3rem;
 }
