@@ -11,6 +11,9 @@ export function initModalLogin() {
     const modalLeftSide = modalContainer.querySelector('.modal-login__left') as HTMLElement;
     const modalRightSide = modalContainer.querySelector('.modal-login__right') as HTMLElement;
 
+    const signInBtn = modalLeftSide.querySelector('.signIn__btn') as HTMLButtonElement;
+    const signUpBtn = modalRightSide.querySelector('.signUp__btn') as HTMLButtonElement;
+
     let elementThatOpenedModal: HTMLElement | null = null;
 
 
@@ -34,15 +37,15 @@ export function initModalLogin() {
 
                     <span>Entre com o seu e-mail ou CPF</span>
 
-                    <input type="text" name="email" id="signIn__user" class="modal-login__input"
-                        placeholder="Email ou CPF" required>
+                    <input type="text" name="full_name" id="signIn__user" class="modal-login__input"
+                        placeholder="text ou CPF" required>
 
                     <input type="password" name="password" id="signIn__password" class="modal-login__input"
                         placeholder="Senha" required>
 
                     <a id="signIn__forgot">Esqueceu a senha?</a>
 
-                    <button type="submit" class="signIn__submit">Login</button>
+                    <button type="submit" class="form__submit">Login</button>
                 </form>`,
                 
         right: `<div class="modal-login__close">
@@ -54,7 +57,7 @@ export function initModalLogin() {
                 <span>Novo(a) por aqui? É bom ter você conosco</span>
                 <span>Cadastre-se em nosso site!</span>
 
-                <button class="signIn__submit">Cadastrar</button>`
+                <button class="signUp__btn">Cadastrar</button>`
     }
 
     const signUp = {
