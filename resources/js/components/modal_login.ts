@@ -2,72 +2,29 @@ export function initModalLogin() {
     // DECLARATIONS
     const modalBtn = document.querySelector(".header__user") as HTMLButtonElement;
     const modalContainer = document.querySelector('.modal-login') as HTMLElement;
-    const closeBtnModal = document.querySelector('#modal-login__close-btn') as HTMLButtonElement;
+
+    const closeBtnsModal = document.querySelectorAll('.modal-login__close-btn') as NodeListOf<HTMLButtonElement>;
 
     const focusableElements = getFocusableElements(modalContainer) as HTMLElement[];
     const firstFocusableElement = focusableElements[0] as HTMLElement;
     const lastFocusableElement = focusableElements[focusableElements.length - 1] as HTMLElement;
 
-    const modalLeftSide = modalContainer.querySelector('.modal-login__left') as HTMLElement;
-    const modalRightSide = modalContainer.querySelector('.modal-login__right') as HTMLElement;
+    const modalLeftSide_1: HTMLElement | null = modalContainer.querySelector('.modal-login__left.l_pt1');
+    const modalRightSide_1: HTMLElement | null = modalContainer.querySelector('.modal-login__right.r_pt1');
+    const modalLeftSide_2: HTMLElement | null = modalContainer.querySelector('.modal-login__left.l_pt2');
+    const modalRightSide_2: HTMLElement | null = modalContainer.querySelector('.modal-login__right.r_pt2');
 
-    const signInBtn = modalLeftSide.querySelector('.signIn__btn') as HTMLButtonElement;
-    const signUpBtn = modalRightSide.querySelector('.signUp__btn') as HTMLButtonElement;
+    const signInBtn = modalLeftSide_2?.querySelector('.signIn__btn') as HTMLButtonElement;
+    const signUpBtn = modalRightSide_1?.querySelector('.signUp__btn') as HTMLButtonElement;
 
     let elementThatOpenedModal: HTMLElement | null = null;
 
-
-    const signIn = {
-        left: `<h2 class="modal-login__title">Login</h2>
-
-                <div class="modal-login__social">
-                    <button class="modal-login__social__item">
-                        <img src="{{ asset('images/icon_google.svg') }}" alt="Google">
-                    </button>
-                    <button class="modal-login__social__item">
-                        <img src="{{ asset('images/icon_facebook.svg') }}" alt="Facebook">
-                    </button>
-                    <button class="modal-login__social__item">
-                        <img src="{{ asset('images/icon_twitter.svg') }}" alt="Twitter">
-                    </button>
-                </div>
-
-                <form id="signIn__form" action="" method="get">
-                    @csrf
-
-                    <span>Entre com o seu e-mail ou CPF</span>
-
-                    <input type="text" name="full_name" id="signIn__user" class="modal-login__input"
-                        placeholder="text ou CPF" required>
-
-                    <input type="password" name="password" id="signIn__password" class="modal-login__input"
-                        placeholder="Senha" required>
-
-                    <a id="signIn__forgot">Esqueceu a senha?</a>
-
-                    <button type="submit" class="form__submit">Login</button>
-                </form>`,
-                
-        right: `<div class="modal-login__close">
-                    <button id="modal-login__close-btn" aria-label="Fechar modal">&times;</button>
-                </div>
-
-                <h2 class="modal-login__title">Seja bem-vindo(a)!</h2>
-
-                <span>Novo(a) por aqui? É bom ter você conosco</span>
-                <span>Cadastre-se em nosso site!</span>
-
-                <button class="signUp__btn">Cadastrar</button>`
-    }
-
-    const signUp = {
-        left: "...",
-        right: "..."
-    }
-
     // EVENTS
     modalBtn.addEventListener('click', () => { openModal() });
-    closeBtnModal.addEventListener('click', () => { closeModal() });
+
+    closeBtnsModal.forEach((btn) => {
+        btn.addEventListener('click', () => { closeModal() });
+    });
 
     if (modalContainer) {
         modalContainer.addEventListener('click', (event) => {
@@ -77,16 +34,16 @@ export function initModalLogin() {
         });
     }
 
-    
-
     modalContainer.addEventListener('keydown', (event) => {
+
+        console.log(event.key);
+
         if (!modalContainer.classList.contains('is-active')) {
             return;
-        } else if (event.key === 'Escape') {
+        } 
+        if (event.key === 'Escape') {
             closeModal();
-        }
-
-        if (event.key === 'Tab') {
+        } else if (event.key === 'Tab') {
             if (event.shiftKey) {
                 // Shift + Tab
                 if (document.activeElement === firstFocusableElement) {
@@ -103,8 +60,11 @@ export function initModalLogin() {
         }
     });
 
+    signInBtn?.addEventListener('click', () => { changeToSignIn() });
+    signUpBtn?.addEventListener('click', () => { changeToSignUp() });
+
     // FUNCTIONS
-    const openModal = () => {
+    function openModal() {
         elementThatOpenedModal = document.activeElement as HTMLElement;
 
         modalContainer.classList.add('is-active');
@@ -117,7 +77,7 @@ export function initModalLogin() {
         }
     }
 
-    const closeModal = () => {
+    function closeModal() {
         elementThatOpenedModal?.focus();
 
         document.body.setAttribute('aria-hidden', 'false');
@@ -135,18 +95,18 @@ export function initModalLogin() {
     }
 
     function changeToSignIn() {
-        modalRightSide.classList.add('is-red');
-        modalLeftSide.classList.remove('is-red');
+        modalLeftSide_1?.classList.remove('is-disabled');
+        modalRightSide_1?.classList.remove('is-disabled');
 
-        modalLeftSide.innerHTML = signIn.left;
-        modalRightSide.innerHTML = signIn.right;
+        modalLeftSide_2?.classList.add('is-disabled');
+        modalRightSide_2?.classList.add('is-disabled');
     }
 
     function changeToSignUp() {
-        modalRightSide.classList.remove('is-red');
-        modalLeftSide.classList.add('is-red');
+        modalLeftSide_1?.classList.add('is-disabled');
+        modalRightSide_1?.classList.add('is-disabled');
 
-        modalLeftSide.innerHTML = signUp.left;
-        modalRightSide.innerHTML = signUp.right;
+        modalLeftSide_2?.classList.remove('is-disabled');
+        modalRightSide_2?.classList.remove('is-disabled');
     }
 }

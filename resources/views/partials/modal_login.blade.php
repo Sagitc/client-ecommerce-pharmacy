@@ -2,7 +2,40 @@
     <div class="modal-login__container">
 
         <div class="modal-login__body">
-            <div class="modal-login__left is-red">
+            <div class="modal-login__left l_pt1">
+                <h2 class="modal-login__title">Login</h2>
+
+                <div class="modal-login__social">
+                    <button class="modal-login__social__item">
+                        <img src="{{ asset('images/icon_google.svg') }}" alt="Google">
+                    </button>
+                    <button class="modal-login__social__item">
+                        <img src="{{ asset('images/icon_facebook.svg') }}" alt="Facebook">
+                    </button>
+                    <button class="modal-login__social__item">
+                        <img src="{{ asset('images/icon_twitter.svg') }}" alt="Twitter">
+                    </button>
+                </div>
+
+                <form id="signIn__form" action="" method="get">
+                    @csrf
+
+                    <span>Entre com o seu e-mail ou CPF</span>
+
+                    <input type="text" name="full_name" id="signIn__user" class="modal-login__input"
+                        placeholder="text ou CPF" required>
+
+                    <input type="password" name="password" id="signIn__password" class="modal-login__input"
+                        placeholder="Senha" required>
+
+                    <a id="signIn__forgot">Esqueceu a senha?</a>
+
+                    <button type="submit" class="form__submit">Login</button>
+                </form>
+
+            </div>
+
+            <div class="modal-login__left is-red l_pt2 is-disabled">
                 <h2 class="modal-login__title">É bom te ver de novo!</h2>
 
                 <span>Já tem uma conta cadastrada conosco?</span>
@@ -12,9 +45,24 @@
 
             </div>
 
-            <div class="modal-login__right">
+
+            <div class="modal-login__right is-red r_pt1">
                 <div class="modal-login__close">
-                    <button id="modal-login__close-btn" aria-label="Fechar modal">&times;</button>
+                    <button class="modal-login__close-btn" aria-label="Fechar modal">&times;</button>
+                </div>
+
+                <h2 class="modal-login__title">Seja bem-vindo(a)!</h2>
+
+                <span>Novo(a) por aqui? É bom ter você conosco</span>
+                <span>Cadastre-se em nosso site!</span>
+
+                <button class="signUp__btn">Cadastrar</button>
+
+            </div>
+
+            <div class="modal-login__right r_pt2 is-disabled">
+                <div class="modal-login__close">
+                    <button class="modal-login__close-btn" aria-label="Fechar modal">&times;</button>
                 </div>
 
                 <h2 class="modal-login__title">Cadastro</h2>
