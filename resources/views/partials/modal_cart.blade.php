@@ -1,4 +1,4 @@
-<div class="modal__container is-disabled" role="dialog" aria-modal="true" aria-labelledby="modal__title">
+<div id="modal__container" class="is-disabled" role="dialog" aria-modal="true" aria-labelledby="modal__title">
   <div class="modal" aria-describedby="Área do carrinho de compras">
 
     <div class="modal__header-close-btn">

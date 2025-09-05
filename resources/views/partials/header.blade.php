@@ -12,14 +12,14 @@
         </div>
 
         <div class="header__actions">
-            <button class="header__cart">
+            <button id="header__cart">
                 <span class="cart__icon-wrapper"><img src="{{ asset('images/icon_cart_white.svg') }}" alt="Carrinho de compras"></span>
                 <span>
                     Carrinho<br>
                     <span id="cart__count">R$ 0,00</span>
                 </span>
             </button>
-            <button class="header__user">
+            <button id="header__user">
                 <span class="user__icon-wrapper"><img src="{{ asset('images/icon_user_white.svg') }}" alt="Menu do usuário"></span>
                 <span>
                     Login<br>

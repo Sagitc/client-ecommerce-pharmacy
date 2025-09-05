@@ -1,8 +1,8 @@
 export function initModalCart() {
     // Declarations
-    const cartBtn = document.querySelector('.header__actions .header__cart') as HTMLButtonElement;
-    const cartBtnClose = document.querySelector('.modal__header-close-btn .modal__close-btn') as HTMLButtonElement;
-    const modalContainer = document.querySelector('.modal__container') as HTMLDivElement;
+    const cartBtn = document.querySelector('#header__cart') as HTMLButtonElement;
+    const modalContainer = document.querySelector('#modal__container') as HTMLDivElement;
+    const cartBtnClose = modalContainer.querySelector('.modal__close-btn') as HTMLButtonElement;
 
     const quantitySelect = document.querySelector('#item-card__quantity') as HTMLSelectElement;
     const customQuantityInput = document.querySelector('#custom-quantity-input') as HTMLInputElement;
@@ -36,7 +36,6 @@ export function initModalCart() {
 
     if (cartBtnClose && modalContainer) {
         cartBtnClose.addEventListener('click', () => {
-            modalContainer.classList.remove('is-active');
             modalContainer.classList.add('is-disabled');
             document.body.style.overflow = 'auto';
 

@@ -1,21 +1,18 @@
 export function initModalLogin() {
     // DECLARATIONS
-    const modalBtn = document.querySelector(".header__user") as HTMLButtonElement;
-    const modalContainer = document.querySelector('.modal-login') as HTMLElement;
+    const modalBtn = document.querySelector("#header__user") as HTMLButtonElement;
+    const modalContainer = document.querySelector('#modal-login') as HTMLElement;
 
-    const closeBtnsModal = document.querySelectorAll('.modal-login__close-btn') as NodeListOf<HTMLButtonElement>;
+    const closeBtnsModal = modalContainer.querySelectorAll('.modal-login__close-btn') as NodeListOf<HTMLButtonElement>;
 
-    const focusableElements = getFocusableElements(modalContainer) as HTMLElement[];
-    const firstFocusableElement = focusableElements[0] as HTMLElement;
-    const lastFocusableElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+    const wrapper1 = modalContainer.querySelector('.modal-login__wrapper1') as HTMLElement;
+    const wrapper2 = modalContainer.querySelector('.modal-login__wrapper2') as HTMLElement;
 
-    const modalLeftSide_1: HTMLElement | null = modalContainer.querySelector('.modal-login__left.l_pt1');
-    const modalRightSide_1: HTMLElement | null = modalContainer.querySelector('.modal-login__right.r_pt1');
-    const modalLeftSide_2: HTMLElement | null = modalContainer.querySelector('.modal-login__left.l_pt2');
-    const modalRightSide_2: HTMLElement | null = modalContainer.querySelector('.modal-login__right.r_pt2');
+    let firstElement: HTMLElement;
+    let lastElement: HTMLElement;
 
-    const signInBtn = modalLeftSide_2?.querySelector('.signIn__btn') as HTMLButtonElement;
-    const signUpBtn = modalRightSide_1?.querySelector('.signUp__btn') as HTMLButtonElement;
+    const signInBtn = wrapper2?.querySelector('.signIn__btn') as HTMLButtonElement;
+    const signUpBtn = wrapper1?.querySelector('.signUp__btn') as HTMLButtonElement;
 
     let elementThatOpenedModal: HTMLElement | null = null;
 
@@ -26,39 +23,63 @@ export function initModalLogin() {
         btn.addEventListener('click', () => { closeModal() });
     });
 
-    if (modalContainer) {
-        modalContainer.addEventListener('click', (event) => {
-            if (event.target === modalContainer) {
-                closeModal();
-            }
-        });
-    }
-
-    modalContainer.addEventListener('keydown', (event) => {
-
-        console.log(event.key);
-
-        if (!modalContainer.classList.contains('is-active')) {
-            return;
-        } 
-        if (event.key === 'Escape') {
+    modalContainer?.addEventListener('click', (event) => {
+        if (event.target === modalContainer) {
             closeModal();
-        } else if (event.key === 'Tab') {
-            if (event.shiftKey) {
-                // Shift + Tab
-                if (document.activeElement === firstFocusableElement) {
-                    event.preventDefault();
-                    lastFocusableElement.focus();
-                }
-            } else {
-                // Tab
-                if (document.activeElement === lastFocusableElement) {
-                    event.preventDefault();
-                    firstFocusableElement.focus();
-                }
-            }
         }
     });
+    //     if (!modalContainer.classList.contains('is-active')) {
+    //         return;
+    //     } else if (wrapper1.getAttribute('aria-hidden') === 'false') {
+    //         focusableElements_w1 = getFocusableElements(wrapper1);
+    //         firstFocusableElement_w1 = focusableElements_w1[0] as HTMLElement;
+    //         lastFocusableElement_w1 = focusableElements_w1[focusableElements_w1.length - 1] as HTMLElement;
+
+    //         console.log(event.key);
+
+    //         if (event.key === 'Escape') {
+    //             closeModal();
+    //         } else if (event.key === 'Tab') {
+    //             if (event.shiftKey) {
+    //                 // Shift + Tab
+    //                 if (document.activeElement === firstFocusableElement_w1) {
+    //                     event.preventDefault();
+    //                     lastFocusableElement_w1.focus();
+    //                 }
+    //             } else {
+    //                 // Tab
+    //                 if (document.activeElement === lastFocusableElement_w1) {
+    //                     event.preventDefault();
+    //                     firstFocusableElement_w1.focus();
+    //                 }
+    //             }
+    //         }
+    //     } else if (wrapper2.getAttribute('aria-hidden') === 'false') {
+    //         focusableElements_w2 = getFocusableElements(wrapper2);
+    //         firstFocusableElement_w2 = focusableElements_w2[0] as HTMLElement;
+    //         lastFocusableElement_w2 = focusableElements_w2[focusableElements_w2.length - 1] as HTMLElement;
+
+    //         console.log(event.key);
+
+    //         if (event.key === 'Escape') {
+    //             closeModal();
+    //         } else if (event.key === 'Tab') {
+    //             if (event.shiftKey) {
+    //                 // Shift + Tab
+    //                 if (document.activeElement === firstFocusableElement_w2) {
+    //                     event.preventDefault();
+    //                     lastFocusableElement_w2.focus();
+    //                 }
+    //             } else {
+    //                 // Tab
+    //                 if (document.activeElement === lastFocusableElement_w2) {
+    //                     event.preventDefault();
+    //                     firstFocusableElement_w2.focus();
+    //                 }
+    //             }
+    //         }
+    //     }
+    // });
 
     signInBtn?.addEventListener('click', () => { changeToSignIn() });
     signUpBtn?.addEventListener('click', () => { changeToSignUp() });
@@ -72,9 +93,31 @@ export function initModalLogin() {
         document.body.setAttribute('aria-hidden', 'true');
         modalContainer.setAttribute('aria-hidden', 'false');
 
-        if (focusableElements.length > 0 && focusableElements[0] !== undefined) {
-            focusableElements[0].focus();
+        if (wrapper2.classList.contains('is-disabled')) {
+            wrapper1.setAttribute('aria-hidden', 'false');
+            wrapper2.setAttribute('aria-hidden', 'true');
+
+            firstElement = getFocusableElements(wrapper1)[0] as HTMLElement;
+            lastElement = getFocusableElements(wrapper1)[getFocusableElements(wrapper1).length - 1] as HTMLElement;
+
+            if (getFocusableElements(wrapper1).length > 0 && firstElement !== undefined) {
+                firstElement.focus();
+            }
+
+        } else {
+            wrapper1.setAttribute('aria-hidden', 'true');
+            wrapper2.setAttribute('aria-hidden', 'false');
+
+            firstElement = getFocusableElements(wrapper2)[0] as HTMLElement;
+            lastElement = getFocusableElements(wrapper2)[getFocusableElements(wrapper2).length - 1] as HTMLElement;
+
+            if (getFocusableElements(wrapper2).length > 0 && firstElement !== undefined) {
+                firstElement.focus();
+            }
         }
+
+        callEventKeydown(firstElement, lastElement);
+
     }
 
     function closeModal() {
@@ -82,6 +125,9 @@ export function initModalLogin() {
 
         document.body.setAttribute('aria-hidden', 'false');
         modalContainer.setAttribute('aria-hidden', 'true');
+
+        wrapper1.setAttribute('aria-hidden', 'true');
+        wrapper2.setAttribute('aria-hidden', 'true');
 
         modalContainer.classList.remove('is-active');
     }
@@ -94,19 +140,63 @@ export function initModalLogin() {
         )
     }
 
-    function changeToSignIn() {
-        modalLeftSide_1?.classList.remove('is-disabled');
-        modalRightSide_1?.classList.remove('is-disabled');
+    function callEventKeydown(
+        firstElement: HTMLElement,
+        lastElement: HTMLElement) {
 
-        modalLeftSide_2?.classList.add('is-disabled');
-        modalRightSide_2?.classList.add('is-disabled');
+        modalContainer.addEventListener('keydown', (event) => {
+            if (!modalContainer.classList.contains('is-active')) {
+                return;
+            }
+
+            if (event.key === 'Escape') {
+                closeModal();
+            } else if (event.key === 'Tab') {
+                if (event.shiftKey) {
+                    // Shift + Tab
+                    if (document.activeElement === firstElement) {
+                        event.preventDefault();
+                        lastElement.focus();
+                    }
+                } else {
+                    // Tab
+                    if (document.activeElement === lastElement) {
+                        event.preventDefault();
+                        firstElement.focus();
+                    }
+
+                }
+            }
+        });
+    }
+
+    function changeToSignIn() {
+        wrapper1.classList.remove('is-disabled');
+        wrapper2.classList.add('is-disabled');
+
+        wrapper2.setAttribute('aria-hidden', 'true');
+        wrapper1.setAttribute('aria-hidden', 'false');
+
+        firstElement = getFocusableElements(wrapper1)[0] as HTMLElement;
+        lastElement = getFocusableElements(wrapper1)[getFocusableElements(wrapper1).length - 1] as HTMLElement;
+
+        firstElement.focus();
+
+        callEventKeydown(firstElement, lastElement);
     }
 
     function changeToSignUp() {
-        modalLeftSide_1?.classList.add('is-disabled');
-        modalRightSide_1?.classList.add('is-disabled');
+        wrapper1.classList.add('is-disabled');
+        wrapper2.classList.remove('is-disabled');
 
-        modalLeftSide_2?.classList.remove('is-disabled');
-        modalRightSide_2?.classList.remove('is-disabled');
+        wrapper1.setAttribute('aria-hidden', 'true');
+        wrapper2.setAttribute('aria-hidden', 'false');
+
+        firstElement = getFocusableElements(wrapper2)[0] as HTMLElement;
+        lastElement = getFocusableElements(wrapper2)[getFocusableElements(wrapper2).length - 1] as HTMLElement;
+
+        firstElement.focus();
+
+        callEventKeydown(firstElement, lastElement);
     }
 }

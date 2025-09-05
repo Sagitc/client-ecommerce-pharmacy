@@ -45,9 +45,9 @@ button {
 }
 
 .is-active {
-    display: flex;
+    display: flex !important;
 }
 
 .is-disabled {
-    display: none;
+    display: none !important;
 }

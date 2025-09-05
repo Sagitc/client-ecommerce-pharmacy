@@ -1,161 +1,116 @@
-<div class="modal-login">
+<div id="modal-login">
     <div class="modal-login__container">
-
+        
         <div class="modal-login__body">
-            <div class="modal-login__left l_pt1">
-                <h2 class="modal-login__title">Login</h2>
+            <div class="modal-login__wrapper1" aria-hidden="false">
+                <div class="modal-login__left l_pt1">
+                    <h2 class="modal-login__title">Login</h2>
 
-                <div class="modal-login__social">
-                    <button class="modal-login__social__item">
-                        <img src="{{ asset('images/icon_google.svg') }}" alt="Google">
-                    </button>
-                    <button class="modal-login__social__item">
-                        <img src="{{ asset('images/icon_facebook.svg') }}" alt="Facebook">
-                    </button>
-                    <button class="modal-login__social__item">
-                        <img src="{{ asset('images/icon_twitter.svg') }}" alt="Twitter">
-                    </button>
-                </div>
+                    <div class="modal-login__social">
+                        <button class="modal-login__social__item">
+                            <img src="{{ asset('images/icon_google.svg') }}" alt="Google">
+                        </button>
+                        <button class="modal-login__social__item">
+                            <img src="{{ asset('images/icon_facebook.svg') }}" alt="Facebook">
+                        </button>
+                        <button class="modal-login__social__item">
+                            <img src="{{ asset('images/icon_twitter.svg') }}" alt="Twitter">
+                        </button>
+                    </div>
 
-                <form id="signIn__form" action="" method="get">
-                    @csrf
+                    <form id="signIn__form" action="" method="get">
+                        @csrf
 
-                    <span>Entre com o seu e-mail ou CPF</span>
+                        <span>Entre com o seu e-mail ou CPF</span>
 
-                    <input type="text" name="full_name" id="signIn__user" class="modal-login__input"
-                        placeholder="text ou CPF" required>
+                        <input type="text" name="full_name" id="signIn__user" class="modal-login__input"
+                            placeholder="E-mail ou CPF" required>
 
-                    <input type="password" name="password" id="signIn__password" class="modal-login__input"
-                        placeholder="Senha" required>
-
-                    <a id="signIn__forgot">Esqueceu a senha?</a>
-
-                    <button type="submit" class="form__submit">Login</button>
-                </form>
-
-            </div>
-
-            <div class="modal-login__left is-red l_pt2 is-disabled">
-                <h2 class="modal-login__title">É bom te ver de novo!</h2>
-
-                <span>Já tem uma conta cadastrada conosco?</span>
-                <span>Faça o seu login!</span>
-
-                <button class="signIn__btn">LOGIN</button>
-
-            </div>
-
-
-            <div class="modal-login__right is-red r_pt1">
-                <div class="modal-login__close">
-                    <button class="modal-login__close-btn" aria-label="Fechar modal">&times;</button>
-                </div>
-
-                <h2 class="modal-login__title">Seja bem-vindo(a)!</h2>
-
-                <span>Novo(a) por aqui? É bom ter você conosco</span>
-                <span>Cadastre-se em nosso site!</span>
-
-                <button class="signUp__btn">Cadastrar</button>
-
-            </div>
-
-            <div class="modal-login__right r_pt2 is-disabled">
-                <div class="modal-login__close">
-                    <button class="modal-login__close-btn" aria-label="Fechar modal">&times;</button>
-                </div>
-
-                <h2 class="modal-login__title">Cadastro</h2>
-
-                <div class="modal-login__social">
-                    <button class="modal-login__social__item">
-                        <img src="{{ asset('images/icon_google.svg') }}" alt="Google">
-                    </button>
-                    <button class="modal-login__social__item">
-                        <img src="{{ asset('images/icon_facebook.svg') }}" alt="Facebook">
-                    </button>
-                    <button class="modal-login__social__item">
-                        <img src="{{ asset('images/icon_twitter.svg') }}" alt="Twitter">
-                    </button>
-                </div>
-
-                <form id="signUp__form" action="" method="post">
-                    @csrf
-
-                    <input type="text" name="full_name" id="signUp__user" class="modal-login__input"
-                        placeholder="Nome e sobrenome" required>
-
-                    <div class="modal__input-wrapper">
-                        <input type="text" name="password" id="signUp__password" class="modal-login__input_2"
+                        <input type="password" name="password" id="signIn__password" class="modal-login__input"
                             placeholder="Senha" required>
 
-                        <input type="text" name="password_confirmation" id="signUp__password_confirmation" 
-                        class="modal-login__input_2" placeholder="Confirmar senha" required>
+                        <a id="signIn__forgot">Esqueceu a senha?</a>
+
+                        <button type="submit" class="form__submit">Login</button>
+                    </form>
+
+                </div>
+
+                <div class="modal-login__right r_pt1 is-red">
+                    <div class="modal-login__close">
+                        <button class="modal-login__close-btn" aria-label="Fechar modal">&times;</button>
                     </div>
 
-                    <div class="modal__input-wrapper">
-                        <input type="text" name="CPF" id="signUp__CPF" class="modal-login__input_2"
-                            placeholder="CPF" required>
+                    <h2 class="modal-login__title">Seja bem-vindo(a)!</h2>
 
-                        <input type="tel" name="Tel" id="signUp__tel" class="modal-login__input_2"
-                            placeholder="Telefone" required>
+                    <span>Novo(a) por aqui? É bom ter você conosco</span>
+                    <span>Cadastre-se em nosso site!</span>
+
+                    <button class="signUp__btn">Cadastrar</button>
+
+                </div>
+            </div>
+
+            <div class="modal-login__wrapper2 is-disabled" aria-hidden="true">
+                <div class="modal-login__left l_pt2 is-red">
+                    <h2 class="modal-login__title">É bom te ver de novo!</h2>
+
+                    <span>Já tem uma conta cadastrada conosco?</span>
+                    <span>Faça o seu login!</span>
+
+                    <button class="signIn__btn">LOGIN</button>
+
+                </div>
+
+                <div class="modal-login__right r_pt2">
+                    <div class="modal-login__close">
+                        <button class="modal-login__close-btn" aria-label="Fechar modal">&times;</button>
                     </div>
 
-                    <input type="text" name="email" id="signUp__email" class="modal-login__input"
-                        placeholder="Email" required>
+                    <h2 class="modal-login__title">Cadastro</h2>
 
-                    <button type="submit" class="form__submit">Cadastrar</button>
-                </form>
+                    <div class="modal-login__social">
+                        <button class="modal-login__social__item">
+                            <img src="{{ asset('images/icon_google.svg') }}" alt="Google">
+                        </button>
+                        <button class="modal-login__social__item">
+                            <img src="{{ asset('images/icon_facebook.svg') }}" alt="Facebook">
+                        </button>
+                        <button class="modal-login__social__item">
+                            <img src="{{ asset('images/icon_twitter.svg') }}" alt="Twitter">
+                        </button>
+                    </div>
 
+                    <form id="signUp__form" action="" method="post">
+                        @csrf
+
+                        <input type="text" name="full_name" id="signUp__user" class="modal-login__input"
+                            placeholder="Nome e sobrenome" required>
+
+                        <div class="modal__input-wrapper">
+                            <input type="text" name="password" id="signUp__password" class="modal-login__input_2"
+                                placeholder="Senha" required>
+
+                            <input type="text" name="password_confirmation" id="signUp__password_confirmation"
+                                class="modal-login__input_2" placeholder="Confirmar senha" required>
+                        </div>
+
+                        <div class="modal__input-wrapper">
+                            <input type="text" name="CPF" id="signUp__CPF" class="modal-login__input_2"
+                                placeholder="CPF" required>
+
+                            <input type="tel" name="Tel" id="signUp__tel" class="modal-login__input_2"
+                                placeholder="Telefone" required>
+                        </div>
+
+                        <input type="text" name="email" id="signUp__email" class="modal-login__input"
+                            placeholder="Email" required>
+
+                        <button type="submit" class="form__submit">Cadastrar</button>
+                    </form>
+
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-
-
-
-<!-- 
-
-    <h2 class="modal-login__title">Login</h2>
-
-                <div class="modal-login__social">
-                    <button class="modal-login__social__item">
-                        <img src="{{ asset('images/icon_google.svg') }}" alt="Google">
-                    </button>
-                    <button class="modal-login__social__item">
-                        <img src="{{ asset('images/icon_facebook.svg') }}" alt="Facebook">
-                    </button>
-                    <button class="modal-login__social__item">
-                        <img src="{{ asset('images/icon_twitter.svg') }}" alt="Twitter">
-                    </button>
-                </div>
-
-                <form id="signIn__form" action="" method="get">
-                    @csrf
-
-                    <span>Entre com o seu e-mail ou CPF</span>
-
-                    <input type="text" name="full_name" id="signIn__user" class="modal-login__input"
-                        placeholder="text ou CPF" required>
-
-                    <input type="password" name="password" id="signIn__password" class="modal-login__input"
-                        placeholder="Senha" required>
-
-                    <a id="signIn__forgot">Esqueceu a senha?</a>
-
-                    <button type="submit" class="form__submit">Login</button>
-                </form>
-
-
-
-    
-        <h2 class="modal-login__title">Seja bem-vindo(a)!</h2>
-
-                <span>Novo(a) por aqui? É bom ter você conosco</span>
-                <span>Cadastre-se em nosso site!</span>
-
-                <button class="signUp__btn">Cadastrar</button>
-
-
- -->
