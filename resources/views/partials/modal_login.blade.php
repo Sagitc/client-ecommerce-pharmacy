@@ -1,8 +1,8 @@
 <div id="modal-login">
     <div class="modal-login__container">
-        
+
         <div class="modal-login__body">
-            <div class="modal-login__wrapper1" aria-hidden="false">
+            <div class="modal-login__wrapper1 is-disabled" aria-hidden="false">
                 <div class="modal-login__left l_pt1">
                     <h2 class="modal-login__title">Login</h2>
 
@@ -23,7 +23,7 @@
 
                         <span>Entre com o seu e-mail ou CPF</span>
 
-                        <input type="text" name="full_name" id="signIn__user" class="modal-login__input"
+                        <input type="text" name="user" id="signIn__user" class="modal-login__input"
                             placeholder="E-mail ou CPF" required>
 
                         <input type="password" name="password" id="signIn__password" class="modal-login__input"
@@ -88,10 +88,10 @@
                             placeholder="Nome e sobrenome" required>
 
                         <div class="modal__input-wrapper">
-                            <input type="text" name="password" id="signUp__password" class="modal-login__input_2"
+                            <input type="password" name="password" id="signUp__password" class="modal-login__input_2"
                                 placeholder="Senha" required>
 
-                            <input type="text" name="password_confirmation" id="signUp__password_confirmation"
+                            <input type="password" name="password_confirmation" id="signUp__password_confirmation"
                                 class="modal-login__input_2" placeholder="Confirmar senha" required>
                         </div>
 
@@ -110,6 +110,48 @@
                     </form>
 
                 </div>
+            </div>
+
+            <div class="modal-login__wrapper3" aria-hidden="true">
+                <div class="modal-login__mobile">
+                    <div class="modal-login__close">
+                        <button class="modal-login__close-btn" aria-label="Fechar modal">&times;</button>
+                    </div>
+
+                    <div class="modal-mobile__logo"><img src="{{ asset('images/logo_red.svg') }}" alt=""></div>
+
+                    <div class="modal-mobile__options">
+                        <button class="modal-mobile__option-btn" id="mobile__signIn">Login</button>
+                        <button class="modal-mobile__option-btn" id="mobile__signUp">Cadastro</button>
+                    </div>
+
+                    <form id="forgot__form" action="" method="post">
+                        @csrf
+
+                        <input type="text" name="user" id="mobile_user" class="modal-login__input"
+                            placeholder="E-mail ou CPF" required>
+
+                        <input type="password" name="mobile_password" id="mobile_password" class="modal-login__input"
+                            placeholder="Senha" required>
+
+                        <button class="mobile_forgot">Esqueceu a senha?</button>
+
+                        <button type="submit" class="form__submit">Enviar</button>
+                    </form>
+
+                    <div class="modal-login__social">
+                        <button class="modal-login__social__item">
+                            <img src="{{ asset('images/icon_google.svg') }}" alt="Google">
+                        </button>
+                        <button class="modal-login__social__item">
+                            <img src="{{ asset('images/icon_facebook.svg') }}" alt="Facebook">
+                        </button>
+                        <button class="modal-login__social__item">
+                            <img src="{{ asset('images/icon_twitter.svg') }}" alt="Twitter">
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
