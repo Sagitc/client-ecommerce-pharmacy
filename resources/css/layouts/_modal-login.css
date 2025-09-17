@@ -106,16 +106,20 @@
     width: 100%;
 }
 
-#signIn__form a {
-    margin-top: var(--spacing-lg);
+.forgot-password {
+    background-color: transparent;
     font-size: var(--font-size-sm);
+    border: none;
     color: var(--color-secondary);
-    cursor: pointer;
 }
 
-#signIn__form a:hover {
+.forgot-password:hover {
     text-decoration: underline;
     color: var(--color-dark);
+}
+
+#signIn__form .forgot-password {
+    margin-top: var(--spacing-lg);
 }
 
 .form__submit {
@@ -253,22 +257,8 @@
     width: 100%;
 }
 
-/* #form-signIn__mobile input,
-#form-signUp__mobile input {
-    padding-top: var(--spacing-md);
-    padding-bottom: var(--spacing-md);
-} */
-
-.mobile_forgot {
+#form-signIn__mobile .forgot-password {
     align-self: end;
-    background-color: transparent;
-    border: none;
-    color: var(--color-secondary);
-}
-
-.mobile_forgot:hover {
-    text-decoration: underline;
-    color: var(--color-dark);
 }
 
 .modal-login__mobile .form__submit {
@@ -281,4 +271,60 @@
 
 .modal-login__mobile .modal-login__social{
     gap: var(--spacing-lg);
+}
+
+.modal-login__forgot {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: var(--color-primary);
+    border-radius: var(--border-radius-lg);
+}
+
+.modal-login__forgot .modal-mobile__logo {
+    margin: var(--image-sm) 0;
+}
+
+.modal-login__forgot-content {
+    background-color: var(--color-light);
+    padding: var(--spacing-lg);
+    border-top-left-radius: var(--spacing-xl);
+    border-top-right-radius: var(--spacing-xl);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-lg);
+    padding: 0 var(--image-md);
+}
+
+.modal-login__forgot-content h2 {
+    font-size: var(--font-h3);
+    font-weight: bold;
+    color: var(--color-dark);
+    margin-top: var(--spacing-xl);
+}
+
+.modal-login__forgot-content input {
+    padding: var(--spacing-md) var(--spacing-sm);
+    max-width: 75%;
+}
+
+.modal-login__forgot-content button {
+    background-color: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: var(--border-radius-sm);
+    padding: var(--spacing-md) var(--spacing-lg);
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: var(--spacing-xl);
+    font-size: var(--font-size-sm);
+}
+
+@media (max-width: 575px) {
+    .modal-login__forgot-content {
+        padding: 0 var(--image-xs);
+    }
 }

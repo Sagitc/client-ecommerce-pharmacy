@@ -1,4 +1,4 @@
-<div id="modal-login" class="is-disabled" aria-hidden="true" role="dialog" aria-modal="true">
+<div id="modal-login" class="" aria-hidden="true" role="dialog" aria-modal="true">
     <div class="modal-login__container">
 
         <div class="modal-login__body">
@@ -29,7 +29,7 @@
                         <input type="password" name="password" id="signIn__password" class="modal-login__input"
                             placeholder="Senha" required>
 
-                        <a id="signIn__forgot">Esqueceu a senha?</a>
+                        <button class="forgot-password">Esqueceu a senha?</button>
 
                         <button type="submit" class="form__submit">Login</button>
                     </form>
@@ -118,7 +118,7 @@
                         <button class="modal-login__close-btn" aria-label="Fechar modal">&times;</button>
                     </div>
 
-                    <div class="modal-mobile__logo"><img src="{{ asset('images/logo_red.svg') }}" alt=""></div>
+                    <div class="modal-mobile__logo"><img src="{{ asset('images/logo_red.svg') }}" alt="Logo da farmácia"></div>
 
                     <div class="modal-mobile__options">
                         <button class="modal-mobile__option-btn is-active" id="mobile__signIn">Login</button>
@@ -134,7 +134,7 @@
                         <input type="password" name="signIn-password" id="mobile-signIn_password" class="modal-login__input"
                             placeholder="Senha" required>
 
-                        <button class="mobile_forgot">Esqueceu a senha?</button>
+                        <button class="forgot-password">Esqueceu a senha?</button>
 
                         <button type="submit" class="form__submit">Enviar</button>
                     </form>
@@ -180,6 +180,32 @@
                     </div>
                 </div>
 
+            </div>
+
+            <div class="modal-login__wrapper4" aria-hidden="true">
+                <div class="modal-login__forgot">
+                    <div class="modal-login__close">
+                        <button class="modal-login__close-btn" aria-label="Fechar modal">&times;</button>
+                    </div>
+
+                    <div class="modal-mobile__logo"><img src="{{ asset('images/logo_white.svg') }}" alt=""></div>
+
+                    <div class="modal-login__forgot-content">
+                        <h2>Se esqueceu da senha?</h2>
+
+                        <span>Não tem problema, iremos te ajudar a <br>
+                        recuperar sua conta!</span>
+
+                        <input type="text" name="forgot__cpf-user" id="forgot__cpf-user" class="modal-login__input"
+                            placeholder="Seu CPF" required>
+
+                        <button>
+                            Resetar senha
+                            <span class="mobile-touch"></span>
+                        </button>
+                        
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -3,11 +3,13 @@ export function initModalLogin() {
     const modalBtn = document.querySelector("#header__user") as HTMLButtonElement;
     const modal = document.querySelector("#modal-login") as HTMLElement;
 
-    const closeBtnsModal = modal.querySelectorAll('.modal-login__close-btn') as NodeListOf<HTMLButtonElement>;
+    const modalCloseBtns = modal.querySelectorAll('.modal-login__close-btn') as NodeListOf<HTMLButtonElement>;
+    const modalForgotBtns = modal.querySelectorAll('.forgot-password') as NodeListOf<HTMLButtonElement>;
 
     const wrapper1 = modal.querySelector('.modal-login__wrapper1') as HTMLElement;
     const wrapper2 = modal.querySelector('.modal-login__wrapper2') as HTMLElement;
     const wrapper3 = modal.querySelector('.modal-login__wrapper3') as HTMLElement;
+    const wrapper4 = modal.querySelector('.modal-login__wrapper4') as HTMLElement;
 
     let firstElement: HTMLElement;
     let lastElement: HTMLElement;
@@ -26,8 +28,29 @@ export function initModalLogin() {
     // EVENTS
     modalBtn.addEventListener('click', () => { openModal() });
 
-    closeBtnsModal.forEach((btn) => {
+    modalCloseBtns.forEach((btn) => {
         btn.addEventListener('click', () => { closeModal() });
+    });
+
+    modalForgotBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            wrapper1.classList.add('is-disabled');
+            wrapper3.classList.add('is-disabled');
+            wrapper4.classList.remove('is-disabled');
+
+            wrapper1.setAttribute('aria-hidden', 'true');
+            wrapper3.setAttribute('aria-hidden', 'true');
+            wrapper4.setAttribute('aria-hidden', 'false');
+
+            firstElement = getFocusableElements(wrapper4)[0] as HTMLElement;
+            lastElement = getFocusableElements(wrapper4)[getFocusableElements(wrapper4).length - 1] as HTMLElement;
+
+            if (getFocusableElements(wrapper4).length > 0 && firstElement !== undefined) {
+                firstElement.focus();
+            }
+
+            callEventKeydown(firstElement, lastElement);
+        });
     });
 
     modal?.addEventListener('click', (event) => {
@@ -55,7 +78,6 @@ export function initModalLogin() {
 
 
         if (window.innerWidth > 991) {
-            modal.classList.add('is-active');
 
             if (wrapper2.classList.contains('is-disabled')) {
                 wrapper1.classList.remove('is-disabled');
@@ -101,21 +123,18 @@ export function initModalLogin() {
     function closeModal() {
         elementThatOpenedModal?.focus();
 
-        if (window.innerWidth > 991) {
-            document.body.setAttribute('aria-hidden', 'false');
-            modal.setAttribute('aria-hidden', 'true');
-
+        if (!wrapper1.classList.contains('is-disabled') || !wrapper2.classList.contains('is-disabled')) {
             wrapper1.setAttribute('aria-hidden', 'true');
             wrapper2.setAttribute('aria-hidden', 'true');
-
-            modal.classList.add('is-disabled');
-        } else {
-            document.body.setAttribute('aria-hidden', 'false');
-            wrapper3.setAttribute('aria-hidden', 'true');
-
+        } else if (!wrapper3.classList.contains('is-disabled')) {
             wrapper3.classList.add('is-disabled');
-            modal.classList.add('is-disabled');
+            wrapper3.setAttribute('aria-hidden', 'true');
+        } else if (!wrapper4.classList.contains('is-disabled')) {
+            wrapper4.classList.add('is-disabled');
+            wrapper4.setAttribute('aria-hidden', 'true');
         }
+
+        modal.classList.add('is-disabled');
     }
 
     function getFocusableElements(container: HTMLElement) {
