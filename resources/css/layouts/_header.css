@@ -103,7 +103,8 @@
     justify-content: center;
     cursor: pointer;
     position: relative;
-    /* display: none; */
+    background-color: transparent;
+    border: none;
 }
 
 #header__mobile-search_icon {
@@ -125,10 +126,17 @@
 }
 
 #header__mobile-search {
+    width: 100%;
     align-items: center;
     padding: var(--spacing-sm) var(--site-margin);
     background-color: var(--color-light);
-    display: none;
+    display: flex;
+}
+
+#header__mobile-search_form {
+    display: flex;
+    align-items: center;
+    width: calc(100% - (2 * var(--site-margin)));
 }
 
 #header__mobile-search button {

@@ -1,4 +1,4 @@
-export function initModalCart() {
+export function initModalCart(): void {
     // Declarations
     const cartBtn = document.querySelector('#header__cart') as HTMLButtonElement;
     const modalContainer = document.querySelector('#modal__container') as HTMLDivElement;

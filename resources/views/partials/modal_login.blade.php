@@ -1,4 +1,4 @@
-<div id="modal-login" class="" aria-hidden="true" role="dialog" aria-modal="true">
+<div id="modal-login" class="is-disabled" aria-hidden="true" role="dialog" aria-modal="true">
     <div class="modal-login__container">
 
         <div class="modal-login__body">
@@ -182,7 +182,7 @@
 
             </div>
 
-            <div class="modal-login__wrapper4" aria-hidden="true">
+            <div class="modal-login__wrapper4 is-disabled" aria-hidden="true">
                 <div class="modal-login__forgot">
                     <div class="modal-login__close">
                         <button class="modal-login__close-btn" aria-label="Fechar modal">&times;</button>

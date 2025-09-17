@@ -1,4 +1,4 @@
-export function initModalLogin() {
+export function initModalLogin(): void {
     // DECLARATIONS
     const modalBtn = document.querySelector("#header__user") as HTMLButtonElement;
     const modal = document.querySelector("#modal-login") as HTMLElement;
@@ -63,9 +63,6 @@ export function initModalLogin() {
     signUpBtn?.addEventListener('click', () => { changeToSignUp() });
     mobileSignInBtn?.addEventListener('click', () => { changeToSignIn() });
     mobileSignUpBtn?.addEventListener('click', () => { changeToSignUp() });
-
-    // teste
-    document.querySelector('#header__mobile-search_icon')?.addEventListener('click', openModal);
 
     // FUNCTIONS
     function openModal() {
