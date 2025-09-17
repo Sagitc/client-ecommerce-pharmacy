@@ -2,7 +2,6 @@ export function initModalLogin() {
     // DECLARATIONS
     const modalBtn = document.querySelector("#header__user") as HTMLButtonElement;
     const modal = document.querySelector("#modal-login") as HTMLElement;
-    const modalMobile = document.getElementById('modal-login') as HTMLElement;
 
     const closeBtnsModal = modal.querySelectorAll('.modal-login__close-btn') as NodeListOf<HTMLButtonElement>;
 
@@ -15,6 +14,12 @@ export function initModalLogin() {
 
     const signInBtn = wrapper2?.querySelector('.signIn__btn') as HTMLButtonElement;
     const signUpBtn = wrapper1?.querySelector('.signUp__btn') as HTMLButtonElement;
+
+    const mobileSignInBtn = wrapper3?.querySelector('#mobile__signIn') as HTMLButtonElement;
+    const mobileSignUpBtn = wrapper3?.querySelector('#mobile__signUp') as HTMLButtonElement;
+
+    const mobileSignInForm = wrapper3?.querySelector('#form-signIn__mobile') as HTMLFormElement;
+    const mobileSignUpForm = wrapper3?.querySelector('#form-signUp__mobile') as HTMLFormElement;
 
     let elementThatOpenedModal: HTMLElement | null = null;
 
@@ -33,20 +38,28 @@ export function initModalLogin() {
 
     signInBtn?.addEventListener('click', () => { changeToSignIn() });
     signUpBtn?.addEventListener('click', () => { changeToSignUp() });
+    mobileSignInBtn?.addEventListener('click', () => { changeToSignIn() });
+    mobileSignUpBtn?.addEventListener('click', () => { changeToSignUp() });
+
+    // teste
+    document.querySelector('#header__mobile-search_icon')?.addEventListener('click', openModal);
 
     // FUNCTIONS
     function openModal() {
 
+        elementThatOpenedModal = document.activeElement as HTMLElement;
+
+        document.body.setAttribute('aria-hidden', 'true');
+        modal.setAttribute('aria-hidden', 'false');
+        modal.classList.remove('is-disabled');
+
+
         if (window.innerWidth > 991) {
-            elementThatOpenedModal = document.activeElement as HTMLElement;
-
             modal.classList.add('is-active');
-            wrapper1.classList.remove('is-disabled');
-
-            document.body.setAttribute('aria-hidden', 'true');
-            modal.setAttribute('aria-hidden', 'false');
 
             if (wrapper2.classList.contains('is-disabled')) {
+                wrapper1.classList.remove('is-disabled');
+
                 wrapper1.setAttribute('aria-hidden', 'false');
                 wrapper2.setAttribute('aria-hidden', 'true');
 
@@ -69,12 +82,16 @@ export function initModalLogin() {
                 }
             }
         } else {
-            elementThatOpenedModal = document.activeElement as HTMLElement;
+            wrapper3.classList.remove('is-disabled');
 
-            modalMobile.classList.remove('is-disabled');
+            wrapper3.setAttribute('aria-hidden', 'false');
 
-            document.body.setAttribute('aria-hidden', 'true');
-            modalMobile.setAttribute('aria-hidden', 'false');
+            firstElement = getFocusableElements(wrapper3)[0] as HTMLElement;
+            lastElement = getFocusableElements(wrapper3)[getFocusableElements(wrapper3).length - 1] as HTMLElement;
+
+            if (getFocusableElements(wrapper3).length > 0 && firstElement !== undefined) {
+                firstElement.focus();
+            }
         }
 
         callEventKeydown(firstElement, lastElement);
@@ -84,13 +101,21 @@ export function initModalLogin() {
     function closeModal() {
         elementThatOpenedModal?.focus();
 
-        document.body.setAttribute('aria-hidden', 'false');
-        modal.setAttribute('aria-hidden', 'true');
+        if (window.innerWidth > 991) {
+            document.body.setAttribute('aria-hidden', 'false');
+            modal.setAttribute('aria-hidden', 'true');
 
-        wrapper1.setAttribute('aria-hidden', 'true');
-        wrapper2.setAttribute('aria-hidden', 'true');
+            wrapper1.setAttribute('aria-hidden', 'true');
+            wrapper2.setAttribute('aria-hidden', 'true');
 
-        modal.classList.remove('is-active');
+            modal.classList.add('is-disabled');
+        } else {
+            document.body.setAttribute('aria-hidden', 'false');
+            wrapper3.setAttribute('aria-hidden', 'true');
+
+            wrapper3.classList.add('is-disabled');
+            modal.classList.add('is-disabled');
+        }
     }
 
     function getFocusableElements(container: HTMLElement) {
@@ -106,7 +131,7 @@ export function initModalLogin() {
         lastElement: HTMLElement) {
 
         modal.addEventListener('keydown', (event) => {
-            if (!modal.classList.contains('is-active')) {
+            if (modal.classList.contains('is-disabled')) {
                 return;
             }
 
@@ -132,32 +157,72 @@ export function initModalLogin() {
     }
 
     function changeToSignIn() {
-        wrapper1.classList.remove('is-disabled');
-        wrapper2.classList.add('is-disabled');
 
-        wrapper2.setAttribute('aria-hidden', 'true');
-        wrapper1.setAttribute('aria-hidden', 'false');
+        if (wrapper3.classList.contains('is-disabled')) {
+            wrapper1.classList.remove('is-disabled');
+            wrapper2.classList.add('is-disabled');
 
-        firstElement = getFocusableElements(wrapper1)[0] as HTMLElement;
-        lastElement = getFocusableElements(wrapper1)[getFocusableElements(wrapper1).length - 1] as HTMLElement;
+            wrapper2.setAttribute('aria-hidden', 'true');
+            wrapper1.setAttribute('aria-hidden', 'false');
 
-        firstElement.focus();
+            firstElement = getFocusableElements(wrapper1)[0] as HTMLElement;
+            lastElement = getFocusableElements(wrapper1)[getFocusableElements(wrapper1).length - 1] as HTMLElement;
 
-        callEventKeydown(firstElement, lastElement);
+            firstElement.focus();
+
+            callEventKeydown(firstElement, lastElement);
+        } else {
+            mobileSignInBtn.classList.add('is-active');
+            mobileSignUpBtn.classList.remove('is-active');
+
+            mobileSignInForm.classList.remove('is-disabled');
+            mobileSignInForm.setAttribute('aria-hidden', 'false');
+
+            mobileSignUpForm.classList.add('is-disabled');
+            mobileSignUpForm.setAttribute('aria-hidden', 'true');
+
+            firstElement = getFocusableElements(wrapper3)[0] as HTMLElement;
+            lastElement = getFocusableElements(wrapper3)[getFocusableElements(wrapper3).length - 1] as HTMLElement;
+
+            firstElement.focus();
+
+            callEventKeydown(firstElement, lastElement);
+        }
     }
 
     function changeToSignUp() {
-        wrapper1.classList.add('is-disabled');
-        wrapper2.classList.remove('is-disabled');
 
-        wrapper1.setAttribute('aria-hidden', 'true');
-        wrapper2.setAttribute('aria-hidden', 'false');
+        if (wrapper3.classList.contains('is-disabled')) {
+            wrapper1.classList.add('is-disabled');
+            wrapper2.classList.remove('is-disabled');
 
-        firstElement = getFocusableElements(wrapper2)[0] as HTMLElement;
-        lastElement = getFocusableElements(wrapper2)[getFocusableElements(wrapper2).length - 1] as HTMLElement;
+            wrapper1.setAttribute('aria-hidden', 'true');
+            wrapper2.setAttribute('aria-hidden', 'false');
 
-        firstElement.focus();
+            firstElement = getFocusableElements(wrapper2)[0] as HTMLElement;
+            lastElement = getFocusableElements(wrapper2)[getFocusableElements(wrapper2).length - 1] as HTMLElement;
 
-        callEventKeydown(firstElement, lastElement);
+            firstElement.focus();
+
+            callEventKeydown(firstElement, lastElement);
+        } else {
+            mobileSignInBtn.classList.remove('is-active');
+            mobileSignUpBtn.classList.add('is-active');
+
+            mobileSignInForm.classList.add('is-disabled');
+            mobileSignInForm.setAttribute('aria-hidden', 'true');
+
+            mobileSignUpForm.classList.remove('is-disabled');
+            mobileSignUpForm.setAttribute('aria-hidden', 'false');
+
+            firstElement = getFocusableElements(wrapper3)[0] as HTMLElement;
+            lastElement = getFocusableElements(wrapper3)[getFocusableElements(wrapper3).length - 1] as HTMLElement;
+
+            firstElement.focus();
+
+            console.log(firstElement, lastElement);
+
+            callEventKeydown(firstElement, lastElement);
+        }
     }
 }

@@ -9,7 +9,6 @@
     justify-content: center;
     align-items: center;
     z-index: 9999;
-    /* display: none; */
 }
 
 .modal-login__container {
@@ -193,7 +192,8 @@
 }
 
 .modal-login__wrapper1,
-.modal-login__wrapper2 {
+.modal-login__wrapper2,
+.modal-login__wrapper3 {
     display: flex;
     width: 100%;
     height: 100%;
@@ -206,8 +206,79 @@
 }
 
 .modal-login__mobile {
-    padding: var(--spacing-md);
+    position: relative;
+    max-width: calc(100vw - (var(--spacing-xl) * 2.5));
+    padding: var(--spacing-md) var(--spacing-xl);
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.modal-mobile__logo {
+    margin: var(--spacing-xl) 0;
+}
+
+.modal-mobile__logo img {
+    width: var(--image-lg);
+    height: auto;
+}
+
+.modal-mobile__options {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+}
+
+.modal-mobile__option-btn {
+    background-color: transparent;
+    border: none;
+    color: var(--color-dark);
+    padding: var(--spacing-sm) var(--spacing-sm);
+    font-weight: bold;
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+}
+
+.modal-mobile__option-btn.is-active {
+    border-bottom: 2px solid var(--color-primary);
+}
+
+#form-signIn__mobile,
+#form-signUp__mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    margin-top: var(--spacing-md);
+    width: 100%;
+}
+
+/* #form-signIn__mobile input,
+#form-signUp__mobile input {
+    padding-top: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+} */
+
+.mobile_forgot {
+    align-self: end;
+    background-color: transparent;
+    border: none;
+    color: var(--color-secondary);
+}
+
+.mobile_forgot:hover {
+    text-decoration: underline;
+    color: var(--color-dark);
+}
+
+.modal-login__mobile .form__submit {
+    margin-top: var(--spacing-xl);
+    margin-bottom: var(--spacing-lg);
+    font-size: var(--font-size-sm);
+    height: var(--h-mobile-button);
+    padding: var(--spacing-sm) var(--spacing-lg);
+}
+
+.modal-login__mobile .modal-login__social{
+    gap: var(--spacing-lg);
 }

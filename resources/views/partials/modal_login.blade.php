@@ -1,8 +1,8 @@
-<div id="modal-login">
+<div id="modal-login" class="is-disabled" aria-hidden="true" role="dialog" aria-modal="true">
     <div class="modal-login__container">
 
         <div class="modal-login__body">
-            <div class="modal-login__wrapper1 is-disabled" aria-hidden="false">
+            <div class="modal-login__wrapper1 is-disabled" aria-hidden="true">
                 <div class="modal-login__left l_pt1">
                     <h2 class="modal-login__title">Login</h2>
 
@@ -112,7 +112,7 @@
                 </div>
             </div>
 
-            <div class="modal-login__wrapper3" aria-hidden="true">
+            <div class="modal-login__wrapper3 is-disabled" aria-hidden="true">
                 <div class="modal-login__mobile">
                     <div class="modal-login__close">
                         <button class="modal-login__close-btn" aria-label="Fechar modal">&times;</button>
@@ -121,22 +121,50 @@
                     <div class="modal-mobile__logo"><img src="{{ asset('images/logo_red.svg') }}" alt=""></div>
 
                     <div class="modal-mobile__options">
-                        <button class="modal-mobile__option-btn" id="mobile__signIn">Login</button>
+                        <button class="modal-mobile__option-btn is-active" id="mobile__signIn">Login</button>
                         <button class="modal-mobile__option-btn" id="mobile__signUp">Cadastro</button>
                     </div>
 
-                    <form id="forgot__form" action="" method="post">
+                    <form id="form-signIn__mobile" action="" method="post" aria-hidden="true">
                         @csrf
 
-                        <input type="text" name="user" id="mobile_user" class="modal-login__input"
+                        <input type="text" name="signIn-user" id="mobile-signIn_user" class="modal-login__input"
                             placeholder="E-mail ou CPF" required>
 
-                        <input type="password" name="mobile_password" id="mobile_password" class="modal-login__input"
+                        <input type="password" name="signIn-password" id="mobile-signIn_password" class="modal-login__input"
                             placeholder="Senha" required>
 
                         <button class="mobile_forgot">Esqueceu a senha?</button>
 
                         <button type="submit" class="form__submit">Enviar</button>
+                    </form>
+
+                    <form id="form-signUp__mobile" action="" method="post" aria-hidden="true" class="is-disabled">
+                        @csrf
+
+                        <input type="text" name="mobile__signUp__user" id="mobile-signUp__user" class="modal-login__input"
+                            placeholder="E-mail ou CPF" required>
+
+                        <div class="modal__input-wrapper">
+                            <input type="password" name="mobile__signUp__password" id="mobile-signUp__password" class="modal-login__input_2"
+                                placeholder="Senha" required>
+
+                            <input type="password" name="mobile__signUp__password-confirmation" id="mobile-signUp__password-confirmation" class="modal-login__input_2"
+                                placeholder="Confirmar senha" required>
+                        </div>
+
+                        <div class="modal__input-wrapper">
+                            <input type="text" name="mobile__signUp__CPF" id="mobile-signUp__CPF" class="modal-login__input_2"
+                                placeholder="CPF" required>
+
+                            <input type="text" name="mobile__signUp__tel" id="mobile-signUp__tel" class="modal-login__input_2"
+                                placeholder="Telefone" required>
+                        </div>
+
+                        <input type="email" name="mobile__signUp__email" id="mobile-signUp__email" class="modal-login__input"
+                            placeholder="Email" required>
+
+                        <button type="submit" class="form__submit">Cadastrar</button>
                     </form>
 
                     <div class="modal-login__social">
