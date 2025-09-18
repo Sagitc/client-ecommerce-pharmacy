@@ -51,11 +51,9 @@
 
 .modal__close-btn {
     margin-top: var(--spacing-sm);
-    margin-right: var(--spacing-sm);
     background: none;
     border: none;
     cursor: pointer;
-    padding: var(--spacing-sm);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -240,6 +238,13 @@
 
 @media (max-width: 769px) {
     #modal__container {
-        display: none;
+        justify-content: center;
+        height: 100%;
+        padding: 0;
+    }
+    .modal {
+        margin: 0;
+        max-width: calc(100% - (var(--spacing-md) * 2));
+        max-height: calc(100% - (var(--spacing-md) * 2));
     }
 }

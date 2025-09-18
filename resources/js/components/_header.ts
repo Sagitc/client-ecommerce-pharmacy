@@ -1,27 +1,53 @@
 export function initHeader(): void {
     //  Declarations
-    const searchCampBtnMobile = document.querySelector('#header__mobile-search_icon') as HTMLButtonElement;
-    const searchCampMobile = document.querySelector('#header__mobile-search') as HTMLDivElement;
+    const header = document.querySelector('.header__content') as HTMLDivElement;
 
-    const mobileMenuBtn = document.querySelector('#header__mobile-menu') as HTMLButtonElement;
-    const mobileMenu = document.querySelector('#mobile-menu') as HTMLDivElement;
+    const mobileMenu = document.querySelector('#mobile-menu') as HTMLDivElement
+    const mobileMenuButton = header.querySelector('#header__mobile-menu') as HTMLButtonElement
+    const mobileMenuCloseBtn = mobileMenu.querySelector('.mobile-menu__wrapper .modal__close-btn') as HTMLButtonElement
 
-    const mobileLogin = document.querySelector('#mobile-menu__login') as HTMLButtonElement;
-    const mobileCart = document.querySelector('#mobile-menu__cart') as HTMLButtonElement;
-    const mobileProfile = document.querySelector('#mobile-menu__profile') as HTMLButtonElement;
+    const mobileSearch = document.querySelector('#header__mobile-search') as HTMLDivElement
+    const mobileSearchButton = header.querySelector('#header__mobile-search_icon') as HTMLButtonElement
+    const mobileSearchCloseBtn = document.querySelector('.header__mobile-search_close-btn') as HTMLButtonElement
 
+    const mobileCart = document.querySelector('#modal__container') as HTMLDivElement;
+    const mobileCartButton = header.querySelector('#header__mobile-cart') as HTMLButtonElement;
 
     //  Events
-    searchCampBtnMobile?.addEventListener('click', () => {
-        searchCampMobile?.classList.toggle('is-disabled');
-    });
+    mobileMenuButton.addEventListener('click', toggleMobileMenu);
+    mobileMenuCloseBtn.addEventListener('click', toggleMobileMenu);
+
+    mobileSearchButton.addEventListener('click', toggleMobileSearch);
+    mobileSearchCloseBtn.addEventListener('click', toggleMobileSearch);
+
+    mobileCartButton.addEventListener('click', toggleMobileCart);
 
     
     //  Functions
-    function openCart(): void {
-        mobileMenu?.classList.add('is-disabled');
-        searchCampMobile?.classList.add('is-disabled');
+    function toggleMobileMenu(): void {
 
-        
+        //  Make login verification to show different menu options
+
+        if (mobileMenu.classList.contains('is-disabled')) {
+            mobileMenu.classList.remove('is-disabled');
+        } else {
+            mobileMenu.classList.add('is-disabled');
+        }
+    }
+
+    function toggleMobileSearch(): void {
+        if (mobileSearch.classList.contains('is-disabled')) {
+            mobileSearch.classList.remove('is-disabled');
+        } else {
+            mobileSearch.classList.add('is-disabled');
+        }
+    }
+
+    function toggleMobileCart(): void {
+        if (mobileCart.classList.contains('is-disabled')) {
+            mobileCart.classList.remove('is-disabled');
+        } else {
+            mobileCart.classList.add('is-disabled');
+        }
     }
 }

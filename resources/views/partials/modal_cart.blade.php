@@ -55,17 +55,8 @@
 
           <input type="number" class="is-disabled" id="custom-quantity-input" min="1" max="99" value="0" aria-label="Quantidade personalizada">
 
-          <!-- <div class="item-card__quantity" role="button">
-            <span class="quantity__value">1</span>
-            <svg aria-label="Ícone de quantidade" class="quantity__icon" fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
-              <path d="M7 10l5 5 5-5z" />
-            </svg>
-          </div> -->
-
         </div>
       </div>
-
-      <!-- <p>Seu carrinho está vazio.</p> -->
 
     </div>
 

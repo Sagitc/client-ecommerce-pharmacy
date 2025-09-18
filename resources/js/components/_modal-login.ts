@@ -17,6 +17,9 @@ export function initModalLogin(): void {
     const signInBtn = wrapper2?.querySelector('.signIn__btn') as HTMLButtonElement;
     const signUpBtn = wrapper1?.querySelector('.signUp__btn') as HTMLButtonElement;
 
+    const signInBtn_mobile = document.querySelector('.mobile-menu__signIn') as HTMLButtonElement;
+    const signUpBtn_mobile = document.querySelector('.mobile-menu__signUp') as HTMLButtonElement;
+
     const mobileSignInBtn = wrapper3?.querySelector('#mobile__signIn') as HTMLButtonElement;
     const mobileSignUpBtn = wrapper3?.querySelector('#mobile__signUp') as HTMLButtonElement;
 
@@ -64,6 +67,19 @@ export function initModalLogin(): void {
     mobileSignInBtn?.addEventListener('click', () => { changeToSignIn() });
     mobileSignUpBtn?.addEventListener('click', () => { changeToSignUp() });
 
+    signInBtn_mobile?.addEventListener('click', () => {
+        document.querySelector('#mobile-menu')?.classList.add('is-disabled');
+        openModal();
+        changeToSignIn();
+    });
+
+    signUpBtn_mobile?.addEventListener('click', () => {
+        document.querySelector('#mobile-menu')?.classList.add('is-disabled');
+        openModal();
+        changeToSignUp();
+    });
+
+
     // FUNCTIONS
     function openModal() {
 
@@ -72,7 +88,6 @@ export function initModalLogin(): void {
         document.body.setAttribute('aria-hidden', 'true');
         modal.setAttribute('aria-hidden', 'false');
         modal.classList.remove('is-disabled');
-
 
         if (window.innerWidth > 991) {
 
