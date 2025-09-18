@@ -165,18 +165,21 @@
 #mobile-menu {
     position: absolute;
     bottom: 0;
-    background-color: var(--color-light);
     color: var(--color-dark);
     box-shadow: var(--box-shadow-md);
-    flex-direction: column;
     z-index: 999;
     border-radius: var(--border-radius-lg);
+    width: 100vw;
+    display: flex;
+    justify-content: center;
 }
 
 .mobile-menu__wrapper {
+    background-color: var(--color-light);
     position: relative;
-    width: calc(100vw - (2 * var(--site-margin)));
-    padding: var(--spacing-md) var(--site-margin);
+    width: calc(100% - (2 * var(--site-margin)));
+    max-width: 20rem;
+    padding: var(--spacing-md) var(--spacing-md);
     display: flex;
     flex-direction: column;
     justify-content: center;
