@@ -64,21 +64,65 @@
 
 <div id="mobile-menu" class="is-disabled" aria-hidden="false">
     <div class="mobile-menu__wrapper">
-        <div class="modal__header-close-btn">
-            <button aria-label="Fechar" class="modal__close-btn">
-                <svg aria-label="Ícone de X" fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
-                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
-                </svg>
-            </button>
+
+        <div class="dragIcon">
+            <div class="mobile-touch"></div>
         </div>
 
-        <h2 class="mobile-menu__greatings">Que bom te ver!</h2>
-        <span>Efetue seu login ou crie uma conta!</span>
+        <div class="menu-mobile__login-wrapper">
+            <h2 class="mobile-menu__greatings">Que bom te ver!</h2>
+            <span>Efetue seu login ou crie uma conta!</span>
 
-        <div class="mobile-menu__act-btns">
-            <button class="mobile-menu__signIn">Login</button>
-            <button class="mobile-menu__signUp">Cadastro</button>
+            <div class="mobile-menu__act-btns">
+                <button class="mobile-menu__signIn">Login</button>
+                <button class="mobile-menu__signUp">Cadastro</button>
+            </div>
         </div>
+
+        <nav class="mobile-menu__nav" aria-label="Menu do usuário">
+            <ul>
+                <li>
+                    <a href="#">
+                        Perfil
+                        <svg aria-label="Seta para a direita" width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align: middle;">
+                            <path d="M8 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        Meus pedidos
+                        <svg aria-label="Seta para a direita" width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align: middle;">
+                            <path d="M8 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        Produtos favoritos
+                        <svg aria-label="Seta para a direita" width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align: middle;">
+                            <path d="M8 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        Descontos e benefícios
+                        <svg aria-label="Seta para a direita" width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align: middle;">
+                            <path d="M8 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        Sair
+                        <svg aria-label="Seta para a direita" width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align: middle;">
+                            <path d="M8 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </div>
 

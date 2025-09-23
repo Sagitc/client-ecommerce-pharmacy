@@ -39,7 +39,6 @@ button {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: var(--color-dark);
     cursor: pointer;
     display: none;
 }
@@ -50,4 +49,10 @@ button {
 
 .is-disabled {
     display: none !important;
+}
+
+@media (max-width: 768px) {
+    .mobile-touch {
+        display: flex;
+    }
 }

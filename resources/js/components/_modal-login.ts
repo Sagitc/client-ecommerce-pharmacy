@@ -251,8 +251,6 @@ export function initModalLogin(): void {
 
             firstElement.focus();
 
-            console.log(firstElement, lastElement);
-
             callEventKeydown(firstElement, lastElement);
         }
     }
