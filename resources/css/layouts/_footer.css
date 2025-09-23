@@ -139,8 +139,53 @@
     gap: var(--spacing-md);
     align-items: center;
     padding: 4px 0;
+    flex-wrap: wrap;
 }
 
 .footer__payment-icons img {
     height: 3rem;
+}
+
+.footer__copyright {
+    text-align: center;
+}
+
+@media (max-width: 576px) {
+    .footer__container {
+        padding: 0 var(--site-margin);
+        gap: var(--spacing-md);
+    }
+
+    .footer__wrapper1,
+    .footer__wrapper2,
+    .footer__wrapper3 {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        text-align: center;
+    }
+
+    .footer__wrapper1 {
+        gap: var(--spacing-lg);
+    }
+
+    .footer__callCenter,
+    .footer__payment-methods {
+        padding: var(--spacing-md);
+    }
+
+    .footer__payment-icons {
+        display: grid;
+        margin-top: var(--spacing-md);
+        gap: var(--spacing-md);
+        grid-template-columns: repeat(3, 1fr);
+        justify-items: center;
+    }
+
+    .footer__payment-icons img {
+        height: 2.5rem;
+    }
+
+    .footer__social-icons {
+        justify-content: center;
+    }
 }

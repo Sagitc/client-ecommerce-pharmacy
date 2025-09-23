@@ -73,7 +73,7 @@
                     <img src="{{ asset('images/icon_amex.svg') }}" alt="American Express">
                     <img src="{{ asset('images/icon_elo.svg') }}" alt="Elo">
                     <img src="{{ asset('images/icon_hipercard.svg') }}" style="height:4rem" alt="Hipercard">
-                    <img src="{{ asset('images/icon_pix.svg') }}" style="height:2rem" alt="Pix">
+                    <img src="{{ asset('images/icon_pix.svg') }}" alt="Pix">
                 </div>
             </div>
         </div>
