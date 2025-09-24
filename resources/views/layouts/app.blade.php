@@ -13,7 +13,7 @@
 </head>
 <body>
     <header>
-        @yield('header')
+        @include('partials.header')
         @yield('nav')
     </header>
 
@@ -22,7 +22,7 @@
     </main>
 
     <footer>
-        @yield('footer')
+        @include('partials.footer')
     </footer>
 
     @stack('scripts')
