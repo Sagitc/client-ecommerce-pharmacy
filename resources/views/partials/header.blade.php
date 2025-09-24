@@ -1,4 +1,4 @@
-<div class="l-header" role="banner">
+<div class="l-header">
     <div class="header__content max-width">
         <a href="/" class="header__logo">
             <img src="{{ asset('images/logo_white.svg') }}" alt="Logo da Farmácia">

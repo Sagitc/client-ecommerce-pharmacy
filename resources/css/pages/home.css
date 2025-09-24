@@ -3,7 +3,7 @@
     --benefits-img-bg: var(--color-tertiary);
 }
 .banner1__area {
-    margin-top: var(--spacing-lg);
+    margin-top: calc(90px + var(--spacing-lg));
     border-radius: var(--spacing-lg);
     height: 400px;
     background-color: #d9d9d9;
