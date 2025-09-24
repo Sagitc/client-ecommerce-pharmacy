@@ -38,15 +38,19 @@
                 <div class="footer__social-icons">
                     <a href="https://www.facebook.com/drogariascamargo" target="_blank" rel="noopener noreferrer">
                         <img src="{{ asset('images/icon_facebook_black.svg') }}" alt="Facebook">
+                        <span class="mobile-touch"></span>
                     </a>
                     <a href="https://www.instagram.com/drogariascamargo" target="_blank" rel="noopener noreferrer">
                         <img src="{{ asset('images/icon_instagram_black.svg') }}" alt="Instagram">
+                        <span class="mobile-touch"></span>
                     </a>
                     <a href="https://www.twitter.com/drogariascamargo" target="_blank" rel="noopener noreferrer">
                         <img src="{{ asset('images/icon_whatsapp_black.svg') }}" alt="Twitter">
+                        <span class="mobile-touch"></span>
                     </a>
                     <a href="https://www.twitter.com/drogariascamargo" target="_blank" rel="noopener noreferrer">
                         <img src="{{ asset('images/icon_linkedin_black.svg') }}" alt="Twitter">
+                        <span class="mobile-touch"></span>
                     </a>
                 </div>
             </div>
@@ -79,14 +83,15 @@
         </div>
 
         <div class="footer__wrapper3">
+            <p class="footer__copyright">
+                &copy; 2025 Drogarias Camargo<br>
+                Todos os direitos reservados<br>
+                Desenvolvido por Sagitc Corporation Ltda
+            </p>
+
             <figure class="footer__logo">
                 <img src="{{ asset('images/logo_red.svg') }}" alt="Logo">
             </figure>
-
-            <p class="footer__copyright">
-                &copy; 2025 Drogarias Camargo. Todos os direitos reservados.<br>
-                Desenvolvido por Sagitc Corporation Ltda.
-            </p>
         </div>
 
     </div>
