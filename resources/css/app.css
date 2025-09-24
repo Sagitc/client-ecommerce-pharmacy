@@ -7,6 +7,7 @@
 @import './layouts/_modal-cart.css';
 @import './layouts/_modal-login.css';
 @import './layouts/_products-cards.css';
+@import './layouts/_section-top.css';
 
 /* Components */
 
@@ -22,6 +23,7 @@ body {
     letter-spacing: 0.5px;
     line-height: 1.5;
     box-sizing: border-box;
+    height: auto;
 }
 
 button {
@@ -42,6 +44,7 @@ button {
     transform: translate(-50%, -50%);
     cursor: pointer;
     display: none;
+    /* background-color: tomato; */
 }
 
 .is-active {
@@ -55,5 +58,12 @@ button {
 @media (max-width: 768px) {
     .mobile-touch {
         display: flex;
+    }
+}
+
+@media (max-width: 1280px) {
+    .max-width {
+        padding-left: var(--site-margin);
+        padding-right: var(--site-margin);
     }
 }

@@ -118,7 +118,7 @@
     border: none;
     border-radius: 50%;
     outline: none;
-    /* display: none; */
+    position: relative;
 }
 
 #header__mobile-search_icon:active {
@@ -160,10 +160,11 @@
 #header__mobile-cart {
     border: none;
     background: none;
+    position: relative;
 }
 
 #mobile-menu {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     color: var(--color-dark);
     box-shadow: var(--box-shadow-md);
