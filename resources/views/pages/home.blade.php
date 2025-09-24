@@ -45,6 +45,17 @@
                     <p class="benefits__description">Encontrou um preço melhor? Nós cobrimos!</p>
                 </div>
             </div>
+
+            <div class="benefits__card">
+                <figure class="benefits__img">
+                    <img src="{{ asset('images/icon_retrieve_white.svg') }}" alt="Benefício 1">
+                </figure>
+
+                <div class="benefits__text">
+                    <h3 class="benefits__title">Retire na loja</h3>
+                    <p class="benefits__description">Retire seu pedido na loja e evite o frete.</p>
+                </div>
+            </div>
         </div>
     </section>
 

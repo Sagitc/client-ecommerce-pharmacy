@@ -86,13 +86,15 @@
             <figure class="footer__logo">
                 <img src="{{ asset('images/logo_red.svg') }}" alt="Logo">
             </figure>
-            
+  
             <p class="footer__copyright">
                 &copy; 2025 Drogarias Camargo<br>
                 Todos os direitos reservados<br>
                 Desenvolvido por Sagitc Corporation Ltda
             </p>
 
+            <img src="{{ asset('images/logo_anvisa.png') }}" alt="Logo Anvisa" class="footer__anvisa-logo">
+          
         </div>
 
     </div>

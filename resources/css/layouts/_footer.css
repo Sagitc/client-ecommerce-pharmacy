@@ -158,12 +158,12 @@
     font-size: var(--font-size-xs);
 }
 
-@media (max-width: 576px) {
-    .footer__container {
-        padding: 0 var(--site-margin);
-        gap: var(--spacing-md);
-    }
+.footer__anvisa-logo {
+    height: 3rem;
+    margin-left: var(--spacing-md);
+}
 
+@media (max-width: 576px) {
     .footer__wrapper1,
     .footer__wrapper2,
     .footer__wrapper3 {
@@ -207,6 +207,7 @@
 }
 
 @media (min-width: 577px) and (max-width: 768px) {
+
     .footer__wrapper1 {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -219,12 +220,10 @@
     }
 
     .footer__payment-icons {
-        justify-content: space-between;
         flex-wrap: wrap;
     }
 
     .footer__wrapper3 {
-        flex-direction: column;
         gap: var(--spacing-md);
     }
 }
@@ -242,5 +241,13 @@
     .footer__payment-icons {
         display: flex;
         justify-content: center;
+    }
+}
+
+@media (max-width: 1280px) {
+
+    .footer__container {
+        padding: 0 var(--site-margin);
+        gap: var(--spacing-md);
     }
 }
