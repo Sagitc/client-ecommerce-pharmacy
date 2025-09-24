@@ -28,6 +28,11 @@
     cursor: not-allowed;
 }
 
+.products__btn-nav:hover:not(:disabled) {
+    background-color: rgba(0, 0, 0, 0.2);
+    transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
 .products__btn--prev {
     padding-right: 12px;
 }

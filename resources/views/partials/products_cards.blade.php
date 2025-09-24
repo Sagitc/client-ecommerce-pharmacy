@@ -1,6 +1,6 @@
 <div class="products__card">
     <button class="products__like">
-        <img src="{{ asset('images/icon_fav_outline.svg') }}" alt="Ícone de favoritar">
+        <img src="{{ asset('images/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
         <span class="mobile-touch"></span>
     </button>
 
@@ -25,7 +25,7 @@
 
 <div class="products__card">
     <button class="products__like">
-        <img src="{{ asset('images/icon_fav_outline.svg') }}" alt="Ícone de favoritar">
+        <img src="{{ asset('images/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
         <span class="mobile-touch"></span>
     </button>
 
@@ -50,7 +50,7 @@
 
 <div class="products__card">
     <button class="products__like">
-        <img src="{{ asset('images/icon_fav_outline.svg') }}" alt="Ícone de favoritar">
+        <img src="{{ asset('images/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
         <span class="mobile-touch"></span>
     </button>
 
@@ -75,7 +75,7 @@
 
 <div class="products__card">
     <button class="products__like">
-        <img src="{{ asset('images/icon_fav_outline.svg') }}" alt="Ícone de favoritar">
+        <img src="{{ asset('images/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
         <span class="mobile-touch"></span>
     </button>
 
@@ -100,7 +100,7 @@
 
 <div class="products__card">
     <button class="products__like">
-        <img src="{{ asset('images/icon_fav_outline.svg') }}" alt="Ícone de favoritar">
+        <img src="{{ asset('images/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
         <span class="mobile-touch"></span>
     </button>
 
@@ -125,7 +125,7 @@
 
 <div class="products__card">
     <button class="products__like">
-        <img src="{{ asset('images/icon_fav_outline.svg') }}" alt="Ícone de favoritar">
+        <img src="{{ asset('images/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
         <span class="mobile-touch"></span>
     </button>
 
@@ -150,7 +150,7 @@
 
 <div class="products__card">
     <button class="products__like">
-        <img src="{{ asset('images/icon_fav_outline.svg') }}" alt="Ícone de favoritar">
+        <img src="{{ asset('images/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
         <span class="mobile-touch"></span>
     </button>
 
@@ -175,7 +175,7 @@
 
 <div class="products__card">
     <button class="products__like">
-        <img src="{{ asset('images/icon_fav_outline.svg') }}" alt="Ícone de favoritar">
+        <img src="{{ asset('images/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
         <span class="mobile-touch"></span>
     </button>
 
@@ -200,7 +200,7 @@
 
 <div class="products__card">
     <button class="products__like">
-        <img src="{{ asset('images/icon_fav_outline.svg') }}" alt="Ícone de favoritar">
+        <img src="{{ asset('images/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
         <span class="mobile-touch"></span>
     </button>
 
@@ -225,7 +225,7 @@
 
 <div class="products__card">
     <button class="products__like">
-        <img src="{{ asset('images/icon_fav_outline.svg') }}" alt="Ícone de favoritar">
+        <img src="{{ asset('images/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
         <span class="mobile-touch"></span>
     </button>
 

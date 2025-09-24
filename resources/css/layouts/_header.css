@@ -161,6 +161,7 @@
     border: none;
     background: none;
     position: relative;
+    display: none;
 }
 
 #mobile-menu {
