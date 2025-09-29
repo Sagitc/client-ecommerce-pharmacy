@@ -6,11 +6,11 @@
 @import './layouts/_footer.css';
 @import './layouts/_modal-cart.css';
 @import './layouts/_modal-login.css';
-@import './layouts/_products-cards.css';
-@import './layouts/_section-top.css';
+
 
 /* Components */
-
+@import './components/_products-cards.css';
+@import './components/_section-top.css';
 
 
 body {
@@ -24,6 +24,7 @@ body {
     line-height: 1.5;
     box-sizing: border-box;
     height: auto;
+    padding-top: 85px;
 }
 
 button {

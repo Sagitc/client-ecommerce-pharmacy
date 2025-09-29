@@ -1,17 +1,11 @@
-import { initModalCart } from "./_modal-cart";
-
 export function initHomePage() {
     //  Declarations
-    const favIcons = document.querySelectorAll('.products__like');
+
     const catalogBtns = document.querySelectorAll('.catalog__option');
-    const buyBtns = document.querySelectorAll('.products__btn-buy');
 
 
     //  Events
-    favIcons.forEach(icon => {
-        icon.addEventListener('click', () => { toggleFavIcon(icon) });
-    });
-
+    
     catalogBtns.forEach(btn => {
         btn.addEventListener('click', () => { filterCatalog(btn) });
     });
@@ -22,31 +16,8 @@ export function initHomePage() {
         });
     });
 
-    buyBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            addOnCart(btn.parentElement?.parentElement as HTMLElement)
-        });
-    })
-
 
     //  Functions
-    function toggleFavIcon(icon: Element) {
-        if (icon.classList.contains('active')) {
-            icon.setAttribute('aria-pressed', 'false');
-            icon.querySelector('img')?.setAttribute('src', 'http://localhost:8000/images/icon_fav_outline.svg');
-
-            //  Script para remover dos favoritos do perfil
-
-        } else {
-            icon.setAttribute('aria-pressed', 'true');
-            icon.querySelector('img')?.setAttribute('src', 'http://localhost:8000/images/icon_fav_filled.svg');
-
-            //  Script para adicionar aos favoritos do perfil
-
-        }
-        icon.classList.toggle('active');
-    }
-
     function filterCatalog(btn: Element) {
         if (btn.classList.contains('active')) {
             return;
@@ -102,9 +73,5 @@ export function initHomePage() {
 
         sectionScrollable.addEventListener('scrollend', updateButtonStates);
         updateButtonStates();
-    }
-
-    function addOnCart(item: HTMLElement) {
-        //  Código para adicionar o produto no carrinho do cliente
     }
 }

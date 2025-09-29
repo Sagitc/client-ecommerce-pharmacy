@@ -7,7 +7,7 @@
 }
 
 #main-banner {
-    margin-top: calc(90px + var(--spacing-lg));
+    margin-top: var(--spacing-lg);
 }
 
 #banner1__img {

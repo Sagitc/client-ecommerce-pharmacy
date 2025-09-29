@@ -64,9 +64,9 @@
 
 <section id="products-cards" class="products">
     <div class="products__area max-width">
-        @include('partials.section_top', ['section_title' => 'Produtos em destaque'])
+        @include('components.section_top', ['section_title' => 'Produtos em destaque'])
         <div class="products__content">
-            @include('partials.products_cards')
+            @include('components.products_cards')
         </div>
     </div>
 </section>
@@ -109,7 +109,7 @@
         </div>
 
         <div class="catalog__product-content">
-            @include('partials.products_cards')
+            @include('components.products_cards')
         </div>
     </div>
 </section>
@@ -123,15 +123,16 @@
 
 <section id="daily-products" class="daily">
     <div class="daily__area max-width">
-        @include('partials.section_top', ['section_title' => 'Promoções diárias'])
+        @include('components.section_top', ['section_title' => 'Promoções diárias'])
         <div class="daily__content">
-            @include('partials.products_cards')
+            @include('components.products_cards')
         </div>
     </div>
 </section>
 
 @endsection
 
-@section('footer')
-@include('partials.footer')
-@endsection
+@push('scripts')
+<script src="{{ Vite::asset('resources/js/pages/_home.ts') }}" defer></script>
+<script src="{{ Vite::asset('resources/js/components/_products_cards.ts') }}" defer></script>
+@endpush
