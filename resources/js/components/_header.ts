@@ -34,7 +34,6 @@ export function initHeader(): void {
         isDragging = true;
         startY = e.touches[0]!.clientY;
         mobileMenu.style.transition = 'none';
-        console.log('start', startY);
     });
 
     draggableIcon.addEventListener('touchmove', (e: TouchEvent) => {
