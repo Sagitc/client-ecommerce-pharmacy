@@ -3,7 +3,7 @@
 @section('title', 'Drogarias Camargo | Home')
 
 @push('styles')
-<link rel="stylesheet" href="{{ Vite::asset('resources/css/pages/home.css') }}">
+    @vite('resources/css/pages/home.css')
 @endpush
 
 @section('content')
@@ -133,6 +133,8 @@
 @endsection
 
 @push('scripts')
-<script src="{{ Vite::asset('resources/js/pages/_home.ts') }}" defer></script>
-<script src="{{ Vite::asset('resources/js/components/_products_cards.ts') }}" defer></script>
+    @vite([
+            'resources/js/pages/_home.ts',
+            'resources/js/components/_products_cards.ts'
+        ])
 @endpush
