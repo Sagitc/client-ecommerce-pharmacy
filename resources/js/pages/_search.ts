@@ -7,7 +7,6 @@ const currentPageElement = document.querySelector('.result__nav-page.active') as
 let currentPage = currentPageElement ? parseInt(currentPageElement.textContent) : 1;
 const totalPages: number = pageBtn.length;
 const filterMobile = document.getElementById('mobile-filter') as HTMLButtonElement;
-const filterArea = document.getElementById('result__filter-box') as HTMLDivElement;
 
 const draggableIcon = document.querySelector('.dragIcon__filter-wrapper') as HTMLDivElement;
 const draggableArea = document.getElementById('result__filter-box') as HTMLDivElement;
@@ -18,6 +17,13 @@ let deltaY: number;
 let closeThreshold: number = 100;
 
 //  Events
+
+document.querySelectorAll<HTMLButtonElement>('.result__heading-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!isExpanded));
+    });
+});
 
 collapseBtn.forEach(btn => {
     btn.addEventListener('click', () => { toggleContent(btn) });
@@ -50,7 +56,6 @@ navBtns.forEach(btn => {
 });
 
 filterMobile.addEventListener('click', () => {
-    // ABRIR: Apenas adiciona a classe 'is-open'
     draggableArea.classList.add('is-open');
 });
 
@@ -58,17 +63,12 @@ draggableIcon.addEventListener('touchstart', (e: TouchEvent) => {
     isDragging = true;
     startY = e.touches[0]!.clientY;
     draggableArea.style.transition = 'none';
-    console.log('start', startY);
 });
 
 draggableIcon.addEventListener('touchmove', (e: TouchEvent) => {
     if (!isDragging) return;
-
-    e.preventDefault();
-
-    const currentY = e.touches[0]!.clientY;
-    deltaY = currentY - startY;
-
+    deltaY = (e.touches[0]!.clientY) - startY;
+    
     if (deltaY > 0) {
         draggableArea.style.transform = `translateY(${deltaY}px)`;
     }
@@ -76,10 +76,13 @@ draggableIcon.addEventListener('touchmove', (e: TouchEvent) => {
 
 draggableIcon.addEventListener('touchend', () => {
     isDragging = false;
-    draggableArea.style.transition = 'transform 0.3s ease, visibility 0s 0.3s';
-
+    draggableArea.style.transition = 'all 0.4s ease';
     if (deltaY > closeThreshold) {
         draggableArea.classList.remove('is-open');
+        setTimeout(() => {
+            draggableArea.style.transform = 'translateY(0)';
+            draggableArea.style.removeProperty('transform');
+        }, 300);
     } else {
         draggableArea.style.transform = 'translateY(0)';
     }

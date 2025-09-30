@@ -13,6 +13,7 @@ export function initHeader(): void {
     const mobileCartButton = header.querySelector('#header__mobile-cart') as HTMLButtonElement;
 
     const draggableIcon = mobileMenu.querySelector('.dragIcon') as HTMLDivElement;
+    const draggableArea = mobileMenu.querySelector('.mobile-menu__wrapper') as HTMLDivElement;
 
     let isDragging = false;
     let startY: number;
@@ -39,6 +40,7 @@ export function initHeader(): void {
     draggableIcon.addEventListener('touchmove', (e: TouchEvent) => {
         if (!isDragging) return;
         deltaY = e.touches[0]!.clientY - startY;
+
         if (deltaY > 0) {
             mobileMenu.style.transform = `translateY(${deltaY}px)`;
         }
@@ -46,16 +48,28 @@ export function initHeader(): void {
 
     draggableIcon.addEventListener('touchend', () => {
         isDragging = false;
-        mobileMenu.style.transition = 'transform 0.3s ease';
+        draggableArea.style.transition = 'transform 0.3s ease';
         if (deltaY > closeThreshold) {
+            
+            mobileMenu.classList.remove('is-menu-open');
             mobileMenu.style.transform = `translateY(100%)`;
+            draggableIcon.style.opacity = '0';
             setTimeout(() => {
                 mobileMenu.classList.add('is-disabled');
                 mobileMenu.style.transform = 'translateY(0)';
+
+                draggableArea.style.removeProperty('transition');
+                mobileMenu.style.removeProperty('transform');
+                draggableIcon.style.opacity = '';
             }, 300);
         } else {
             mobileMenu.style.transform = 'translateY(0)';
+            setTimeout(() => {
+                mobileMenu.style.removeProperty('transform');
+                draggableArea.style.removeProperty('transition');
+            }, 300);
         }
+        deltaY = 0;
     });
 
     //  Functions
@@ -69,8 +83,19 @@ export function initHeader(): void {
 
         if (mobileMenu.classList.contains('is-disabled')) {
             mobileMenu.classList.remove('is-disabled');
+            mobileMenu.style.removeProperty('transform');
+            draggableArea.style.removeProperty('transition');
+
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    mobileMenu.classList.add('is-menu-open');
+                });
+            });
         } else {
-            mobileMenu.classList.add('is-disabled');
+            mobileMenu.classList.remove('is-menu-open');
+            setTimeout(() => {
+                mobileMenu.classList.add('is-disabled');
+            }, 350);
         }
     }
 

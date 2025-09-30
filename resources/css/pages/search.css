@@ -215,6 +215,7 @@ input[type='number'] {
     align-items: center;
     width: 100%;
     cursor: grab;
+    display: none;
 }
 
 .dragIcon__filter {
@@ -224,10 +225,10 @@ input[type='number'] {
     background-color: black;
 }
 
-.is-open {
+#result__filter-box.is-open {
     transform: translateY(-100%);
     visibility: visible;
-    transition: transform 0.3s ease;
+    transition: transform 0.6s ease;
 }
 
 @media (max-width: 576px) {
@@ -258,13 +259,12 @@ input[type='number'] {
         background-color: var(--color-bg);
         visibility: hidden;
         transform: translateY(100%);
-        transition: transform 0.3s ease, visibility 0s 0.3s;
     }
 
     #result__filter-box.is-open {
         visibility: visible;
+        transition: all 0.4s ease;
         transform: translateY(0);
-        transition: transform 0.3s ease;
     }
 
     .price__input-area {
@@ -277,13 +277,92 @@ input[type='number'] {
     }
 
     #result__cards {
-        grid-template-columns: repeat(2, minmax(140px, 1fr));
+        grid-template-columns: repeat(2, minmax(160px, 250px));
         width: 100%;
         column-gap: var(--spacing-sm);
     }
 
+    .dragIcon__filter-wrapper {
+        display: flex;
+    }
+
     .dragIcon {
-        display: block;
+        display: flex;
         z-index: 1001;
+    }
+}
+
+@media (min-width: 577px) and (max-width: 768px) {
+    #search-info {
+        margin-top: var(--spacing-lg);
+    }
+
+    #search-info__content {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    #mobile-filter {
+        display: block;
+    }
+
+    #result__area {
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #result__filter-box {
+        bottom: 0;
+        position: fixed;
+        z-index: 1000;
+        padding: var(--spacing-lg) var(--spacing-sm);
+        width: calc(100vw - 4 * var(--site-margin));
+        border-radius: var(--spacing-md);
+        background-color: var(--color-tertiary);
+        visibility: hidden;
+        transform: translateY(100%);
+        max-width: 500px;
+    }
+
+    #result__cards {
+        grid-template-columns: repeat(3, minmax(160px, 250px));
+        width: 100%;
+        column-gap: var(--spacing-sm);
+    }
+
+    #result__filter-box.is-open {
+        visibility: visible;
+        transition: all 0.4s ease;
+        transform: translateY(0);
+    }
+
+    .price__input-area {
+        align-items: center;
+    }
+
+    .dragIcon__filter-wrapper {
+        display: flex;
+    }
+
+    .dragIcon {
+        display: flex;
+        z-index: 1001;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 992px) {
+    #result__cards {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 250px));
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
+
+@media (min-width: 993px) and (max-width: 1280px) {
+    #result__cards {
+        grid-template-columns: repeat(3, minmax(160px, 250px));
+        width: 100%;
+        justify-content: center;
     }
 }

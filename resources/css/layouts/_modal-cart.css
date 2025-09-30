@@ -57,6 +57,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: var(--spacing-sm);
 }
 
 .modal__close-btn:hover {

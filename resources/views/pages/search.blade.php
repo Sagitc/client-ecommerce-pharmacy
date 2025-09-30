@@ -4,7 +4,7 @@
 @section('title', 'Drogarias Camargo | Título do produto aqui')
 
 @push('styles')
-<link rel="stylesheet" href="{{ Vite::asset('resources/css/pages/search.css') }}">
+    @vite('resources/css/pages/search.css')
 @endpush
 
 @section('content')
@@ -150,6 +150,8 @@
 @endsection
 
 @push('scripts')
-<script src="{{ Vite::asset('resources/js/pages/_search.ts') }}" defer></script>
-<script src="{{ Vite::asset('resources/js/components/_products_cards.ts') }}" defer></script>
+    @vite([
+        'resources/js/pages/_search.ts',
+        'resources/js/components/_products_cards.ts'
+    ])
 @endpush
