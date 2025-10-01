@@ -75,12 +75,16 @@
     padding: 0 var(--site-margin);
 }
 
-.products__content {
+#products__content {
     display: flex;
     gap: var(--spacing-xs);
     overflow-x: auto;
     scroll-behavior: smooth;
     padding-bottom: var(--spacing-md);
+}
+
+#products__content .products__card {
+    min-width: 200px;
 }
 
 #banner2 {
@@ -154,12 +158,16 @@
     margin-bottom: var(--body-gap);
 }
 
-.daily__content {
+#daily__content {
     display: flex;
     gap: var(--spacing-xs);
     overflow-x: auto;
     scroll-behavior: smooth;
     padding-bottom: var(--spacing-md);
+}
+
+#daily__content .products__card {
+    min-width: 200px;
 }
 
 @media (max-width: 576px) {

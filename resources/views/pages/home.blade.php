@@ -65,7 +65,7 @@
 <section id="products-cards" class="products">
     <div class="products__area max-width">
         @include('components.section_top', ['section_title' => 'Produtos em destaque'])
-        <div class="products__content">
+        <div id="products__content">
             @include('components.products_cards')
         </div>
     </div>
@@ -124,7 +124,7 @@
 <section id="daily-products" class="daily">
     <div class="daily__area max-width">
         @include('components.section_top', ['section_title' => 'Promoções diárias'])
-        <div class="daily__content">
+        <div id="daily__content">
             @include('components.products_cards')
         </div>
     </div>

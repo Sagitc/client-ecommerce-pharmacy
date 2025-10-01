@@ -33,12 +33,12 @@
     transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
 }
 
-.products__btn--prev {
-    padding-right: 12px;
+.products__btn-prev {
+    padding-right: 11px;
 }
 
-.products__btn--next {
-    padding-left: 12px;
+.products__btn-next {
+    padding-left: 11px;
 }
 
 .products__btn-nav img {
