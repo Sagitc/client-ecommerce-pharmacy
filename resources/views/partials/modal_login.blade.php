@@ -8,13 +8,13 @@
 
                     <div class="modal-login__social">
                         <button class="modal-login__social__item">
-                            <img src="{{ asset('images/icon_google.svg') }}" alt="Google">
+                            <img src="{{ asset('images/icons/icon_google.svg') }}" alt="Google">
                         </button>
                         <button class="modal-login__social__item">
-                            <img src="{{ asset('images/icon_facebook.svg') }}" alt="Facebook">
+                            <img src="{{ asset('images/icons/icon_facebook.svg') }}" alt="Facebook">
                         </button>
                         <button class="modal-login__social__item">
-                            <img src="{{ asset('images/icon_twitter.svg') }}" alt="Twitter">
+                            <img src="{{ asset('images/icons/icon_twitter.svg') }}" alt="Twitter">
                         </button>
                     </div>
 
@@ -71,13 +71,13 @@
 
                     <div class="modal-login__social">
                         <button class="modal-login__social__item">
-                            <img src="{{ asset('images/icon_google.svg') }}" alt="Google">
+                            <img src="{{ asset('images/icons/icon_google.svg') }}" alt="Google">
                         </button>
                         <button class="modal-login__social__item">
-                            <img src="{{ asset('images/icon_facebook.svg') }}" alt="Facebook">
+                            <img src="{{ asset('images/icons/icon_facebook.svg') }}" alt="Facebook">
                         </button>
                         <button class="modal-login__social__item">
-                            <img src="{{ asset('images/icon_twitter.svg') }}" alt="Twitter">
+                            <img src="{{ asset('images/icons/icon_twitter.svg') }}" alt="Twitter">
                         </button>
                     </div>
 
@@ -118,7 +118,7 @@
                         <button class="modal-login__close-btn" aria-label="Fechar modal">&times;</button>
                     </div>
 
-                    <div class="modal-mobile__logo"><img src="{{ asset('images/logo_red.svg') }}" alt="Logo da farmácia"></div>
+                    <div class="modal-mobile__logo"><img src="{{ asset('images/logos/logo_red.svg') }}" alt="Logo da farmácia"></div>
 
                     <div class="modal-mobile__options">
                         <button class="modal-mobile__option-btn is-active" id="mobile__signIn">Login</button>
@@ -169,13 +169,13 @@
 
                     <div class="modal-login__social">
                         <button class="modal-login__social__item">
-                            <img src="{{ asset('images/icon_google.svg') }}" alt="Google">
+                            <img src="{{ asset('images/icons/icon_google.svg') }}" alt="Google">
                         </button>
                         <button class="modal-login__social__item">
-                            <img src="{{ asset('images/icon_facebook.svg') }}" alt="Facebook">
+                            <img src="{{ asset('images/icons/icon_facebook.svg') }}" alt="Facebook">
                         </button>
                         <button class="modal-login__social__item">
-                            <img src="{{ asset('images/icon_twitter.svg') }}" alt="Twitter">
+                            <img src="{{ asset('images/icons/icon_twitter.svg') }}" alt="Twitter">
                         </button>
                     </div>
                 </div>
@@ -188,13 +188,13 @@
                         <button class="modal-login__close-btn" aria-label="Fechar modal">&times;</button>
                     </div>
 
-                    <div class="modal-mobile__logo"><img src="{{ asset('images/logo_white.svg') }}" alt=""></div>
+                    <div class="modal-mobile__logo"><img src="{{ asset('images/logos/logo_white.svg') }}" alt=""></div>
 
                     <div class="modal-login__forgot-content">
                         <h2>Se esqueceu da senha?</h2>
 
                         <span>Não tem problema, iremos te ajudar a <br>
-                        recuperar sua conta!</span>
+                            recuperar sua conta!</span>
 
                         <input type="text" name="forgot__cpf-user" id="forgot__cpf-user" class="modal-login__input"
                             placeholder="Seu CPF" required>
@@ -203,7 +203,7 @@
                             Resetar senha
                             <span class="mobile-touch"></span>
                         </button>
-                        
+
                     </div>
                 </div>
             </div>

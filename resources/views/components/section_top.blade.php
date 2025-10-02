@@ -13,3 +13,5 @@
         </button>
     </div>
 </div>
+
+@vite('resources/js/components/_section-top.ts')

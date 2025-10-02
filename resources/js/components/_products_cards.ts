@@ -29,13 +29,13 @@ buyBtns.forEach(btn => {
 function toggleFavIcon(icon: Element) {
     if (icon.classList.contains('active')) {
         icon.setAttribute('aria-pressed', 'false');
-        icon.querySelector('img')?.setAttribute('src', 'http://localhost:8000/images/icon_fav_outline.svg');
+        icon.querySelector('img')?.setAttribute('src', 'http://localhost:8000/images/icons/icon_fav_outline.svg');
 
         //  Script para remover dos favoritos do perfil
 
     } else {
         icon.setAttribute('aria-pressed', 'true');
-        icon.querySelector('img')?.setAttribute('src', 'http://localhost:8000/images/icon_fav_filled.svg');
+        icon.querySelector('img')?.setAttribute('src', 'http://localhost:8000/images/icons/icon_fav_filled.svg');
 
         //  Script para adicionar aos favoritos do perfil
 

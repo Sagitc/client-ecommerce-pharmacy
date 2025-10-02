@@ -24,7 +24,7 @@
         <div class="item-card__details">
 
           <div class="item-card__image-wrapper">
-            <img src="{{ asset('images/product_example.png') }}" alt="Transmissor Medtronic" class="item-card__image">
+            <img src="{{ asset('images/products/product_example.png') }}" alt="Transmissor Medtronic" class="item-card__image">
           </div>
 
           <div class="item-card__info">
@@ -33,7 +33,7 @@
           </div>
 
           <button aria-label="Remover item" class="item-card__delete-btn">
-            <img src="{{ asset('images/icon_trash_black.svg') }}" alt="Ícone de remover item">
+            <img src="{{ asset('images/icons/icon_trash_black.svg') }}" alt="Ícone de remover item">
           </button>
 
         </div>
