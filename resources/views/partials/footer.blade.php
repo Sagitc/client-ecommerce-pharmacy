@@ -37,19 +37,19 @@
                 <h2 class="footer__nav-title">Redes sociais</h2>
                 <div class="footer__social-icons">
                     <a href="https://www.facebook.com/drogariascamargo" target="_blank" rel="noopener noreferrer">
-                        <img src="{{ asset('images/icon_facebook_black.svg') }}" alt="Facebook">
+                        <img src="{{ asset('images/icons/icon_facebook_black.svg') }}" alt="Facebook">
                         <span class="mobile-touch"></span>
                     </a>
                     <a href="https://www.instagram.com/drogariascamargo" target="_blank" rel="noopener noreferrer">
-                        <img src="{{ asset('images/icon_instagram_black.svg') }}" alt="Instagram">
+                        <img src="{{ asset('images/icons/icon_instagram_black.svg') }}" alt="Instagram">
                         <span class="mobile-touch"></span>
                     </a>
                     <a href="https://www.twitter.com/drogariascamargo" target="_blank" rel="noopener noreferrer">
-                        <img src="{{ asset('images/icon_whatsapp_black.svg') }}" alt="Twitter">
+                        <img src="{{ asset('images/icons/icon_whatsapp_black.svg') }}" alt="Twitter">
                         <span class="mobile-touch"></span>
                     </a>
                     <a href="https://www.twitter.com/drogariascamargo" target="_blank" rel="noopener noreferrer">
-                        <img src="{{ asset('images/icon_linkedin_black.svg') }}" alt="Twitter">
+                        <img src="{{ asset('images/icons/icon_linkedin_black.svg') }}" alt="Twitter">
                         <span class="mobile-touch"></span>
                     </a>
                 </div>
@@ -61,7 +61,7 @@
 
             <div class="footer__callCenter">
                 <a href="#">
-                    <img src="{{ asset('images/icon_callcenter_black.svg') }}" alt="icone de call center">
+                    <img src="{{ asset('images/icons/icon_callcenter_black.svg') }}" alt="icone de call center">
                     <div class="footer__callCenter-wrapper">
                         <h2 class="footer__nav-title">Central de atendimento</h2>
                         <p>Atendimento disponível de segunda a sexta, das 8h às 22h.</p>
@@ -72,19 +72,19 @@
             <div class="footer__payment-methods">
                 <h2 class="footer__nav-title">Formas de pagamento</h2>
                 <div class="footer__payment-icons">
-                    <img src="{{ asset('images/icon_visa.svg') }}" alt="Visa">
-                    <img src="{{ asset('images/icon_mastercard.svg') }}" alt="Mastercard">
-                    <img src="{{ asset('images/icon_amex.svg') }}" alt="American Express">
-                    <img src="{{ asset('images/icon_elo.svg') }}" alt="Elo">
-                    <img src="{{ asset('images/icon_hipercard.svg') }}" style="height:4rem" alt="Hipercard">
-                    <img src="{{ asset('images/icon_pix.svg') }}" alt="Pix">
+                    <img src="{{ asset('images/icons/icon_visa.svg') }}" alt="Visa">
+                    <img src="{{ asset('images/icons/icon_mastercard.svg') }}" alt="Mastercard">
+                    <img src="{{ asset('images/icons/icon_amex.svg') }}" alt="American Express">
+                    <img src="{{ asset('images/icons/icon_elo.svg') }}" alt="Elo">
+                    <img src="{{ asset('images/icons/icon_hipercard.svg') }}" style="height:4rem" alt="Hipercard">
+                    <img src="{{ asset('images/icons/icon_pix.svg') }}" alt="Pix">
                 </div>
             </div>
         </div>
 
         <div class="footer__wrapper3">
             <figure class="footer__logo">
-                <img src="{{ asset('images/logo_red.svg') }}" alt="Logo">
+                <img src="{{ asset('images/logos/logo_red.svg') }}" alt="Logo">
             </figure>
   
             <p class="footer__copyright">
@@ -93,7 +93,7 @@
                 Desenvolvido por Sagitc Corporation Ltda
             </p>
 
-            <img src="{{ asset('images/logo_anvisa.png') }}" alt="Logo Anvisa" class="footer__anvisa-logo">
+            <img src="{{ asset('images/logos/logo_anvisa.png') }}" alt="Logo Anvisa" class="footer__anvisa-logo">
           
         </div>
 

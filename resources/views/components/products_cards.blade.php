@@ -1,11 +1,11 @@
 <a href="{{ route('product') }}" class="products__card">
     <button class="products__like">
-        <img src="{{ asset('images/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
+        <img src="{{ asset('images/icons/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
         <span class="mobile-touch"></span>
     </button>
 
     <div class="products__image">
-        <img src="{{ asset('images/product_example.png') }}" alt="Imagem do produto">
+        <img src="{{ asset('images/products/product_example.png') }}" alt="Imagem do produto">
 
         <button class="products__btn-buy">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -25,12 +25,12 @@
 
 <a href="{{ route('product') }}" class="products__card">
     <button class="products__like">
-        <img src="{{ asset('images/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
+        <img src="{{ asset('images/icons/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
         <span class="mobile-touch"></span>
     </button>
 
     <div class="products__image">
-        <img src="{{ asset('images/product_example.png') }}" alt="Imagem do produto">
+        <img src="{{ asset('images/products/product_example.png') }}" alt="Imagem do produto">
 
         <button class="products__btn-buy">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -50,12 +50,12 @@
 
 <a href="{{ route('product') }}" class="products__card">
     <button class="products__like">
-        <img src="{{ asset('images/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
+        <img src="{{ asset('images/icons/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
         <span class="mobile-touch"></span>
     </button>
 
     <div class="products__image">
-        <img src="{{ asset('images/product_example.png') }}" alt="Imagem do produto">
+        <img src="{{ asset('images/products/product_example.png') }}" alt="Imagem do produto">
 
         <button class="products__btn-buy">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -75,12 +75,12 @@
 
 <a href="{{ route('product') }}" class="products__card">
     <button class="products__like">
-        <img src="{{ asset('images/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
+        <img src="{{ asset('images/icons/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
         <span class="mobile-touch"></span>
     </button>
 
     <div class="products__image">
-        <img src="{{ asset('images/product_example.png') }}" alt="Imagem do produto">
+        <img src="{{ asset('images/products/product_example.png') }}" alt="Imagem do produto">
 
         <button class="products__btn-buy">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -100,12 +100,12 @@
 
 <a href="{{ route('product') }}" class="products__card">
     <button class="products__like">
-        <img src="{{ asset('images/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
+        <img src="{{ asset('images/icons/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
         <span class="mobile-touch"></span>
     </button>
 
     <div class="products__image">
-        <img src="{{ asset('images/product_example.png') }}" alt="Imagem do produto">
+        <img src="{{ asset('images/products/product_example.png') }}" alt="Imagem do produto">
 
         <button class="products__btn-buy">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -125,12 +125,12 @@
 
 <a href="{{ route('product') }}" class="products__card">
     <button class="products__like">
-        <img src="{{ asset('images/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
+        <img src="{{ asset('images/icons/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
         <span class="mobile-touch"></span>
     </button>
 
     <div class="products__image">
-        <img src="{{ asset('images/product_example.png') }}" alt="Imagem do produto">
+        <img src="{{ asset('images/products/product_example.png') }}" alt="Imagem do produto">
 
         <button class="products__btn-buy">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -150,12 +150,12 @@
 
 <a href="{{ route('product') }}" class="products__card">
     <button class="products__like">
-        <img src="{{ asset('images/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
+        <img src="{{ asset('images/icons/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
         <span class="mobile-touch"></span>
     </button>
 
     <div class="products__image">
-        <img src="{{ asset('images/product_example.png') }}" alt="Imagem do produto">
+        <img src="{{ asset('images/products/product_example.png') }}" alt="Imagem do produto">
 
         <button class="products__btn-buy">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -175,12 +175,12 @@
 
 <a href="{{ route('product') }}" class="products__card">
     <button class="products__like">
-        <img src="{{ asset('images/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
+        <img src="{{ asset('images/icons/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
         <span class="mobile-touch"></span>
     </button>
 
     <div class="products__image">
-        <img src="{{ asset('images/product_example.png') }}" alt="Imagem do produto">
+        <img src="{{ asset('images/products/product_example.png') }}" alt="Imagem do produto">
 
         <button class="products__btn-buy">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -200,12 +200,12 @@
 
 <a href="{{ route('product') }}" class="products__card">
     <button class="products__like">
-        <img src="{{ asset('images/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
+        <img src="{{ asset('images/icons/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
         <span class="mobile-touch"></span>
     </button>
 
     <div class="products__image">
-        <img src="{{ asset('images/product_example.png') }}" alt="Imagem do produto">
+        <img src="{{ asset('images/products/product_example.png') }}" alt="Imagem do produto">
 
         <button class="products__btn-buy">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -225,12 +225,12 @@
 
 <a href="{{ route('product') }}" class="products__card">
     <button class="products__like">
-        <img src="{{ asset('images/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
+        <img src="{{ asset('images/icons/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
         <span class="mobile-touch"></span>
     </button>
 
     <div class="products__image">
-        <img src="{{ asset('images/product_example.png') }}" alt="Imagem do produto">
+        <img src="{{ asset('images/products/product_example.png') }}" alt="Imagem do produto">
 
         <button class="products__btn-buy">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

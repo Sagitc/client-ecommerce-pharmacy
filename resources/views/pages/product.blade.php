@@ -12,39 +12,39 @@
         <div id="product__left">
             <div id="product__nav-area">
                 <button class="product__nav-arrow up">
-                    <img src="{{ asset('images/icon_arrow_secondary.svg') }}" alt="Seta para cima">
+                    <img src="{{ asset('images/icons/icon_arrow_secondary.svg') }}" alt="Seta para cima">
                 </button>
 
                 <div id="product__nav-imgs">
                     <button class="product__img-mini active">
-                        <img src="{{ asset('images/product_example.png') }}" alt="Imagem do produto">
+                        <img src="{{ asset('images/products/product_example.png') }}" alt="Imagem do produto">
                     </button>
 
                     <button class="product__img-mini">
-                        <img src="{{ asset('images/product_example.png') }}" alt="Imagem do produto">
+                        <img src="{{ asset('images/products/product_example.png') }}" alt="Imagem do produto">
                     </button>
 
                     <button class="product__img-mini">
-                        <img src="{{ asset('images/product_example.png') }}" alt="Imagem do produto">
+                        <img src="{{ asset('images/products/product_example.png') }}" alt="Imagem do produto">
                     </button>
 
                     <button class="product__img-mini">
-                        <img src="{{ asset('images/product_example.png') }}" alt="Imagem do produto">
+                        <img src="{{ asset('images/products/product_example.png') }}" alt="Imagem do produto">
                     </button>
                 </div>
 
                 <button class="product__nav-arrow down">
-                    <img src="{{ asset('images/icon_arrow_secondary.svg') }}" alt="Seta para baixo">
+                    <img src="{{ asset('images/icons/icon_arrow_secondary.svg') }}" alt="Seta para baixo">
                 </button>
             </div>
 
             <div id="product__img-area">
                 <button id="products__like">
-                    <img src="{{ asset('images/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
+                    <img src="{{ asset('images/icons/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
                     <span class="mobile-touch"></span>
                 </button>
 
-                <img id="product__img" src="{{ asset('images/product_example.png') }}" alt="Imagem do produto">
+                <img id="product__img" src="{{ asset('images/products/product_example.png') }}" alt="Imagem do produto">
             </div>
         </div>
 
@@ -56,23 +56,23 @@
                     <div id="product__avaliation">
                         <div id="product__avaliation-stars">
                             <button>
-                                <img src="{{ asset('images/icon_star_filled.svg') }}" alt="Estrela cheia">
+                                <img src="{{ asset('images/icons/icon_star_filled.svg') }}" alt="Estrela cheia">
                                 <span class="mobile-touch"></span>
                             </button>
                             <button>
-                                <img src="{{ asset('images/icon_star_filled.svg') }}" alt="Estrela cheia">
+                                <img src="{{ asset('images/icons/icon_star_filled.svg') }}" alt="Estrela cheia">
                                 <span class="mobile-touch"></span>
                             </button>
                             <button>
-                                <img src="{{ asset('images/icon_star_filled.svg') }}" alt="Estrela cheia">
+                                <img src="{{ asset('images/icons/icon_star_filled.svg') }}" alt="Estrela cheia">
                                 <span class="mobile-touch"></span>
                             </button>
                             <button>
-                                <img src="{{ asset('images/icon_star_outline.svg') }}" alt="Estrela vazia">
+                                <img src="{{ asset('images/icons/icon_star_outline.svg') }}" alt="Estrela vazia">
                                 <span class="mobile-touch"></span>
                             </button>
                             <button>
-                                <img src="{{ asset('images/icon_star_outline.svg') }}" alt="Estrela vazia">
+                                <img src="{{ asset('images/icons/icon_star_outline.svg') }}" alt="Estrela vazia">
                                 <span class="mobile-touch"></span>
                             </button>
                         </div>

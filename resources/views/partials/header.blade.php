@@ -1,7 +1,7 @@
 <div class="l-header">
     <div class="header__content max-width">
         <a href="{{ route('home') }}" class="header__logo">
-            <img src="{{ asset('images/logo_white.svg') }}" alt="Logo da Farmácia">
+            <img src="{{ asset('images/logos/logo_white.svg') }}" alt="Logo da Farmácia">
         </a>
 
         <form method="get" action="{{ route('search') }}" id="header__search">
@@ -13,14 +13,14 @@
 
         <div class="header__actions">
             <button id="header__cart" data-toggle="modal-cart">
-                <span class="cart__icon-wrapper"><img src="{{ asset('images/icon_cart_white.svg') }}" alt="Carrinho de compras"></span>
+                <span class="cart__icon-wrapper"><img src="{{ asset('images/icons/icon_cart_white.svg') }}" alt="Carrinho de compras"></span>
                 <span>
                     Carrinho<br>
                     <span id="cart__count">R$ 0,00</span>
                 </span>
             </button>
             <button id="header__user" data-toggle="modal-login">
-                <span class="user__icon-wrapper"><img src="{{ asset('images/icon_user_white.svg') }}" alt="Menu do usuário"></span>
+                <span class="user__icon-wrapper"><img src="{{ asset('images/icons/icon_user_white.svg') }}" alt="Menu do usuário"></span>
                 <span>
                     Login<br>
                     ou <strong>Cadastro</strong>
@@ -30,17 +30,17 @@
 
         <div id="header__mobile">
             <button id="header__mobile-search_icon" aria-label="Abrir busca">
-                <img src="{{ asset('images/icon_magnifier_white.svg') }}" alt="Botão de busca">
+                <img src="{{ asset('images/icons/icon_magnifier_white.svg') }}" alt="Botão de busca">
                 <span class="mobile-touch"></span>
             </button>
 
             <button id="header__mobile-cart" aria-label="Abrir carrinho">
-                <img src="{{ asset('images/icon_basket_white.svg') }}" alt="Carrinho de compras">
+                <img src="{{ asset('images/icons/icon_basket_white.svg') }}" alt="Carrinho de compras">
                 <span class="mobile-touch"></span>
             </button>
 
             <button id="header__mobile-menu">
-                <img src="{{ asset('images/icon_mobile-menu_white.svg') }}" alt="Menu mobile">
+                <img src="{{ asset('images/icons/icon_mobile-menu_white.svg') }}" alt="Menu mobile">
                 <span class="mobile-touch"></span>
             </button>
         </div>

@@ -18,7 +18,7 @@
         <div class="benefits__content max-width">
             <div class="benefits__card">
                 <figure class="benefits__img">
-                    <img src="{{ asset('images/icon_cardPayment_white.svg') }}" alt="Benefício 1">
+                    <img src="{{ asset('images/icons/icon_cardPayment_white.svg') }}" alt="Benefício 1">
                 </figure>
 
                 <div class="benefits__text">
@@ -29,7 +29,7 @@
 
             <div class="benefits__card">
                 <figure class="benefits__img">
-                    <img src="{{ asset('images/icon_delivery_white.svg') }}" alt="Benefício 1">
+                    <img src="{{ asset('images/icons/icon_delivery_white.svg') }}" alt="Benefício 1">
                 </figure>
 
                 <div class="benefits__text">
@@ -40,7 +40,7 @@
 
             <div class="benefits__card">
                 <figure class="benefits__img">
-                    <img src="{{ asset('images/icon_offer_white.svg') }}" alt="Benefício 1">
+                    <img src="{{ asset('images/icons/icon_offer_white.svg') }}" alt="Benefício 1">
                 </figure>
 
                 <div class="benefits__text">
@@ -51,7 +51,7 @@
 
             <div class="benefits__card">
                 <figure class="benefits__img">
-                    <img src="{{ asset('images/icon_retrieve_white.svg') }}" alt="Benefício 1">
+                    <img src="{{ asset('images/icons/icon_retrieve_white.svg') }}" alt="Benefício 1">
                 </figure>
 
                 <div class="benefits__text">
