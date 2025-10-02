@@ -8,15 +8,19 @@
 #product__area {
     display: flex;
     gap: 5rem;
+    align-items: flex-start;
 }
 
 
 /* ----------   LEFT AREA   ---------- */
 
 #product__left {
-    flex: 1;
+    flex: 1 1 0;
     display: flex;
+    position: sticky;
+    top: 5.5rem;
     gap: var(--spacing-md);
+    min-width: 0;
 }
 
 #product__nav-area {
@@ -30,10 +34,8 @@
 
 .product__nav-arrow {
     display: flex;
-    align-items: center;
-    justify-content: center;
     background-color: transparent;
-    border: 1px solid var(--color-secondary);
+    border: 1px solid transparent;
     border-radius: 50%;
     padding: 0.7rem var(--spacing-sm);
     cursor: pointer;
@@ -61,8 +63,7 @@
 }
 
 .product__nav-arrow:hover:not(:disabled) {
-    background-color: rgba(0, 0, 0, 0.2);
-    border-color: var(--color-primary);
+    background-color: var(--color-bg);
 }
 
 #product__nav-imgs {
@@ -126,10 +127,11 @@
 /* ----------   RIGHT AREA   ---------- */
 
 #product__right {
-    flex: 1;
+    flex: 1 1 0;           /* divide igualmente em largura */
     display: flex;
     flex-direction: column;
     gap: var(--right-side-gap);
+    min-width: 0;
 }
 
 #product__heading {
@@ -250,9 +252,44 @@
 }
 
 #product__description {
-    flex-grow: 1;
-    /* height: 300px; */
+    flex: 0 0 auto;
+    height: 300px;
     background-color: var(--container-bg);
     border-radius: var(--container-border-radius);
     padding: var(--container-padding);
+    overflow: auto;
+}
+
+
+/* ----------   RELATED SECTION   ---------- */
+
+#related__area {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+#related__content {
+    display: flex;
+    gap: var(--spacing-md);
+    overflow-x: auto;
+    padding-bottom: var(--spacing-md);
+}
+
+#related__content::-webkit-scrollbar {
+    height: 8px;
+}
+
+#related__content ::-webkit-scrollbar-thumb {
+    background-color: var(--color-secondary);
+    border-radius: 4px;
+}
+
+#related__content ::-webkit-scrollbar-track {
+    background-color: var(--color-bg);
+}
+
+#related__content .product__card {
+    min-width: 200px;
+    flex: 0 0 auto;
 }

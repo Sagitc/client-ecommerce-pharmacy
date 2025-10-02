@@ -2,7 +2,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: var(--spacing-md);
 }
 
 .products__nav {
@@ -33,7 +32,8 @@
 }
 
 .products__btn-prev {
-    padding-right: 11px;
+    padding-left: 11px;
+    transform: rotate(180deg);
 }
 
 .products__btn-next {

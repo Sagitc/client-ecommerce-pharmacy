@@ -16,7 +16,7 @@
                 </button>
 
                 <div id="product__nav-imgs">
-                    <button class="product__img-mini">
+                    <button class="product__img-mini active">
                         <img src="{{ asset('images/product_example.png') }}" alt="Imagem do produto">
                     </button>
 
@@ -109,6 +109,15 @@
 
             </div>
 
+        </div>
+    </div>
+</section>
+
+<section id="related">
+    <div id="related__area" class="max-width">
+        @include('components.section_top', ['section_title' => 'Produtos semelhantes'])
+        <div id="related__content">
+            @include('components.products_cards')
         </div>
     </div>
 </section>
