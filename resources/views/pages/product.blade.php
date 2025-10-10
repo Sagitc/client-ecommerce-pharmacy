@@ -54,11 +54,56 @@
             </div>
         </div>
 
+        <script>
+            const container = document.getElementById('product__img-area');
+            const img = document.getElementById('product__img');
+            const likeButton = document.getElementById('products__like');
+
+            let isOverLikeButton = false;
+
+            likeButton.addEventListener('mouseenter', () => {
+                isOverLikeButton = true;
+                img.style.transform = 'scale(1)';
+                img.style.transformOrigin = 'center center';
+            });
+
+            likeButton.addEventListener('mouseleave', () => {
+                isOverLikeButton = false;
+            });
+
+            container.addEventListener('mousemove', (e) => {
+                if (isOverLikeButton) return;
+
+                const {
+                    left,
+                    top,
+                    width,
+                    height
+                } = container.getBoundingClientRect();
+                const x = (e.clientX - left) / width;
+                const y = (e.clientY - top) / height;
+
+                img.style.transformOrigin = `${x * 100}% ${y * 100}%`;
+            });
+
+            container.addEventListener('mouseenter', () => {
+                if (!isOverLikeButton) {
+                    img.style.transform = 'scale(2.5)';
+                }
+            });
+
+            container.addEventListener('mouseleave', () => {
+                isOverLikeButton = false;
+                img.style.transform = 'scale(1)';
+                img.style.transformOrigin = 'center center';
+            });
+        </script>
+
         <div id="product__right">
             <div id="product__heading">
                 <h1 id="product__title">Título do Produto aqui</h1>
                 <div id="product__info-area">
-                    <span>MARCA | SKU: 0000 | GRAMATURA</span>
+                    <span>MARCA • SKU: 0000 • GRAMATURA</span>
                     <div id="product__avaliation">
                         <div id="product__avaliation-stars">
                             <button>
