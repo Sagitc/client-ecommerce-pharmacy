@@ -11,6 +11,7 @@
     background-color: var(--footer-bg-color);
     /* padding: var(--footer-spacing); */
     border-radius: calc(var(--spacing-md) + var(--footer-spacing));
+    margin-bottom: var(--spacing-md) !important;
 }
 
 .footer__wrapper1,

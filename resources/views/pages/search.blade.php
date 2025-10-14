@@ -44,7 +44,7 @@
                             <option value="relevance" selected>Mais relevantes</option>
                             <option value="price_low_high">Menor preço</option>
                             <option value="price_high_low">Maior preço</option>
-                            <option value="newest">Mais novos</option>
+                            <option value="newest">Novidade</option>
                         </select>
                     </div>
                 </div>

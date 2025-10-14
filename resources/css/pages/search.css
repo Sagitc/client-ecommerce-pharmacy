@@ -1,14 +1,5 @@
 :root {}
 
-#search-info {
-    margin-top: var(--spacing-xl);
-}
-
-#result {
-    margin-bottom: var(--spacing-xl);
-}
-
-
 #search-info__title {
     font-size: var(--font-h3);
     color: var(--color-dark);
@@ -24,7 +15,6 @@
 #result__area {
     display: flex;
     gap: var(--spacing-lg);
-    margin-top: var(--spacing-xl);
 }
 
 #mobile-filter {

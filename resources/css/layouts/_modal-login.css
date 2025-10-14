@@ -13,7 +13,7 @@
 
 .modal-login__container {
     background-color: #fff;
-    border-radius: var(--border-radius-lg);
+    border-radius: var(--spacing-md);
 }
 
 .modal-login__body {
@@ -193,6 +193,16 @@
     color: var(--color-light);
     border-top-left-radius: 3rem;
     border-bottom-left-radius: 3rem;
+}
+
+.r_pt1 {
+    border-top-right-radius: var(--spacing-md);
+    border-bottom-right-radius: var(--spacing-md);
+}
+
+.l_pt2 {
+    border-top-left-radius: var(--spacing-md);
+    border-bottom-left-radius: var(--spacing-md);
 }
 
 .modal-login__wrapper1,
