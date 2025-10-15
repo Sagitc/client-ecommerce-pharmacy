@@ -2,6 +2,7 @@
     display: flex;
     align-items: center;
 }
+
 #greeting__content {
     display: flex;
     align-items: center;
@@ -19,6 +20,7 @@
     border-radius: 50%;
     background-color: burlywood;
 }
+
 #greeting__avatar img {
     width: 100%;
     height: 100%;
@@ -73,6 +75,7 @@
 #info__result {
     flex: 1;
     display: flex;
+    justify-content: center;
 }
 
 .box {
@@ -229,7 +232,7 @@
 }
 
 #address__change,
-#credit__change{
+#credit__change {
     background-color: transparent;
     color: #000;
     border: 1px solid #000;
@@ -262,6 +265,7 @@
     width: 60px;
     height: 40px;
 }
+
 #credit__img img {
     width: 100%;
     height: 100%;
@@ -394,7 +398,6 @@
     display: flex;
     gap: var(--spacing-sm);
     align-items: center;
-    margin-bottom: var(--spacing-md);
 }
 
 .request__product-img {
@@ -464,7 +467,6 @@
     display: flex;
     flex-direction: column;
     gap: var(--spacing-sm);
-    align-items: self-end;
     justify-content: center;
 }
 
@@ -475,6 +477,7 @@
     padding: var(--spacing-sm) var(--spacing-md);
     border-radius: var(--spacing-md);
     cursor: pointer;
+    width: 170px;
 }
 
 .request__act button:hover {
@@ -486,12 +489,187 @@
 #info__favorites {
     flex: 1;
     display: flex;
-    flex-direction: column;
-    gap: var(--spacing-lg);
 }
 
 #favorites__content {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: var(--spacing-lg);
+    align-self: center;
+}
+
+#requests__nav {
+    align-self: center;
+    display: flex;
+    align-items: center;
+    margin-top: var(--spacing-md);
+    gap: var(--spacing-md);
+}
+
+#requests__nav-right,
+#requests__nav-left {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#requests__nav-left {
+    transform: rotate(180deg);
+}
+
+.requests__nav-page {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-md);
+    color: var(--color-primary);
+    border: 1px solid var(--color-bg);
+    border-radius: 50%;
+}
+
+.requests__nav-page.active {
+    background-color: var(--color-primary);
+    color: #fff;
+    border: 1px solid transparent;
+}
+
+@media (max-width: 576px) {
+    #info__options {
+        display: none;
+    }
+
+    #info__resume {
+        flex-direction: column;
+    }
+
+    .latest__box {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: var(--spacing-lg);
+    }
+
+    #resume__latest {
+        min-width: unset;
+    }
+
+    #resume__address,
+    #resume__credit {
+        min-width: unset;
+    }
+
+    #info__perfil {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-lg);
+    }
+
+    .requests__content {
+        flex-direction: column;
+        align-items: center;
+        gap: var(--spacing-xl);
+    }
+
+    .request__product {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .requests__header-info {
+        display: none;
+    }
+
+    .requests__id {
+        display: flex;
+    }
+
+    #favorites__content {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (min-width: 577px) and (max-width: 768px) {
+    #info__options {
+        display: none;
+    }
+
+    #info__resume {
+        flex-direction: column;
+    }
+
+    #resume__latest {
+        min-width: 580px;
+    }
+
+    #resume__address,
+    #resume__credit {
+        min-width: unset;
+    }
+
+    #info__perfil {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-lg);
+    }
+
+    #perfil__number {
+        grid-column: span 2;
+    }
+
+    .requests__content {
+        flex-direction: column;
+        align-items: center;
+        gap: var(--spacing-xl);
+    }
+
+    .request__product {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .requests__date {
+        display: none;
+    }
+
+    #favorites__content {
+        grid-template-columns: repeat(3, minmax(100px, 1fr));
+        gap: var(--spacing-sm);
+    }
+}
+
+@media (min-width: 769px) and (max-width: 992px) {
+    #info__content {
+        flex-direction: column;
+        gap: var(--spacing-xl);
+    }
+
+    #info__options {
+        flex-direction: row;
+        overflow-x: auto;
+        padding: var(--spacing-md);
+        gap: var(--spacing-sm);
+        width: 100%;
+        justify-content: center;
+    }
+
+    #info__result {
+        width: 100%;
+    }
+
+    #info__resume {
+        flex-direction: column;
+        align-self: center !important;
+    }
+
+    .request__act {
+        align-items: center;
+    }
+    
+    #favorites__content {
+        grid-template-columns: repeat(3, minmax(100px, 1fr));
+        margin: auto;
+        column-gap: var(--spacing-lg);
+    }
 }

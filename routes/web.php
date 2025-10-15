@@ -14,6 +14,6 @@ Route::get('/product', function () {
     return view('pages/product');
 })->name('product');
 
-Route::get('/perfil', function () {
-    return view('pages/perfil');
-})->name('perfil');
+Route::get('/profile', function () {
+    return view('pages/profile');
+})->name('profile');

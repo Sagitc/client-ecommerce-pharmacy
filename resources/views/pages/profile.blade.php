@@ -46,7 +46,7 @@
             </button>
         </div>
         <div id="info__result">
-            <div id="info__resume" class="">
+            <div id="info__resume" class="is-disabled">
                 <div id="resume__latest" class="box">
                     <h3>Últimos Pedidos</h3>
                     <div id="latest__content">
@@ -166,22 +166,22 @@
                 <div class="requests__box">
                     <div class="requests__header">
                         <div class="requests__header-wrapper">
-                            <div class="requests__header-info">
+                            <div class="requests__header-info requests__date">
                                 <h4>Data do pedido</h4>
                                 <span class="requests__header-date">04 Jun. 2024</span>
                             </div>
 
-                            <div class="requests__header-info">
+                            <div class="requests__header-info requests__total">
                                 <h4>Total</h4>
                                 <span class="requests__header-price">R$ 100,00</span>
                             </div>
 
-                            <div class="requests__header-info">
+                            <div class="requests__header-info requests__address">
                                 <h4>Endereço</h4>
                                 <span class="requests__header-address">Rua Exemplo, 123</span>
                             </div>
 
-                            <div class="requests__header-info">
+                            <div class="requests__header-info requests__id">
                                 <h4>Pedido</h4>
                                 <span class="requests__header-order">Nº 123456</span>
                             </div>
@@ -211,9 +211,24 @@
                         </div>
                     </div>
                 </div>
+                <div id="requests__nav">
+                    <button id="requests__nav-left">
+                        <img src="{{ asset('images/icons/icon_arrow_secondary.svg') }}" alt="Seta para esquerda">
+                    </button>
+                    <div id="requests__nav-pages">
+                        <button class="requests__nav-page active">1</button>
+                        <button class="requests__nav-page">2</button>
+                        <button class="requests__nav-page">3</button>
+                        <button class="requests__nav-page">4</button>
+                        <button class="requests__nav-page">5</button>
+                    </div>
+                    <button id="requests__nav-right">
+                        <img src="{{ asset('images/icons/icon_arrow_secondary.svg') }}" alt="Seta para direita">
+                    </button>
+                </div>
             </div>
 
-            <div id="info__favorites" class="is-disabled">
+            <div id="info__favorites" class="">
                 <div id="favorites__content">
                     @include('components.products_cards')
                 </div>
