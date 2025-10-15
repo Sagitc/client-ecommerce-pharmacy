@@ -46,7 +46,20 @@
             </button>
         </div>
         <div id="info__result">
-            Resultado aqui!
+            <div id="info__resume">
+                <div id="resume__latest" class="box">
+
+                </div>
+                <div id="resume__right">
+                    <div id="resume__address" class="box">
+
+                    </div>
+
+                    <div id="resume__credit" class="box">
+
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
