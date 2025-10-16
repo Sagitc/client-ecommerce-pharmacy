@@ -3,7 +3,7 @@
 @section('title', 'Perfil | Drogarias Camargo')
 
 @push('styles')
-@vite('resources/css/pages/perfil.css')
+@vite('resources/css/pages/profile.css')
 @endpush
 
 @section('content')
@@ -17,36 +17,179 @@
     </div>
 </div>
 
+<div id="modal__resume-address" class="modal-container is-disabled" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal__box">
+
+        <button type="button" class="modal__close" aria-label="Fechar modal">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M18 6L6 18M6 6l12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span class="mobile-touch"></span>
+        </button>
+
+        <div class="modal__content">
+            <div class="modal__options-checkbox">
+                <input type="radio" name="address__option1" id="address__option1">
+                <label class="modal__option-checkbox__title" for="address__option1">
+                    <h4>Rua João de Carvalho, 9873</h4>
+                    <span class="modal__option-checkbox__description modal__address-region">Anchieta • 00.000-000</span>
+                    <span class="modal__option-checkbox__description modal__address-receiver">Eduardo de cáprio</span>
+                </label>
+            </div>
+
+            <div class="modal__options-checkbox">
+                <input type="radio" name="address__option1" id="address__option2">
+                <label class="modal__option-checkbox__title" for="address__option2">
+                    <h4>Rua João de Carvalho, 9873</h4>
+                    <span class="modal__option-checkbox__description modal__address-region">Anchieta • 00.000-000</span>
+                    <span class="modal__option-checkbox__description modal__address-receiver">Eduardo de cáprio</span>
+                </label>
+            </div>
+
+            <div class="modal__options-checkbox">
+                <input type="radio" name="address__option1" id="address__option3">
+                <label class="modal__option-checkbox__title" for="address__option3">
+                    <h4>Rua João de Carvalho, 9873</h4>
+                    <span class="modal__option-checkbox__description modal__address-region">Anchieta • 00.000-000</span>
+                    <span class="modal__option-checkbox__description modal__address-receiver">Eduardo de cáprio</span>
+                </label>
+            </div>
+        </div>
+        <div class="modal__act">
+            <button id="modal__resume-address__add" class="modal__act-aux">Adicionar</button>
+            <button id="modal__resume-address__save" class="modal__act-main">Salvar</button>
+        </div>
+    </div>
+</div>
+
+<div id="modal__resume-credit" class="modal-container is-disabled" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal__box">
+        <button type="button" class="modal__close" aria-label="Fechar modal">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M18 6L6 18M6 6l12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span class="mobile-touch"></span>
+        </button>
+
+        <div class="modal__content">
+            <div class="modal__options-checkbox">
+                <input type="radio" name="address__option1" id="address__option1">
+                <label class="modal__option-checkbox__title" for="address__option1">
+                    <h4>Visa, término em 9862</h4>
+                    <span class="modal__option-checkbox__description modal__credit-expire">Validade: 02/2038</span>
+                    <span class="modal__option-checkbox__description modal__credit-owner">Eduardo de cáprio</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="modal__act">
+            <button id="modal__resume-credit__add" class="modal__act-aux">Adicionar</button>
+            <button id="modal__resume-credit__save" class="modal__act-main">Salvar</button>
+        </div>
+    </div>
+</div>
+
+<div id="modal__profile-password" class="modal-container is-disabled" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal__box">
+        <button type="button" class="modal__close" aria-label="Fechar modal">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M18 6L6 18M6 6l12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span class="mobile-touch"></span>
+        </button>
+
+        <form class="modal__content">
+            <div class="modal__form-group">
+                <label for="current_password">Senha atual</label>
+                <input type="password" name="current_password" id="modal__profile-current_password" aria-label="Campo para digitar a senha atual">
+            </div>
+
+            <div class="modal__form-group">
+                <label for="new_password">Nova senha</label>
+                <input type="password" name="new_password" id="modal__profile-new_password" aria-label="Campo para digitar a nova senha">
+            </div>
+
+            <div class="modal__form-group">
+                <label for="confirm_new_password">Confirmar nova senha</label>
+                <input type="password" name="confirm_new_password" id="modal__profile-confirm" aria-label="Campo para confirmar a nova senha">
+            </div>
+
+            <button type="submit" class="modal__act-main">Salvar</button>
+        </form>
+    </div>
+</div>
+
+<div id="modal__profile-number" class="modal-container is-disabled" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal__box">
+        <button type="button" class="modal__close" aria-label="Fechar modal">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M18 6L6 18M6 6l12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span class="mobile-touch"></span>
+        </button>
+
+        <form class="modal__content">
+            <div class="modal__form-group">
+                <label for="new_number">Novo número</label>
+                <input type="text" name="new_number" id="modal__profile-new_number" aria-label="Campo para digitar o novo número de telefone">
+            </div>
+
+            <button type="submit" class="modal__act-main">Salvar</button>
+        </form>
+    </div>
+</div>
+
+<div id="modal__profile-email" class="modal-container" aria-hidden="true" role="dialog" aria-modal="true"1>
+    <div class="modal__box">
+        <button type="button" class="modal__close" aria-label="Fechar modal">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M18 6L6 18M6 6l12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span class="mobile-touch"></span>
+        </button>
+
+        <form class="modal__content">
+            <div class="modal__form-group">
+                <label for="new_email">Novo email</label>
+                <input type="email" name="new_email" id="modal__profile-new_email" aria-label="Campo para digitar o novo email">
+            </div>
+
+            <button type="submit" class="modal__act-main">Salvar</button>
+        </form>
+    </div>
+</div>
+
 <div id="info">
     <div id="info__content" class="max-width">
         <div id="info__options">
-            <button class="info__option-btn active">
+            <button data-option="resume" class="info__option-btn active">
                 <img src="{{ asset('images/icons/icon_user_white.svg') }}" alt="">
                 Resumo
             </button>
-            <button class="info__option-btn">
+            <button data-option="profile" class="info__option-btn">
                 <img src="{{ asset('images/icons/icon_user_black.svg') }}" alt="">
                 Perfil
             </button>
-            <button class="info__option-btn">
+            <button data-option="requests" class="info__option-btn">
                 <img src="{{ asset('images/icons/icon_user_black.svg') }}" alt="">
                 Pedidos
             </button>
-            <button class="info__option-btn is-disabled">
+            <button data-option="covenant" class="info__option-btn is-disabled">
                 <img src="{{ asset('images/icons/icon_user_black.svg') }}" alt="">
                 Convênios
             </button>
-            <button class="info__option-btn">
+            <button data-option="favoritos" class="info__option-btn">
                 <img src="{{ asset('images/icons/icon_user_black.svg') }}" alt="">
                 Favoritos
             </button>
-            <button class="info__option-btn">
+            <button data-option="sair" class="info__option-btn">
                 <img src="{{ asset('images/icons/icon_user_black.svg') }}" alt="">
                 Sair
             </button>
         </div>
+
         <div id="info__result">
-            <div id="info__resume" class="is-disabled">
+            <div id="info__resume" class="">
                 <div id="resume__latest" class="box">
                     <h3>Últimos Pedidos</h3>
                     <div id="latest__content">
@@ -122,7 +265,7 @@
                 </div>
             </div>
 
-            <div id="info__perfil" class="is-disabled">
+            <div id="info__profile" class="is-disabled">
                 <div id="perfil__name" class="box">
                     <h3>Nome</h3>
                     <span id="perfil__name-value">Cauã de Souza Santos</span>
@@ -228,7 +371,14 @@
                 </div>
             </div>
 
-            <div id="info__favorites" class="">
+            <div id="info__covenant" class="is-disabled">
+                <div id="covenant__content">
+                    <h2>Convênios</h2>
+                    <p>Em breve você poderá adicionar convênios ao seu perfil!</p>
+                </div>
+            </div>
+
+            <div id="info__favorites" class="is-disabled">
                 <div id="favorites__content">
                     @include('components.products_cards')
                 </div>
@@ -240,7 +390,7 @@
 
 @push('scripts')
 @vite([
-'resources/js/pages/_search.ts',
+'resources/js/pages/_profile.ts',
 'resources/js/components/_products_cards.ts'
 ])
 @endpush
