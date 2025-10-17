@@ -27,9 +27,9 @@
             <span class="mobile-touch"></span>
         </button>
 
-        <div class="modal__content">
+        <form class="modal__content">
             <div class="modal__options-checkbox">
-                <input type="radio" name="address__option1" id="address__option1">
+                <input selected type="radio" name="address__option1" id="address__option1">
                 <label class="modal__option-checkbox__title" for="address__option1">
                     <h4>Rua João de Carvalho, 9873</h4>
                     <span class="modal__option-checkbox__description modal__address-region">Anchieta • 00.000-000</span>
@@ -54,7 +54,8 @@
                     <span class="modal__option-checkbox__description modal__address-receiver">Eduardo de cáprio</span>
                 </label>
             </div>
-        </div>
+        </form>
+
         <div class="modal__act">
             <button id="modal__resume-address__add" class="modal__act-aux">Adicionar</button>
             <button id="modal__resume-address__save" class="modal__act-main">Salvar</button>
@@ -139,7 +140,7 @@
     </div>
 </div>
 
-<div id="modal__profile-email" class="modal-container" aria-hidden="true" role="dialog" aria-modal="true"1>
+<div id="modal__profile-email" class="modal-container is-disabled" aria-hidden="true" role="dialog" aria-modal="true"1>
     <div class="modal__box">
         <button type="button" class="modal__close" aria-label="Fechar modal">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -155,6 +156,82 @@
             </div>
 
             <button type="submit" class="modal__act-main">Salvar</button>
+        </form>
+    </div>
+</div>
+
+<div id="modal__address-add" class="modal-container is-disabled" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal__box">
+        <button type="button" class="modal__close" aria-label="Fechar modal">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M18 6L6 18M6 6l12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span class="mobile-touch"></span>
+        </button>
+
+        <form class="modal__content">
+            <div class="modal__form-group">
+                <label for="address-add__zipcode">CEP</label>
+                <input type="text" name="address_zipcode" id="address-add__zipcode" aria-label="Campo para digitar o CEP">
+            </div>
+
+            <div class="modal__form-group">
+                <label for="address-add__street">Endereço</label>
+                <input type="text" name="address_street" id="address-add__street" aria-label="Campo para digitar a rua e número">
+            </div>
+
+            <div class="modal__form-group">
+                <label for="address-add__district">Bairro</label>
+                <input type="text" name="address_district" id="address-add__district" aria-label="Campo para digitar o bairro">
+            </div>
+
+            <div class="modal__form-group">
+                <label for="address-add__complement">Complemento</label>
+                <input type="text" name="address_complement" id="address-add__complement" aria-label="Campo para digitar o complemento">
+            </div>
+
+
+            <div class="modal__form-group">
+                <label for="address_receiver">Nome do receptor</label>
+                <input type="text" name="address_receiver" id="modal__address-add-receiver" aria-label="Campo para digitar o nome do receptor">
+            </div>
+
+            <button type="submit" class="modal__act-main">Adicionar endereço</button>
+        </form>
+    </div>
+</div>
+
+<div id="modal__credit-add" class="modal-container is-disabled" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal__box">
+        <button type="button" class="modal__close" aria-label="Fechar modal">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M18 6L6 18M6 6l12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span class="mobile-touch"></span>
+        </button>
+
+        <form class="modal__content">
+            <div class="modal__form-group">
+                <label for="credit-add__number">Número do cartão</label>
+                <input type="text" name="credit_number" id="credit-add__number" aria-label="Campo para digitar o número do cartão">
+            </div>
+
+            <div class="modal__form-group">
+                <label for="credit-add__name">Nome no cartão</label>
+                <input type="text" name="credit_name" id="credit-add__name" aria-label="Campo para digitar o nome no cartão">
+            </div>
+
+            <div class="modal__form-group">
+                <label for="credit-add__expiry">Validade</label>
+                <input type="text" name="credit_expiry" id="credit-add__expiry" aria-label="Campo para digitar a validade do cartão">
+            </div>
+
+            <div class="modal__form-group">
+                <label for="credit-add__cvv">CVV</label>
+                <input type="text" name="credit_cvv" id="credit-add__cvv" aria-label="Campo para digitar o CVV do cartão">
+            </div>
+
+            <button type="submit" class="modal__act-main">Adicionar cartão</button>
         </form>
     </div>
 </div>
@@ -386,6 +463,7 @@
         </div>
     </div>
 </div>
+
 @endsection
 
 @push('scripts')

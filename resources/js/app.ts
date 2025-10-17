@@ -9,3 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
     initModalCart();
     initModalLogin();
 });
+
+export function getFocusableElements(container: HTMLElement) {
+    return Array.from(
+        container.querySelectorAll<HTMLElement>(
+            'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled])'
+        )
+    )
+}

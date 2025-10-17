@@ -640,6 +640,7 @@
     padding: var(--spacing-sm) var(--spacing-md);
     border-radius: var(--spacing-md);
     cursor: pointer;
+    font-weight: bold;
 }
 
 .modal__form-group {
