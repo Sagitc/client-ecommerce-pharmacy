@@ -1,15 +1,29 @@
 {
-    "name": "santo/camarguinho_php",
+    "name": "sagi/camarguinho_php",
     "autoload": {
         "psr-4": {
-            "Santo\\CamarguinhoPhp\\": "src/"
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
         }
     },
     "authors": [
         {
-            "name": "Sagitc",
+            "name": "sagitc",
             "email": "santos.sagitc@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "laravel/framework": "^12.34",
+        "laravel/sanctum": "^4.2"
+    },
+    "require-dev": {
+        "laravel/pail": "^1.2",
+        "laravel/sail": "^1.46"
+    }
 }
