@@ -24,6 +24,8 @@
     },
     "require-dev": {
         "laravel/pail": "^1.2",
-        "laravel/sail": "^1.46"
+        "laravel/sail": "^1.46",
+        "nunomaduro/collision": "^8.8",
+        "laravel/tinker": "^2.10"
     }
 }

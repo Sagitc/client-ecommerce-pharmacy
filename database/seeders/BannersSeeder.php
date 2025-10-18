@@ -14,7 +14,7 @@ class BannersSeeder extends Seeder
     public function run(): void
     {
         Banner::create([
-            'file_path' => 'banners/fake_banner.jpeg',
+            'file_path' => 'banners/fake_banner.jpg',
             'link' => 'https://google.com',
         ]);
 
