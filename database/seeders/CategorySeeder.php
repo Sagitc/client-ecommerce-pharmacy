@@ -15,22 +15,27 @@ class CategorySeeder extends Seeder
     {
         Category::create([
             'name' => 'Medicamento',
-            'category_slug' => 'medicamento',
+            'slug' => 'medicamento'
         ]);
 
         Category::create([
-            'name' => 'Perfumaria',
-            'category_slug' => 'perfumaria',
+            'name' => 'Higiene e Cuidados Pessoais',
+            'slug' => 'higiene-e-cuidados-pessoais'
         ]);
 
         Category::create([
-            'name' => 'Genérico',
-            'category_slug' => 'generico',
+            'name' => 'Mamãe e Bebê',
+            'slug' => 'mamae-e-bebe'
         ]);
 
         Category::create([
-            'name' => 'Similar',
-            'category_slug' => 'similar',
+            'name' => 'Dermocosméticos e Beleza',
+            'slug' => 'dermocosmeticos-e-beleza'
+        ]);
+
+        Category::create([
+            'name' => 'Saúde e Bem-estar',
+            'slug' => 'saude-e-bem-estar'
         ]);
     }
 };

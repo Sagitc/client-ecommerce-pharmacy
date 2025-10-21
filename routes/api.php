@@ -14,6 +14,5 @@ Route::get('/ping', function () {
     return response()->json(['pong' => true]);
 });
 
-
 Route::get('/banners', [BannerController::class, 'getAllBanners']);
 Route::get('/products', [ProductController::class, 'getAllProducts']);

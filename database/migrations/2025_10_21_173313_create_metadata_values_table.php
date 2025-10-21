@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\CategoryMetadata;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,10 +12,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('slug')->unique();
+        Schema::create('metadata_values', function (Blueprint $table) {
+            $table->string('id')->primary();
+            $table->string('label');
+            $table->foreignIdFor(CategoryMetadata::class);
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('metadata_values');
     }
 };

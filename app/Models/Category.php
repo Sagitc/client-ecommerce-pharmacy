@@ -9,7 +9,7 @@ class Category extends Model
 {
     protected $fillable = [
         'name',
-        'category_slug',
+        'slug'
     ];
 
     public $timestamps = false;
@@ -17,5 +17,14 @@ class Category extends Model
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function metadata(): HasMany {
+        return $this->hasMany(CategoryMetadata::class);
+    }
+
+    public function subcategory(): HasMany
+    {
+        return $this->hasMany(SubCategory::class);
     }
 }
