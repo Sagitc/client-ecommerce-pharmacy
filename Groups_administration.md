@@ -38,3 +38,54 @@ Grupos:
         * Nutrição Esportiva (Whey Protein, Barras de Proteína) 
         * Produtos Ortopédicos 
         * Produtos Naturais e Chás
+
+
+
+
+//  FILTROS PARA AS CATEGORIAS (METADATA)
+
+
+
+1. Medicamentos
+
+    *   Principio ativo (formula);
+    *   Laboratório (laboratory);
+    *   Método de Administração (administration-method);
+    *   Receita obrigatória? (recipe-required);
+    *   Indicação de função (indication);
+    *   Uso adulto/pediátrico (usage-type)
+
+2.  Higiene e Cuidados Pessoais
+
+    *   Marca do produto (brand);
+    *   Tipo de Pele (skin-type);
+    *   Tipo de Cabelo (hair-type);
+    *   Fragância (scent);
+    *   Fórmula principal (principal-formula)
+
+
+3.  Mamãe e Bebê
+
+    *   Marca (brand);
+    *   Tamanho da Fralda (size);
+    *   Material (material);
+    *   Fragância (scent);
+    *   Quantidade por pacote (quantity)
+
+
+4.  Dermocosméticos e Beleza
+
+    *   Tipo de Pele (skin-type);
+    *   Marca (brand);
+    *   Função principal (principal-function);
+    *   Textura (texture);
+    *   FPS (fps);
+    *   Ativo principal (formula)
+
+
+5.  Saúde e Bem-estar
+
+    *   Marca (brand);
+    *   Função (function);
+    *   Tipo de dispositivo (type-of-device);
+    *   Sabor (flavor);
