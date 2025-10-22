@@ -28,9 +28,9 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function manufacturer(): BelongsTo
+    public function laboratory(): BelongsTo
     {
-        return $this->belongsTo(Manufacturer::class);
+        return $this->belongsTo(Laboratory::class);
     }
 
     public function images(): HasMany

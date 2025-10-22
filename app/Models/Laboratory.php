@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Manufacturer extends Model
+class Laboratory extends Model
 {
     protected $fillable = [
         'label',
@@ -17,6 +17,6 @@ class Manufacturer extends Model
 
     public function products(): HasMany
     {
-        return $this->hasMany(Product::class, 'manufacturer', 'label');
+        return $this->hasMany(Product::class);
     }
 }
