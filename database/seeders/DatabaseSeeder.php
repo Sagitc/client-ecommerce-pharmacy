@@ -8,14 +8,12 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
-{
-    /**
-     * Seed the application's database.
-     */
-    public function run(): void
-    {
+class DatabaseSeeder extends Seeder {
+    
+    public function run(): void {
+
         $this->call([
+
             BannersSeeder::class,
             LaboratorySeeder::class,
             CategorySeeder::class,
@@ -24,8 +22,9 @@ class DatabaseSeeder extends Seeder
             CategoryMetadataSeeder::class,
             SubCategorySeeder::class,
             FormulaSeeder::class,
-        ]);
 
+        ]);
         
     }
+    
 }

@@ -6,18 +6,16 @@ use App\Models\Laboratory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class LaboratorySeeder extends Seeder
-{
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
-    {
+class LaboratorySeeder extends Seeder   {
+    
+    public function run(): void {
+
         $dados = [
+
             [
                 'label' => 'Marjan',
                 'company_name' => 'Marjan Industria e Comercio LTDA',
-                'CNPJ' => '60.726.692/0001-81',
+                'CNPJ' => '60.726.692/0001-81' 
             ],
             [
                 'label' => 'Arese',
@@ -113,11 +111,16 @@ class LaboratorySeeder extends Seeder
                 'label' => 'Servier',
                 'company_name' => 'Servier do Brasil Ltda.',
                 'CNPJ' => '42.374.230/0001-12',
-            ],
+            ]
+            
         ];
 
         foreach ($dados as $dado) {
+
             Laboratory::create($dado);
+
         }
+
     }
+
 }

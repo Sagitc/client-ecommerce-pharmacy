@@ -5,20 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class MetadataValue extends Model
-{
-    public $incrementing = false;
-    protected $keyType = 'string';
-    protected $table = 'metadata_values';
-    
-    protected $fillable = [
-        'id',
-        'label',
-        'category_metadata_id',
-    ];
+class MetadataValue extends Model   {
 
-    public function categoryMetadata(): BelongsTo
-    {
+    protected $fillable = [ 'label', 'category_metadata_id' ];
+    protected $keyType  = 'string';
+    protected $table    = 'metadata_values';
+    
+    public $incrementing = false;
+    public $timestamps   = false;
+
+
+    public function categoryMetadata(): BelongsTo   {
+
         return $this->belongsTo(CategoryMetadata::class);
+
     }
+
 }

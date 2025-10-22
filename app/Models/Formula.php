@@ -5,14 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Formula extends Model
-{
-    public $timestamps = false;
+class Formula extends Model {
 
-    protected $fillable = [ 'name' ];
+    protected $fillable   = [ 'name' ];
 
-    public function products(): HasMany
-    {
+    public $timestamps    = false;
+
+
+    public function products(): HasMany {
+
         return $this->hasMany(Product::class);
+        
     }
 }

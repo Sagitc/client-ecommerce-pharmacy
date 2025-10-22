@@ -1,42 +1,49 @@
 <?php
 
 use App\Models\Category;
-use App\Models\Manufacturer;
+use App\Models\Laboratory;
 use App\Models\ProductImage;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
-    {
+return new class extends Migration  {
+    
+    public function up(): void  {
+
         Schema::create('products', function (Blueprint $table) {
+
             $table->id();
-            $table->string('label');
+
+            $table->string('label'     );
+            $table->string('main_image')->default('default.png');
+            $table->string('MS'        )->nullable()->unique();
+            $table->string('SKU'       )->unique();
+
             $table->text('description');
-            $table->float('cost');
-            $table->float('price');
-            $table->foreignIdFor(Manufacturer::class);
-            $table->integer('stock');
-            $table->integer('EAN')->unique();
-            $table->string('MS')->nullable()->unique();
-            $table->foreignIdFor(Category::class);
+            
+            $table->integer('stock'      );
+            $table->integer('EAN'        )->unique();
             $table->integer('sales_count')->default(0);
             $table->integer('views_count')->default(0);
+
+            $table->float('cost' );
+            $table->float('price');
+
             $table->boolean('liked')->default(false);
+
+            $table->foreignIdFor(Laboratory::class);
+            $table->foreignIdFor(Category::class  );
+
             $table->timestamps();
+
         });
+
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
+    public function down(): void    {
+
         Schema::dropIfExists('products');
+
     }
 };
