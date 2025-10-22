@@ -41,4 +41,9 @@ class Product extends Model
     public function metadata(): HasMany {
         return $this->hasMany(ProductMetadata::class);
     }
+
+    public function formula(): BelongsTo
+    {
+        return $this->belongsTo(Formula::class);
+    }
 }

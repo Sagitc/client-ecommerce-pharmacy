@@ -22,6 +22,9 @@ class DatabaseSeeder extends Seeder
             ProductImageSeeder::class,
             CategoryMetadataSeeder::class,
             SubCategorySeeder::class,
+            FormulaSeeder::class,
         ]);
+
+        
     }
 }
