@@ -351,25 +351,34 @@ class CategoryMetadataSeeder extends Seeder {
         }
 
 
-        // $metadataMethod = Category::first()->metadata()->create([
-        //     'id' => 'administration_method',
-        //     'label' => 'Método de Administração',
-        // ]);
+        Product::all()->each(function ($product) {
 
-        // $metadataGroup = Category::first()->metadata()->create([
-        //     'id' => 'pharmaceutical_group',
-        //     'label' => 'Grupo Farmacêutico',
-        // ]);
+            $category = $product->category;
 
-        // $metadataMethod->metadataValues()->create([
-        //     'id' => 'gotas',
-        //     'label' => 'Gotas',
-        // ]);
+            if ($category) {
 
-        // $metadataGroup->metadataValues()->create([
-        //     'id' => 'analgesico',
-        //     'label' => 'Analgésico',
-        // ]);
+                $metadata = $category->metadata()->inRandomOrder()->take(2)->get();
+
+                foreach ($metadata as $meta) {
+
+                    $metadataValue = $meta->metadataValues()->inRandomOrder()->first();
+
+                    if ($metadataValue) {
+
+                        $product->metadata()->create([
+
+                            'category_metadata_id' => $meta->id,
+                            'metadata_value_id'    => $metadataValue->id,
+
+                        ]);
+
+                    }
+
+                }
+
+            }
+
+        });        
 
         // Product::first()->metadata()->create([
         //     'category_metadata_id' => 'administration_method',
