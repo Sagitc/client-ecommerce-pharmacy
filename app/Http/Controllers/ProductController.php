@@ -3,21 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\CategoryMetadata;
+use App\Models\MetadataValue;
 use App\Models\Product;
 use App\Models\ProductImage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
-class ProductController extends Controller  {
+class ProductController extends Controller
+{
 
-    public function getAllProducts(Request $request) {
+    public function getAllProducts(Request $request)
+    {
 
         $validator =  Validator::make($request->query(), [
 
-            'limit'      => ['sometimes', 'numeric'               ],
+            'limit'      => ['sometimes', 'numeric'],
             'orderBy'    => ['sometimes', 'in:views,selling,price'],
-            'laboratory' => ['sometimes', 'string'                ],
-            'metadata'   => ['sometimes', 'string'                ]
+            'laboratory' => ['sometimes', 'string'],
+            'metadata'   => ['sometimes', 'string']
 
         ]);
 
@@ -29,14 +34,14 @@ class ProductController extends Controller  {
                 'products' => []
 
             ], 400);
-
         }
 
+        //  Verificação para saber se o metadata passado está em formado JSON e se as chaves existem
         if ($request->filled('metadata')) {
 
             $rawMetadata = $request->query('metadata');
             $metadata = json_decode($rawMetadata, true);
-            
+
             if (\json_last_error() !== JSON_ERROR_NONE) {
 
                 return \response()->json([
@@ -45,24 +50,25 @@ class ProductController extends Controller  {
                     'products' => []
 
                 ], 400);
-
             }
 
-        }
+            foreach ($metadata as $key => &$value) {
 
-        $metadataLabelsValidos = \App\Models\CategoryMetadata::pluck('label')->toArray();
+                $metadataLabelsValidos = \App\Models\CategoryMetadata::pluck('id')->toArray();
 
-        dd( $metadataLabelsValidos );
+                if (!in_array($key, $metadataLabelsValidos)) {
 
-        foreach ($metadata as $key => $value) {
-            
-            if (!in_array($key, $metadataLabelsValidos)) {
-                
-                return \response()->json([
+                    return \response()->json([
 
-                    'error'    => "Metadata key '{$key}' does not exist.",
-                    'products' => []
-                ], 400);
+                        'error'    => "Metadata key '{$key}' does not exist.",
+                        'products' => []
+
+                    ], 400);
+
+                }
+
+                $newValue = MetadataValue::where('label', $value)->value('id');
+                $value = $newValue;
 
             }
 
@@ -108,13 +114,24 @@ class ProductController extends Controller  {
             $query->whereHas('laboratory', function ($q) use ($laboratory_label) {
 
                 $q->where('label', $laboratory_label);
-
             });
-
         }
 
         $query->orderBy($orderBy, 'desc');
         $query->with('category', 'laboratory');
+
+        $query->with('metadata');
+
+        foreach ($metadata as $key => $value) {
+
+            $query->whereHas('metadata', function ($q) use ($key, $value) {
+
+                $q->where('category_metadata_id', $key)
+                  ->where('metadata_value_id',  $value);
+
+            });
+        }
+
         $query->limit($limit);
 
         $products = $query->get();
@@ -148,11 +165,8 @@ class ProductController extends Controller  {
                     'liked' => $product->liked,
 
                 ];
-
             }),
 
         ]);
-
     }
-
 }
