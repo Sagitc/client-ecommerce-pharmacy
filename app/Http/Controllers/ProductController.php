@@ -14,8 +14,7 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
 
-    public function getAllProducts(Request $request)
-    {
+    public function getAllProducts(Request $request)    {
 
         $validator =  Validator::make($request->query(), [
 
@@ -34,44 +33,6 @@ class ProductController extends Controller
                 'products' => []
 
             ], 400);
-        }
-
-        //  Verificação para saber se o metadata passado está em formado JSON e se as chaves existem
-        if ($request->filled('metadata')) {
-
-            $rawMetadata = $request->query('metadata');
-            $metadata = json_decode($rawMetadata, true);
-
-            if (\json_last_error() !== JSON_ERROR_NONE) {
-
-                return \response()->json([
-
-                    'error'    => 'Invalid metadata format',
-                    'products' => []
-
-                ], 400);
-            }
-
-            foreach ($metadata as $key => &$value) {
-
-                $metadataLabelsValidos = \App\Models\CategoryMetadata::pluck('id')->toArray();
-
-                if (!in_array($key, $metadataLabelsValidos)) {
-
-                    return \response()->json([
-
-                        'error'    => "Metadata key '{$key}' does not exist.",
-                        'products' => []
-
-                    ], 400);
-
-                }
-
-                $newValue = MetadataValue::where('label', $value)->value('id');
-                $value = $newValue;
-
-            }
-
         }
 
         $limit   = $request->query('limit', 20);
@@ -119,6 +80,46 @@ class ProductController extends Controller
 
         $query->orderBy($orderBy, 'desc');
         $query->with('category', 'laboratory');
+
+         //  Verificação para saber se o metadata passado está em formado JSON e se as chaves existem
+        $metadata = [];
+         
+        if ($request->filled('metadata')) {
+
+            $rawMetadata = $request->query('metadata');
+            $metadata = json_decode($rawMetadata, true);
+
+            if (\json_last_error() !== JSON_ERROR_NONE) {
+
+                return \response()->json([
+
+                    'error'    => 'Invalid metadata format',
+                    'products' => []
+
+                ], 400);
+            }
+
+            foreach ($metadata as $key => &$value) {
+
+                $metadataLabelsValidos = \App\Models\CategoryMetadata::pluck('id')->toArray();
+
+                if (!in_array($key, $metadataLabelsValidos)) {
+
+                    return \response()->json([
+
+                        'error'    => "Metadata key '{$key}' does not exist.",
+                        'products' => []
+
+                    ], 400);
+
+                }
+
+                $newValue = MetadataValue::where('label', $value)->value('id');
+                $value = $newValue;
+
+            }
+
+        }
 
         $query->with('metadata');
 
@@ -168,5 +169,76 @@ class ProductController extends Controller
             }),
 
         ]);
+    }
+
+    public function getProductById(Request $request, $id)   {
+
+        if (!is_numeric($id)) {
+
+            return response()->json([
+
+                'error'    => 'Invalid product ID.',
+                'product'  => null,
+                'category' => null,
+
+            ], 400);
+
+        }
+
+        $product = Product::with(['category', 'images'])->find($id);
+
+        if (!$product) {
+
+            return response()->json([
+
+                'error'   => 'Product not found.',
+                'product' => null,
+
+            ], 404);
+
+        }
+
+        $images = $product->images->map(function (ProductImage $image) {
+
+            return asset($image->image_path);
+
+        })->toArray();
+
+        if (empty($images)) {
+
+            $images = [asset('images/products/default_generic.jpg')];
+
+        }
+
+        return response()->json([
+
+            'error'   => null,
+
+            'product' => [
+
+                'id'          => $product->id,
+                'name'        => $product->label,
+                'SKU'         => $product->SKU,
+                'description' => $product->description,
+                'stock'       => $product->stock,
+                'EAN'         => $product->EAN,
+                'views_count' => $product->views_count,
+                'sales_count' => $product->sales_count,
+                'cost'        => $product->cost,
+                'price'       => $product->price,
+                'liked'       => $product->liked,
+                'images'      => $images,
+
+            ],
+
+            'category' => $product->category ? [
+
+                'id'   => $product->category->id,
+                'name' => $product->category->name,
+
+            ] : null,
+
+        ]);
+
     }
 }

@@ -378,21 +378,8 @@ class CategoryMetadataSeeder extends Seeder {
 
             }
 
-        });        
+        });
 
-        // Product::first()->metadata()->create([
-        //     'category_metadata_id' => 'administration_method',
-        //     'metadata_value_id' => 'comprimido',
-        // ]);
-
-        // Product::first()->metadata()->create([
-        //     'category_metadata_id' => 'pharmaceutical_group',
-        //     'metadata_value_id' => 'etico',
-        // ]);
-
-        // Product::first()->metadata()->create([
-        //     'category_metadata_id' => 'anticoncepcional',
-        //     'metadata_value_id' => 'Anticoncepcional',
-        // ]);
     }
+    
 }
