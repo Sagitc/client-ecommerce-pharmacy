@@ -64,14 +64,11 @@ class ProductController extends Controller
                         'products' => []
 
                     ], 400);
-
                 }
 
                 $newValue = MetadataValue::where('label', $value)->value('id');
                 $value = $newValue;
-
             }
-
         }
 
         $limit   = $request->query('limit', 20);
@@ -127,8 +124,7 @@ class ProductController extends Controller
             $query->whereHas('metadata', function ($q) use ($key, $value) {
 
                 $q->where('category_metadata_id', $key)
-                  ->where('metadata_value_id',  $value);
-
+                    ->where('metadata_value_id',  $value);
             });
         }
 
@@ -159,6 +155,67 @@ class ProductController extends Controller
 
                     'category'   => $product->category ? $product->category->name : null,
                     'laboratory' => $product->laboratory ? $product->laboratory->label : null,
+
+                    'image' => asset($product->images->first()->image_path ?? null),
+
+                    'liked' => $product->liked,
+
+                ];
+            }),
+
+        ]);
+    }
+
+    public function getRelatedProductsById(Request $request, $id)
+    {
+
+        $validator =  Validator::make($request->query(), [
+
+            'limit'      => ['numeric']
+
+        ]);
+
+        if ($validator->fails()) {
+
+            return \response()->json([
+
+                'error'    => $validator->errors()->first(),
+                'products' => []
+
+            ], 400);
+        }
+
+        $product = Product::find($id);
+
+        $limit   = $request->query('limit', 10);
+
+        $relatedProducts = Product::where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->with('images')
+            ->limit($limit)
+            ->get();
+
+        return \response()->json([
+        
+            'error' => null,
+
+            'products' => $relatedProducts->map(function ($product) {
+
+                return [
+
+                    'id' => $product->id,
+
+                    'name' => $product->label,
+                    'SKU'  => $product->SKU,
+                    'category_id'  => $product->category_id,
+
+                    'stock'       => $product->stock,
+                    'EAN'         => $product->EAN,
+                    'views_count' => $product->views_count,
+                    'sales_count' => $product->sales_count,
+
+                    'cost'  => $product->cost,
+                    'price' => $product->price,
 
                     'image' => asset($product->images->first()->image_path ?? null),
 
