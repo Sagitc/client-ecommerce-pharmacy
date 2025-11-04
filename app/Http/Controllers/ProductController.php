@@ -35,6 +35,41 @@ class ProductController extends Controller
             ], 400);
         }
 
+        //  Verificação para saber se o metadata passado está em formado JSON e se as chaves existem
+        if ($request->filled('metadata')) {
+
+            $rawMetadata = $request->query('metadata');
+            $metadata = json_decode($rawMetadata, true);
+
+            if (\json_last_error() !== JSON_ERROR_NONE) {
+
+                return \response()->json([
+
+                    'error'    => 'Invalid metadata format',
+                    'products' => []
+
+                ], 400);
+            }
+
+            foreach ($metadata as $key => &$value) {
+
+                $metadataLabelsValidos = \App\Models\CategoryMetadata::pluck('id')->toArray();
+
+                if (!in_array($key, $metadataLabelsValidos)) {
+
+                    return \response()->json([
+
+                        'error'    => "Metadata key '{$key}' does not exist.",
+                        'products' => []
+
+                    ], 400);
+                }
+
+                $newValue = MetadataValue::where('label', $value)->value('id');
+                $value = $newValue;
+            }
+        }
+
         $limit   = $request->query('limit', 20);
         $orderBy = 'id';
 
@@ -128,8 +163,7 @@ class ProductController extends Controller
             $query->whereHas('metadata', function ($q) use ($key, $value) {
 
                 $q->where('category_metadata_id', $key)
-                  ->where('metadata_value_id',  $value);
-
+                    ->where('metadata_value_id',  $value);
             });
         }
 
