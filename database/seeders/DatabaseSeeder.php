@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder {
 
         $this->call([
 
+            UserSeeder::class,
             BannersSeeder::class,
             LaboratorySeeder::class,
             CategorySeeder::class,
@@ -22,7 +23,7 @@ class DatabaseSeeder extends Seeder {
             CategoryMetadataSeeder::class,
             SubCategorySeeder::class,
             FormulaSeeder::class,
-
+            AddressSeeder::class,
         ]);
         
     }

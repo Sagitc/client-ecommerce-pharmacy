@@ -14,7 +14,8 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
 
-    public function getAllProducts(Request $request)    {
+    public function getAllProducts(Request $request)
+    {
 
         $validator =  Validator::make($request->query(), [
 
@@ -116,9 +117,9 @@ class ProductController extends Controller
         $query->orderBy($orderBy, 'desc');
         $query->with('category', 'laboratory');
 
-         //  Verificação para saber se o metadata passado está em formado JSON e se as chaves existem
+        //  Verificação para saber se o metadata passado está em formado JSON e se as chaves existem
         $metadata = [];
-         
+
         if ($request->filled('metadata')) {
 
             $rawMetadata = $request->query('metadata');
@@ -146,14 +147,11 @@ class ProductController extends Controller
                         'products' => []
 
                     ], 400);
-
                 }
 
                 $newValue = MetadataValue::where('label', $value)->value('id');
                 $value = $newValue;
-
             }
-
         }
 
         $query->with('metadata');
@@ -205,7 +203,8 @@ class ProductController extends Controller
         ]);
     }
 
-    public function getProductById(Request $request, $id)   {
+    public function getProductById(Request $request, $id)
+    {
 
         if (!is_numeric($id)) {
 
@@ -216,7 +215,6 @@ class ProductController extends Controller
                 'category' => null,
 
             ], 400);
-
         }
 
         $product = Product::with(['category', 'images'])->find($id);
@@ -229,19 +227,16 @@ class ProductController extends Controller
                 'product' => null,
 
             ], 404);
-
         }
 
         $images = $product->images->map(function (ProductImage $image) {
 
             return asset($image->image_path);
-
         })->toArray();
 
         if (empty($images)) {
 
             $images = [asset('images/products/default_generic.jpg')];
-
         }
 
         return response()->json([
@@ -273,6 +268,71 @@ class ProductController extends Controller
             ] : null,
 
         ]);
+    }
 
+    public function getRelatedProductsById(Request $request, $id)
+    {
+
+        $validator = Validator::make($request->query(), [
+
+            'limit' => ['sometimes', 'numeric'],
+
+        ]);
+
+        if ($validator->fails()) {
+
+            return response()->json([
+
+                'error'    => $validator->errors()->first(),
+                'products' => []
+
+            ], 400);
+        }
+
+        if (!is_numeric($id)) {
+
+            return response()->json([
+
+                'error'    => 'Invalid product ID.',
+                'products' => []
+
+            ], 400);
+        }
+
+        $limit = $request->query('limit', 5);
+        $product = Product::find($id);
+
+        if (!$product) {
+
+            return response()->json([
+
+                'error'    => 'Product not found.',
+                'products' => []
+
+            ], 404);
+        }
+
+        $relatedProducts =  Product::where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->limit($limit)
+            ->get();
+        
+        $formattedProducts = $relatedProducts->map( function ($product) {
+            return [
+                'id'       => $product->id,
+                'name'     => $product->label,
+                'SKU'      => $product->SKU,
+                'price'    => $product->price,
+                'image'    => asset($product->images->first()->image_path ?? 'images/products/default_generic.jpg'),
+                'category' => $product->category()->pluck('slug')->first(),
+            ];
+        });
+
+        return response()->json([
+            
+            'error'    => null,
+            'products' => $formattedProducts
+
+        ]);
     }
 }
