@@ -193,4 +193,30 @@ class UserController extends Controller {
 
         ]);
     }
+
+    public function getAddresses(Request $request) {
+
+        $user = FacadesAuth::user();
+
+        $user = User::find($user->id);
+
+        $addresses = $user->addresses()->get()->map(function ($address) {
+            return [
+                'id'         => $address->id,
+                'street'     => $address->street,
+                'number'     => $address->number,
+                'complement' => $address->complement,
+                'country'    => $address->country,
+                'city'       => $address->city,
+                'state'      => $address->state,
+                'zipcode'   => $address->zipcode,
+            ];
+        });
+
+        return response()->json([
+            'error'     => null,
+            'addresses' => $addresses
+        ]);
+    }
+
 }

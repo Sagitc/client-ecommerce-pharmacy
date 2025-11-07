@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Address;
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller {
@@ -97,6 +100,90 @@ class CartController extends Controller {
 
         ]);
 
+    }
+
+    public function finish(Request $request) {
+        
+        $validator = Validator::make(
+
+            $request->all(),
+
+            [
+                "cart" => ["required", "array", "min:1"],
+                "cart.*.product_id" => ["required", "numeric", "min:1"],
+                "cart.*.quantity"   => ["required", "numeric", "min:1"],
+                "address_id" => ["required", "numeric", "min:1"]
+            ]
+
+        );
+
+        if ($validator->fails()) {
+
+            return response()->json([
+
+                'error' => $validator->errors()->first()
+
+            ], 400);
+
+        }
+
+        $user = Auth::user();
+
+        $address = Address::where('id', $request->input('address_id'))->first();
+
+        if ($address->user_id != $user->id) {
+            return response()->json([
+
+                'error' => 'Endereço inválido para o usuário autenticado.',
+                'products' => []
+
+            ], 400);
+        }
+
+        $cart = $request->input('cart');
+        $products = Product::whereIn('id', \array_column($cart, 'product_id'))->get();
+
+        $total = 0;
+
+        foreach ($cart as $item) {
+
+            $product = $products->find( $item['product_id'] );
+
+            $total += $product->price * $item['quantity'];
+
+        }
+
+        $order = Order::create([
+
+            'user_id'    => $user->id,
+            'shipping_cost' => 15.00,
+            'shipping_days' => 8,
+            'shipping_zipcode' => $address->zipcode,
+            'shipping_number'  => $address->number,
+            'shipping_complement' => $address->complement,
+            'shipping_district'   => $address->district,
+            'shipping_city'       => $address->city,
+            'shipping_state'      => $address->state,
+            'total'      => $total,
+            'status'     => 'pending'
+
+        ]);
+
+        foreach ($cart as $item) {
+
+            $product = $products->find( $item['product_id'] );
+
+            $order->products()->create([
+
+                'product_id' => $product->id,
+                'quantity'   => $item['quantity'],
+                'price'      => $product->price
+
+            ]);
+
+        }
+
+        
     }
 
 }
