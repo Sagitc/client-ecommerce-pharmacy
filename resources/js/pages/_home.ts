@@ -1,11 +1,6 @@
 //  Declarations
 
 const catalogBtns = document.querySelectorAll('.catalog__option');
-const btnPrev = document.querySelectorAll('.products__btn-prev') as NodeListOf<HTMLButtonElement>;
-const btnNext = document.querySelectorAll('.products__btn-next') as NodeListOf<HTMLButtonElement>;
-
-let scrollableSection: HTMLDivElement;
-let otherButton: HTMLButtonElement;
 
 
 //  Events

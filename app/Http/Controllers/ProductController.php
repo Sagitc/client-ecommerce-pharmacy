@@ -54,7 +54,7 @@ class ProductController extends Controller
 
             foreach ($metadata as $key => &$value) {
 
-                $metadataLabelsValidos = \App\Models\CategoryMetadata::pluck('id')->toArray();
+                $metadataLabelsValidos = CategoryMetadata::pluck('id')->toArray();
 
                 if (!in_array($key, $metadataLabelsValidos)) {
 

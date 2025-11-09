@@ -8,12 +8,112 @@
 
 #main-banner {
     margin-top: var(--spacing-lg);
+    height: 400px;
+    display: flex;
+    justify-content: center;
 }
 
-#banner1__img {
+#banner1__area {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+}
+
+#banner1__slides-area {
+    flex: 1;
+    display: flex;
+    transition: all 0.5s ease-in-out;
+    /* margin-left: calc(1280px * -1); */
+}
+
+.banner1__arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    background-color: white;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer !important;
+    z-index: 10;
+    display: none;
+}
+
+.banner1__arrow.active {
+    display: flex;
+}
+
+.banner1__arrow.arrow-left {
+    left: 16px;
+}
+
+.banner1__arrow.arrow-left img {
+    transform: rotate(180deg);
+    margin-right: 3px;
+}
+
+.banner1__arrow.arrow-right {
+    right: 16px;
+}
+
+.banner1__arrow.arrow-right img {
+    margin-left: 3px;
+}
+
+#banner1__dots {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: var(--spacing-sm);
+    z-index: 10;
+}
+
+.banner1__dot {
+    width: 12px;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.banner1__dot.active {
+    background-color: var(--color-primary);
+}
+
+.banner1__dot:hover {
+    background-color: var(--color-primary);
+}
+
+.banner1__images {
+    flex-shrink: 0;
+    width: 1280px;
+    background-color: red;
     border-radius: var(--spacing-lg);
-    height: 400px;
-    background-color: #d9d9d9;
+}
+
+.banner1__images[data-slide="0"] {
+    background-image: url('../../../public/images/banners/fake_banner1.jpg');
+    background-size: cover;
+    background-position: left center;
+}
+
+.banner1__images[data-slide="1"] {
+    background-image: url('../../../public/images/banners/fake_banner2.jpg');
+    background-size: cover;
+    background-position: left center;
+}
+
+.banner1__images[data-slide="2"] {
+    background-image: url('../../../public/images/banners/fake_banner.jpg');
+    background-size: cover;
+    background-position: left center;
 }
 
 #benefits {
