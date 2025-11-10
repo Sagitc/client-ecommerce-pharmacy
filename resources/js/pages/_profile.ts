@@ -19,6 +19,9 @@ const modalEmail: HTMLDivElement | null = document.querySelector('#modal__profil
 const modalAddressAdd: HTMLDivElement | null = document.querySelector('#modal__address-add');
 const modalCreditAdd: HTMLDivElement | null = document.querySelector('#modal__credit-add');
 
+const params: URLSearchParams = new URLSearchParams(window.location.search);
+const tab: string | null = params.get('tab');
+
 const modalInfos = {
     address: {
         btn: resumeAddressBtn,
@@ -52,12 +55,25 @@ const modalInfos = {
 
 const modalCloseBtn: NodeListOf<Element> = document.querySelectorAll('.modal__close');
 
-
-
 let elementThatOpenedModal: HTMLElement | null = null;
 
 
 //  EVENTS
+
+let btnActiveOnLoad: Element | null = null;
+
+btnActiveOnLoad = document.querySelector('.info__option-btn[data-option="' + (tab ? tab : 'resume') + '"]');
+
+if (btnActiveOnLoad) {
+    toggleInfoOption(btnActiveOnLoad);
+}
+
+if (tab && modalInfos[tab as keyof typeof modalInfos]) {
+    const obj = modalInfos[tab as keyof typeof modalInfos];
+    elementThatOpenedModal = obj.btn;
+    toggleModal(obj.modal);
+}
+
 options.forEach(btn => {
     btn.addEventListener('click', () => {
         toggleInfoOption(btn);
@@ -81,6 +97,7 @@ modalCloseBtn.forEach(btn => {
 
 
 //  FUNCTIONS
+
 function toggleInfoOption(btn: Element): void {
     let resumeSection: HTMLDivElement | null = document.getElementById('info__resume') as HTMLDivElement;
     let profileSection: HTMLDivElement | null = document.getElementById('info__profile') as HTMLDivElement;
@@ -108,7 +125,7 @@ function toggleInfoOption(btn: Element): void {
             covenantSection?.classList.add('is-disabled');
             favoritesSection?.classList.add('is-disabled');
             break;
-        case 'requests':
+        case 'orders':
             resumeSection?.classList.add('is-disabled');
             profileSection?.classList.add('is-disabled');
             requestsSection?.classList.remove('is-disabled');
@@ -122,15 +139,12 @@ function toggleInfoOption(btn: Element): void {
             covenantSection?.classList.remove('is-disabled');
             favoritesSection?.classList.add('is-disabled');
             break;
-        case 'favoritos':
+        case 'favorites':
             resumeSection?.classList.add('is-disabled');
             profileSection?.classList.add('is-disabled');
             requestsSection?.classList.add('is-disabled');
             covenantSection?.classList.add('is-disabled');
             favoritesSection?.classList.remove('is-disabled');
-            break;
-        case 'sair':
-            window.location.href = '/logout';
             break;
         default:
             break;

@@ -36,10 +36,16 @@ if (banner1__area) {
     banner1__area.addEventListener('mouseover', () => {
         banner1__arrowLeft.classList.add('active');
         banner1__arrowRight.classList.add('active');
+        
+        clearInterval(bannerInterval);
     });
     banner1__area.addEventListener('mouseout', () => {
         banner1__arrowLeft.classList.remove('active');
         banner1__arrowRight.classList.remove('active');
+
+        bannerInterval = setInterval(() => {
+            scrollBanner('right');
+        }, 3000);
     });
 }
 

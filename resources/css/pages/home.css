@@ -110,12 +110,6 @@
     background-position: left center;
 }
 
-.banner1__images[data-slide="2"] {
-    background-image: url('../../../public/images/banners/fake_banner.jpg');
-    background-size: cover;
-    background-position: left center;
-}
-
 #benefits {
     margin-top: var(--spacing-lg);
 }

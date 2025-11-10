@@ -19,19 +19,75 @@
                     <span id="cart__count">R$ 0,00</span>
                 </span>
             </button>
-            <button id="header__user" data-toggle="modal-login">
-                <span class="user__icon-wrapper"><img src="{{ asset('images/icons/icon_user_white.svg') }}" alt="Menu do usuário"></span>
-                <span>
-                    @auth
-                        <span>Olá, {{ Auth::user()->full_name }}!</span>
-                    @endauth
-                    @guest
-                        Login<br>
-                        ou <strong>Cadastro</strong>
-                    @endguest
-                </span>
-            </button>
+            <div id="header__menu-wrapper">
+                <button @auth id="header__user-menu" @else id="header__user" @endauth class="header__user" data-toggle="modal-login">
+                    <span class="user__icon-wrapper"><img src="{{ asset('images/icons/icon_user_white.svg') }}" alt="Menu do usuário"></span>
+                    <span>
+                        @auth
+                            Olá,<br>
+                            <strong>{{ Auth::user()->full_name }}</strong>!
+                        @endauth
+                        @guest
+                            Login<br>
+                            ou <strong>Cadastro</strong>
+                        @endguest
+                    </span>
+                    
+                </button>
+                @auth
+                    <div id="user-menu__area" class="is-disabled" aria-hidden="true">
+                        <ul>
+                            <li>
+                                <a href="{{ url('profile?tab=resume') }}">
+                                    Perfil
+                                    <svg aria-label="Seta para a direita" width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align: middle;">
+                                        <path d="M8 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url('profile?tab=orders') }}">
+                                    Meus pedidos
+                                    <svg aria-label="Seta para a direita" width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align: middle;">
+                                        <path d="M8 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url('profile?tab=favorites') }}">
+                                    Produtos favoritos
+                                    <svg aria-label="Seta para a direita" width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align: middle;">
+                                        <path d="M8 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </a>
+                            </li>
+                            <!-- <li>
+                            <a href="{{ url('profile?tab=benefits') }}">
+                                Descontos e benefícios
+                                <svg aria-label="Seta para a direita" width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align: middle;">
+                                    <path d="M8 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </a>
+                        </li> -->
+                            <li>
+                                <a href="#" onclick="event.preventDefault(); document.getElementById('header__logout-form').submit();">
+                                    Sair
+                                    <svg aria-label="Seta para a direita" width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align: middle;">
+                                        <path d="M8 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </a>
+
+                                <form action="{{ route('logout') }}" id="header__logout-form" method="post" style="display: none;">
+                                    @csrf
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                @endauth
+            </div>
         </div>
+
+
 
         <div id="header__mobile">
             <button id="header__mobile-search_icon" aria-label="Abrir busca">

@@ -18,8 +18,6 @@
         <div id="banner1__slides-area">
             <div data-slide="0" class="banner1__images active"></div>
             <div data-slide="1" class="banner1__images"></div>
-            <div data-slide="2" class="banner1__images"></div>
-            <div data-slide="3" class="banner1__images"></div>
         </div>
 
         <button class="banner1__arrow arrow-right">

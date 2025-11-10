@@ -237,6 +237,22 @@
     display: none;
 }
 
+.modal__guest-message {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: var(--font-size-sm);
+    color: var(--color-secondary);
+}
+
+.modal__guest-text {
+    padding: var(--spacing-lg);
+    font-size: var(--font-size-xl);
+}
+
 @media (max-width: 769px) {
     #modal__container {
         justify-content: center;

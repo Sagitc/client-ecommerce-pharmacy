@@ -65,8 +65,13 @@
     gap: var(--spacing-xl);
 }
 
+#header__menu-wrapper {
+    position: relative;
+    display: flex;
+}
+
 .header__actions #header__cart,
-.header__actions #header__user {
+.header__actions .header__user {
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
@@ -77,6 +82,10 @@
     background: none;
     border: none;
     text-align: left;
+}
+
+.header__user {
+    padding: var(--spacing-sm) var(--spacing-md);
 }
 
 #cart__count {
@@ -292,6 +301,38 @@
     opacity: 0;
 }
 
+#user-menu__area {
+    position: absolute;
+    top: 100%;
+    right: 0%;
+    background-color: var(--color-light);
+    box-shadow: var(--box-shadow-md);
+    border-radius: var(--border-radius-md);
+    min-width: 12rem;
+    z-index: 1001;
+    flex-direction: column;
+}
+
+#user-menu__area ul {
+    list-style: none;
+    margin: 0;
+    padding: var(--spacing-lg) var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+#user-menu__area ul li a {
+    text-decoration: none;
+    color: var(--color-dark);
+    font-size: var(--font-size-md);
+    text-wrap: nowrap;
+}
+
+#user-menu__area ul li a:hover {
+    color: var(--color-primary);
+}
+
 @media (max-width: 576px) {
 
     .header__content {
@@ -345,7 +386,7 @@
         width: var(--image-md);
     }
 
-    .header__actions #header__user {
+    .header__actions .header__user {
         display: none;
     }
 

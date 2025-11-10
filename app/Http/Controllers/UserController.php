@@ -104,6 +104,25 @@ class UserController extends Controller
         ])->onlyInput('identifier');
     }
 
+    public function userStatus(Request $request)
+    {
+
+        $user = Auth::user();
+
+        return response()->json([
+
+            'error' => null,
+            'user'  => [
+                'id'         => $user->id,
+                'full_name' => $user->full_name,
+                'email'      => $user->email,
+                'cpf'        => $user->cpf,
+                'phone_number' => $user->phone_number,
+            ]
+
+        ]);
+    }
+
     public function createAddress(Request $request)
     {
 
@@ -205,5 +224,15 @@ class UserController extends Controller
             'error'     => null,
             'addresses' => $addresses
         ]);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/');
     }
 }

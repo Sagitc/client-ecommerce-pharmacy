@@ -28,8 +28,11 @@ export function initModalLogin(): void {
 
     let elementThatOpenedModal: HTMLElement | null = null;
 
+
     // EVENTS
-    modalBtn.addEventListener('click', () => { openModal() });
+    if (modalBtn) {
+        modalBtn.addEventListener('click', () => { openModal() });
+    }
 
     modalCloseBtns.forEach((btn) => {
         btn.addEventListener('click', () => { closeModal() });
@@ -146,6 +149,8 @@ export function initModalLogin(): void {
             wrapper4.setAttribute('aria-hidden', 'true');
         }
 
+        document.body.setAttribute('aria-hidden', 'false');
+        modal.setAttribute('aria-hidden', 'true');
         modal.classList.add('is-disabled');
     }
 

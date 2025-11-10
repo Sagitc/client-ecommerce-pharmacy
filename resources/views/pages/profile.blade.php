@@ -13,7 +13,7 @@
             <img src="{{ asset('images/user_avatar.png') }}" alt="Avatar do Usuário">
         </div>
         <!-- Colocar nome do usuário de forma dinâmica -->
-        <h1>Olá, nome do usuário!</h1>
+        <h1>Bem-vindo(a), {{ Auth::user()->full_name }}!</h1>
     </div>
 </div>
 
@@ -247,7 +247,7 @@
                 <img src="{{ asset('images/icons/icon_user_black.svg') }}" alt="">
                 Perfil
             </button>
-            <button data-option="requests" class="info__option-btn">
+            <button data-option="orders" class="info__option-btn">
                 <img src="{{ asset('images/icons/icon_user_black.svg') }}" alt="">
                 Pedidos
             </button>
@@ -255,13 +255,16 @@
                 <img src="{{ asset('images/icons/icon_user_black.svg') }}" alt="">
                 Convênios
             </button>
-            <button data-option="favoritos" class="info__option-btn">
+            <button data-option="favorites" class="info__option-btn">
                 <img src="{{ asset('images/icons/icon_user_black.svg') }}" alt="">
                 Favoritos
             </button>
-            <button data-option="sair" class="info__option-btn">
+            <button data-option="sair" class="info__option-btn" onclick="event.preventDefault(); document.getElementById('profile__logout-btn').submit();">
                 <img src="{{ asset('images/icons/icon_user_black.svg') }}" alt="">
                 Sair
+                <form action="{{ route('logout') }}" method="post" id="profile__logout-btn" style="display: none;">
+                    @csrf
+                </form>
             </button>
         </div>
 

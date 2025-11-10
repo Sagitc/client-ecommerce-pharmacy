@@ -26,26 +26,28 @@ export function initModalCart(): void {
         }
     });
 
-    quantitySelect.addEventListener('change', () => {
-        if (quantitySelect.value === 'selectQuantity') {
-            quantitySelect.classList.add('is-disabled');
+    if (!modal.classList.contains('not-logged')) {
+        quantitySelect.addEventListener('change', () => {
+            if (quantitySelect.value === 'selectQuantity') {
+                quantitySelect.classList.add('is-disabled');
 
-            customQuantityInput.classList.remove('is-disabled');
-            customQuantityInput.focus();
-        }
-    });
+                customQuantityInput.classList.remove('is-disabled');
+                customQuantityInput.focus();
+            }
+        });
 
-    customQuantityInput.addEventListener('blur', () => {
+        customQuantityInput.addEventListener('blur', () => {
 
-        if (customQuantityInput.value === '' || customQuantityInput.value === '0') {
-            customQuantityInput.classList.add('is-disabled');
-            quantitySelect.classList.remove('is-disabled');
+            if (customQuantityInput.value === '' || customQuantityInput.value === '0') {
+                customQuantityInput.classList.add('is-disabled');
+                quantitySelect.classList.remove('is-disabled');
 
-            customQuantityInput.value = '';
-            quantitySelect.value = '1';
-        }
+                customQuantityInput.value = '';
+                quantitySelect.value = '1';
+            }
 
-    });
+        });
+    }
 
 
     // Functions
