@@ -20,7 +20,8 @@
     ],
     "require": {
         "laravel/framework": "^12.34",
-        "laravel/sanctum": "^4.2"
+        "laravel/sanctum": "^4.2",
+        "laravellegends/pt-br-validator": "^12.2"
     },
     "require-dev": {
         "laravel/pail": "^1.2",

@@ -18,16 +18,21 @@
                         </button>
                     </div>
 
-                    <form id="signIn__form" action="" method="get">
+                    <form id="signIn__form" action="{{ route('login') }}" method="post">
                         @csrf
 
                         <span>Entre com o seu e-mail ou CPF</span>
 
-                        <input type="text" name="user" id="signIn__user" class="modal-login__input"
+                        <input type="text" name="identifier" id="signIn__user" class="modal-login__input"
                             placeholder="E-mail ou CPF" required>
 
                         <input type="password" name="password" id="signIn__password" class="modal-login__input"
                             placeholder="Senha" required>
+
+                        <label for="signIn__remember" class="remember-me">
+                            <input type="checkbox" name="remember" id="signIn__remember" value="1">
+                            <span>Manter-me conectado(a)</span>
+                        </label>
 
                         <button class="forgot-password">Esqueceu a senha?</button>
 
@@ -84,7 +89,7 @@
                     <form id="signUp__form" action="" method="post">
                         @csrf
 
-                        <input type="text" name="full_name" id="signUp__user" class="modal-login__input"
+                        <input type="text" name="name" id="signUp__user" class="modal-login__input"
                             placeholder="Nome e sobrenome" required>
 
                         <div class="modal__input-wrapper">
@@ -96,10 +101,10 @@
                         </div>
 
                         <div class="modal__input-wrapper">
-                            <input type="text" name="CPF" id="signUp__CPF" class="modal-login__input_2"
+                            <input type="text" name="cpf" id="signUp__CPF" class="modal-login__input_2"
                                 placeholder="CPF" required>
 
-                            <input type="tel" name="Tel" id="signUp__tel" class="modal-login__input_2"
+                            <input type="tel" name="phone_number" id="signUp__tel" class="modal-login__input_2"
                                 placeholder="Telefone" required>
                         </div>
 

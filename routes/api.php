@@ -17,23 +17,23 @@ Route::get('/ping', function () {
     return response()->json(['pong' => true]);
 });
 
-Route::get('/banners',      [BannerController::class,  'getAllBanners' ]);
+// Route::get('/banners',      [BannerController::class,  'getAllBanners' ]);
 
-Route::get('/products',     [ProductController::class, 'getAllProducts']);
-Route::get('/product/{id}', [ProductController::class, 'getProductById']);
-Route::get('/product/{id}/related', [ProductController::class, 'getRelatedProductsById']);
+// Route::get('/products',     [ProductController::class, 'getAllProducts']);
+// Route::get('/product/{id}', [ProductController::class, 'getProductById']);
+// Route::get('/product/{id}/related', [ProductController::class, 'getRelatedProductsById']);
 
-Route::get('/categories', [CategoryController::class, 'getAllCategories']);
-Route::get('/categories/{slug}/metadata', [CategoryController::class, 'getCategoryMetadataBySlug']);
+// Route::get('/categories', [CategoryController::class, 'getAllCategories']);
+// Route::get('/categories/{slug}/metadata', [CategoryController::class, 'getCategoryMetadataBySlug']);
 
-Route::post('/cart/mount', [CartController::class, 'mount']);
-Route::get('/cart/shipping', [CartController::class, 'getShipping']);
+// Route::post('/cart/mount', [CartController::class, 'mount']);
+// Route::get('/cart/shipping', [CartController::class, 'getShipping']);
 
-Route::post('/user/login', [UserController::class, 'login']);
-Route::post('/user/register', [UserController::class, 'register']);
+// Route::post('/user/login', [UserController::class, 'login'])->name('login');
+// Route::post('/user/register', [UserController::class, 'register']);
 
-Route::middleware('auth:sanctum')->group( function () {
-    Route::post('user/addresses', [UserController::class, 'createAddress']);
-    Route::get('user/addresses', [UserController::class, 'getAddresses']);
-    Route::post('cart/finish', [CartController::class, 'finish']);
-});
+// Route::middleware('auth:sanctum')->group( function () {
+//     Route::post('user/addresses', [UserController::class, 'createAddress']);
+//     Route::get('user/addresses', [UserController::class, 'getAddresses']);
+//     Route::post('cart/finish', [CartController::class, 'finish']);
+// });

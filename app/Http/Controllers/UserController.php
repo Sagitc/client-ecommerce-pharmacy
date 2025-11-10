@@ -4,36 +4,46 @@ namespace App\Http\Controllers;
 
 use App\Models\Address;
 use App\Models\User;
+use App\Rules\CpfOrEmailRule;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth as FacadesAuth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-class UserController extends Controller {
-    
-    public function register(Request $request) {
-        
+class UserController extends Controller
+{
+
+    public function register(Request $request)
+    {
+
         $validator = Validator::make(
             $request->all(),
             [
-                'name'         => 'required|string|max:255',
-                'cpf'          => 'required|string|size:11|unique:users',
-                'email'        => 'required|string|email|max:255|unique:users',
-                'password'     => 'required|string|min:8',
-                'phone_number' => 'required|string|max:15'
+                'name'                  => 'required|string|max:255',
+                'cpf'                   => ['required', 'unique:users', new CpfOrEmailRule],
+                'email'                 => 'required|string|email|max:255|unique:users',
+                'password'              => 'required|string|min:8',
+                'password_confirmation' => 'required|string|same:password',
+                'phone_number'          => 'required|string|max:15'
             ],
             [
-                'name.required'     => 'Name is required',
-                'name.string'       => 'Name must be a string',
-                'name.max'          => 'Name must not exceed 255 characters',
-                'email.required'    => 'Email is required',
-                'email.string'      => 'Email must be a string',
-                'email.email'       => 'Email must be a valid email address',
-                'email.max'         => 'Email must not exceed 255 characters',
-                'email.unique'      => 'Email is already registered',
-                'password.required' => 'Password is required',
-                'password.string'   => 'Password must be a string',
-                'password.min'      => 'Password must be at least 8 characters'
+                'name.required'                  => 'Name is required',
+                'name.string'                    => 'Name must be a string',
+                'name.max'                       => 'Name must not exceed 255 characters',
+                'email.required'                 => 'Email is required',
+                'email.string'                   => 'Email must be a string',
+                'email.email'                    => 'Email must be a valid email address',
+                'email.max'                      => 'Email must not exceed 255 characters',
+                'email.unique'                   => 'Email is already registered',
+                'password.required'              => 'Password is required',
+                'password.string'                => 'Password must be a string',
+                'password.min'                   => 'Password must be at least 8 characters',
+                'password_confirmation.required' => 'Password confirmation is required',
+                'password_confirmation.string'   => 'Password confirmation must be a string',
+                'password_confirmation.same'     => 'Password confirmation must match the password',
+                'phone_number.required'          => 'Phone number is required',
+                'phone_number.string'            => 'Phone number must be a string',
+                'phone_number.max'               => 'Phone number must not exceed 15 characters'
             ]
         );
 
@@ -62,64 +72,41 @@ class UserController extends Controller {
                     'email' => $item->email
                 ];
             })
+
+
         ]);
     }
 
-    public function login(Request $request) {
-        
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'email'    => 'required|string|email',
-                'password' => 'required|string'
-            ]
-        );
+    public function login(Request $request)
+    {
 
-        if ($validator->fails()) {
-
-            return response()->json([
-
-                'error' => 'Usuário ou senha inválidos',
-                'token' => null
-
-            ], 400);
-        }
-
-        $user = User::where('email', $request->input('email'))->first();
-
-        if (!$user) {
-            
-            return response()->json([
-
-                'error' => 'Usuário ou senha inválidos',
-                'token' => null
-
-            ], 400);
-
-        }
-
-        if (!Hash::check($request->input('password'), $user->password)) {
-            
-            return response()->json([
-
-                'error' => 'Usuário ou senha inválidos',
-                'token' => null
-
-            ], 400);
-
-        }
-
-        $user->tokens()->delete();
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'error' => null,
-            'token' => $token
+        $request->validate([
+            'identifier' => ['required', new CpfOrEmailRule],
+            'password'   => 'required|string',
+            'remember'   => 'nullable|boolean'
         ]);
+
+        $identifier = $request->input('identifier');
+        $field = filter_var($identifier, FILTER_VALIDATE_EMAIL) ? 'email' : 'cpf';
+
+        $credentials = [
+            $field    => $identifier,
+            'password' => $request->input('password')
+        ];
+
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            $request->session()->regenerate();
+            return redirect()->intended(route('home'));
+        }
+
+        return back()->withErrors([
+            'identifier' => 'Credenciais inválidas.'
+        ])->onlyInput('identifier');
     }
 
-    public function createAddress(Request $request) {
-        
+    public function createAddress(Request $request)
+    {
+
         $validator = Validator::make(
             $request->all(),
             [
@@ -162,7 +149,7 @@ class UserController extends Controller {
             ], 400);
         }
 
-        $user = FacadesAuth::user();
+        $user = Auth::user();
 
         $address = Address::create([
 
@@ -194,9 +181,10 @@ class UserController extends Controller {
         ]);
     }
 
-    public function getAddresses(Request $request) {
+    public function getAddresses(Request $request)
+    {
 
-        $user = FacadesAuth::user();
+        $user = Auth::user();
 
         $user = User::find($user->id);
 
@@ -218,5 +206,4 @@ class UserController extends Controller {
             'addresses' => $addresses
         ]);
     }
-
 }

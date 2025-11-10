@@ -22,8 +22,13 @@
             <button id="header__user" data-toggle="modal-login">
                 <span class="user__icon-wrapper"><img src="{{ asset('images/icons/icon_user_white.svg') }}" alt="Menu do usuário"></span>
                 <span>
-                    Login<br>
-                    ou <strong>Cadastro</strong>
+                    @auth
+                        <span>Olá, {{ Auth::user()->full_name }}!</span>
+                    @endauth
+                    @guest
+                        Login<br>
+                        ou <strong>Cadastro</strong>
+                    @endguest
                 </span>
             </button>
         </div>

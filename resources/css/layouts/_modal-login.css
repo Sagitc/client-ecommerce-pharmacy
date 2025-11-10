@@ -333,6 +333,10 @@
     font-size: var(--font-size-sm);
 }
 
+.remember-me span {
+    color: var(--color-secondary);
+}
+
 @media (max-width: 575px) {
     .modal-login__forgot-content {
         padding: 0 var(--image-xs);
