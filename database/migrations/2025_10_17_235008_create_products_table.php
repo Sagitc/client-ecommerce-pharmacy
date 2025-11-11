@@ -16,7 +16,7 @@ return new class extends Migration  {
             $table->id();
 
             $table->string('label'     );
-            $table->string('main_image')->default('default.png');
+            $table->string('main_image')->default('http://127.0.0.1:8000/images/products/product_example.png');
             $table->string('MS'        )->nullable()->unique();
             $table->string('SKU'       )->unique();
 

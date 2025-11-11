@@ -2,11 +2,15 @@ import axios from 'axios';
 
 //  Declarations
 
-const favIcons = document.querySelectorAll('.products__like');
+
+loadProducts();
+
 const buyBtns = document.querySelectorAll('.products__btn-buy');
 
-// Normalized product shape for the frontend
+let products: Product[] = [];
+
 export interface Product {
+
     id: number;
     label: string;        // from API 'name'
     main_image: string;   // from API 'image'
@@ -20,9 +24,9 @@ export interface Product {
     liked: boolean;
     category: string | null;
     laboratory: string | null;
+
 }
 
-// Raw shape returned by the API (ProductController@getAllProducts)
 type RawProduct = {
     id: number;
     name: string;
@@ -44,15 +48,9 @@ type ApiResponse = {
     products: RawProduct[];
 }
 
+
 //  Events
 
-favIcons.forEach(icon => {
-    icon.addEventListener('click', event => {
-        event.stopPropagation();
-        event.preventDefault();
-        toggleFavIcon(icon)
-    });
-});
 
 buyBtns.forEach(btn => {
     btn.addEventListener('click', event => {
@@ -63,12 +61,9 @@ buyBtns.forEach(btn => {
     });
 });
 
-loadProducts();
-
 
 //  Functions
 
-// Map RawProduct -> Product
 function mapApiProduct(raw: RawProduct): Product {
     return {
         id: raw.id,
@@ -87,11 +82,11 @@ function mapApiProduct(raw: RawProduct): Product {
     };
 }
 
-export async function fetchProducts(): Promise<Product[]> {
+export async function fetchProducts(orderBy: 'selling' | 'views' | 'price'): Promise<Product[]> {
+
     try {
         // Use a relative URL and a valid orderBy value accepted by the API (views | selling | price)
-        const response = await axios.get<ApiResponse>('/api/products?orderBy=selling');
-
+        const response = await axios.get<ApiResponse>(`/api/products?orderBy=${orderBy}`);
         if (response.data.error === null) {
             return (response.data.products || []).map(mapApiProduct);
         }
@@ -108,7 +103,57 @@ export async function fetchProducts(): Promise<Product[]> {
 }
 
 async function loadProducts() {
-    const products = await fetchProducts();
+
+    const products = await fetchProducts('selling');
+
+    for (let i = 0; i < products.length; i++) {
+        const cardProducts = document.createElement('a');
+        cardProducts.href = `/product/${products[i]?.id}`;
+        cardProducts.classList.add('products__card');
+
+        // console.log(products[i]?.main_image);
+
+        cardProducts.innerHTML = `
+        <button class="products__like">
+            <img src="images/icons/icon_fav_outline.svg" aria-pressed="false" alt="Ícone de favoritar">
+            <span class="mobile-touch"></span>
+        </button>
+
+        <div class="products__image">
+            <img src="${products[i]?.main_image}" alt="Imagem do produto">
+
+            <button class="products__btn-buy">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="11" y="4" width="2" height="16" fill="#fff" />
+                    <rect x="4" y="11" width="16" height="2" fill="#fff" />
+                </svg>
+                <span class="mobile-touch"></span>
+            </button>
+        </div>
+
+        <div class="products__text">
+            <h3 class="products__title">${products[i]?.label}</h3>
+
+            <span class="products__price">R$ ${products[i]?.price.toFixed(2)}</span>
+        </div>`
+
+
+        document.querySelector('#products__content')?.appendChild(cardProducts);
+    }
+
+
+
+    const favIcons = document.querySelectorAll('.products__like');
+
+
+    favIcons.forEach(icon => {
+        icon.addEventListener('click', event => {
+            event.stopPropagation();
+            event.preventDefault();
+            toggleFavIcon(icon)
+        });
+    });
+
 }
 
 function toggleFavIcon(icon: Element) {

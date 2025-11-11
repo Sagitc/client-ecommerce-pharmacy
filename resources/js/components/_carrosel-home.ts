@@ -20,6 +20,7 @@ if (dotsArea) {
         if (i === 0) {
             dot.classList.add('active');
         }
+        
         dotsArea.appendChild(dot);
     }
 
