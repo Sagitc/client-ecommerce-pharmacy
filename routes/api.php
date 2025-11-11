@@ -21,9 +21,9 @@ Route::middleware('auth:sanctum')->get('/user/status', [UserController::class, '
 
 // Route::get('/banners',      [BannerController::class,  'getAllBanners' ]);
 
-// Route::get('/products',     [ProductController::class, 'getAllProducts']);
-// Route::get('/product/{id}', [ProductController::class, 'getProductById']);
-// Route::get('/product/{id}/related', [ProductController::class, 'getRelatedProductsById']);
+Route::get('/products',             [ProductController::class, 'getAllProducts'        ]);
+Route::get('/product/{id}',         [ProductController::class, 'getProductById'        ]);
+Route::get('/product/{id}/related', [ProductController::class, 'getRelatedProductsById']);
 
 // Route::get('/categories', [CategoryController::class, 'getAllCategories']);
 // Route::get('/categories/{slug}/metadata', [CategoryController::class, 'getCategoryMetadataBySlug']);

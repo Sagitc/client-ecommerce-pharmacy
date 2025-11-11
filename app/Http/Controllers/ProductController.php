@@ -36,7 +36,6 @@ class ProductController extends Controller
             ], 400);
         }
 
-        //  Verificação para saber se o metadata passado está em formado JSON e se as chaves existem
         if ($request->filled('metadata')) {
 
             $rawMetadata = $request->query('metadata');
@@ -117,7 +116,6 @@ class ProductController extends Controller
         $query->orderBy($orderBy, 'desc');
         $query->with('category', 'laboratory');
 
-        //  Verificação para saber se o metadata passado está em formado JSON e se as chaves existem
         $metadata = [];
 
         if ($request->filled('metadata')) {

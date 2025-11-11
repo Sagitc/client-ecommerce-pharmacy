@@ -23,7 +23,7 @@
     </div>
 </a>
 
-<a href="{{ route('product') }}" class="products__card">
+<!-- <a href="{{ route('product') }}" class="products__card">
     <button class="products__like">
         <img src="{{ asset('images/icons/icon_fav_outline.svg') }}" aria-pressed="false" alt="Ícone de favoritar">
         <span class="mobile-touch"></span>
@@ -246,4 +246,4 @@
 
         <span class="products__price">R$ 12,90</span>
     </div>
-</a>
+</a> -->
