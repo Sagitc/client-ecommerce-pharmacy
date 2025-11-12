@@ -1,3 +1,5 @@
+import { getProducts } from "@/components/_products_cards";
+
 //  Declarations
 
 const collapseBtn = document.querySelectorAll('.result__heading-btn') as NodeListOf<HTMLButtonElement>;
@@ -11,10 +13,16 @@ const filterMobile = document.getElementById('mobile-filter') as HTMLButtonEleme
 const draggableIcon = document.querySelector('.dragIcon__filter-wrapper') as HTMLDivElement;
 const draggableArea = document.getElementById('result__filter-box') as HTMLDivElement;
 
+const queryString  = document.querySelector('#search-info__title')?.getAttribute('data-query-string') as string;
+const productsArea = document.querySelector('#result__cards') as HTMLDivElement;
+
 let isDragging: boolean = false;
 let startY: number;
 let deltaY: number;
 let closeThreshold: number = 100;
+
+getProducts('search', 'views', 30, queryString, productsArea);
+
 
 //  Events
 

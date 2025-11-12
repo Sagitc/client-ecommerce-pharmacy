@@ -2,7 +2,6 @@
 
 @section('title', ($product['label']) . ' | Drogarias Camargo')
 
-
 @push('styles')
 @vite('resources/css/pages/product.css')
 @endpush

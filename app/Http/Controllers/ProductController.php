@@ -322,8 +322,8 @@ class ProductController extends Controller
             })
             ->limit($limit)
             ->get();
-        
-        $formattedProducts = $relatedProducts->map( function ($product) {
+
+        $formattedProducts = $relatedProducts->map(function ($product) {
             return [
                 'id'       => $product->id,
                 'label'    => $product->label,
@@ -335,7 +335,7 @@ class ProductController extends Controller
         });
 
         return response()->json([
-            
+
             'error'    => null,
             'products' => $formattedProducts
 
@@ -346,7 +346,7 @@ class ProductController extends Controller
     {
 
         $validator = Validator::make($request->query(), [
-            
+
             'limit'   => ['sometimes', 'numeric'],
             'orderBy' => ['sometimes', 'in:views,selling,price'],
 
@@ -360,7 +360,6 @@ class ProductController extends Controller
                 'products' => []
 
             ], 400);
-
         }
 
         $slugs_allowed = [
@@ -381,35 +380,29 @@ class ProductController extends Controller
             ], 400);
         }
 
-        $limit   = $request->query('limit', 10);
-        
-        if ($request->query('orderBy')) {
+        $limit = $request->query('limit', 10);
 
-            switch ($request->query('orderBy')) {
+        switch ($request->query('orderBy')) {
 
-                case 'views':
+            case 'views':
 
-                    $orderBy = 'views_count';
-                    break;
+                $orderBy = 'views_count';
+                break;
 
-                case 'selling':
+            case 'selling':
 
-                    $orderBy = 'sales_count';
-                    break;
+                $orderBy = 'sales_count';
+                break;
 
-                case 'price':
+            case 'price':
 
-                    $orderBy = 'price';
-                    break;
+                $orderBy = 'price';
+                break;
 
-                default:
+            default:
 
-                    $orderBy = 'sales_count';
-                    break;
-            }
-        } else {
-
-            $orderBy = 'sales_count';
+                $orderBy = 'sales_count';
+                break;
         }
 
         $category = Category::where('slug', $slug)->first();
@@ -433,7 +426,7 @@ class ProductController extends Controller
 
         $products = $query->get();
 
-        $formattedProducts = $products->map( function ($product) use ($category) {
+        $formattedProducts = $products->map(function ($product) use ($category) {
             return [
                 'id'       => $product->id,
                 'label'    => $product->label,
@@ -445,7 +438,75 @@ class ProductController extends Controller
         });
 
         return response()->json([
-            
+
+            'error'    => null,
+            'products' => $formattedProducts
+
+        ]);
+    }
+
+    public function getProductsBySearch(Request $request)
+    {
+
+        $validator = Validator::make($request->query(), [
+
+            'product_name' => ['required', 'string'],
+            'limit'        => ['sometimes', 'numeric'],
+            'orderBy'      => ['sometimes', 'in:views,selling,price'],
+
+        ]);
+
+        if ($validator->fails()) {
+
+            return response()->json([
+
+                'error'    => $validator->errors()->first(),
+                'products' => []
+
+            ], 400);
+        }
+
+        $product_name = $request->query('product_name');
+        $limit = $request->query('limit', 10);
+
+        switch ($request->query('orderBy')) {
+
+            case 'views':
+
+                $orderBy = 'views_count';
+                break;
+
+            case 'selling':
+
+                $orderBy = 'sales_count';
+                break;
+
+            case 'price':
+
+                $orderBy = 'price';
+                break;
+
+            default:
+
+                $orderBy = 'sales_count';
+                break;
+        }
+
+        $products = Product::where('label', 'like', '%' . $product_name . '%')->orderBy($orderBy, 'desc')->limit($limit)->get();
+
+        $formattedProducts = $products->map(function ($product) {
+            return [
+                'id'       => $product->id,
+                'label'    => $product->label,
+                'SKU'      => $product->SKU,
+                'price'    => $product->price,
+                'image'    => asset($product->images->first()->image_path ?? 'images/products/product_example.png'),
+                'category' => $product->category()->pluck('slug')->first(),
+            ];
+        });
+
+        return response()->json([
+
             'error'    => null,
             'products' => $formattedProducts
 
@@ -454,16 +515,13 @@ class ProductController extends Controller
 
     public function product_view($id)
     {
+
         $fakeRequest = new Request();
         $response = $this->getProductById($fakeRequest, $id);
 
-        // Extract array from JsonResponse
-        $data = [];
-        if (method_exists($response, 'getData')) {
-            $data = $response->getData(true);
-        } else {
-            $data = json_decode($response->getContent(), true) ?: [];
-        }
+        $data = method_exists($response, 'getData')
+            ? ($response->getData(true))
+            : (json_decode($response->getContent(), true) ?: []);
 
         $product = $data['product'] ?? null;
 

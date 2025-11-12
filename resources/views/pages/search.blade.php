@@ -14,7 +14,7 @@
     <div id="search-info" role="region" aria-labelledby="search-info__title">
         <div class="max-width" id="search-info__content">
             <div id="search-info__heading-wrapper">
-                <h1 id="search-info__title">Resultados para "{{ request('product_name') }}"</h1>
+                <h1 id="search-info__title" data-query-string="{{ request('product_name') }}">Resultados para "{{ request('product_name') }}"</h1>
                 <span id="search-info__count">x resultados encontrados</span>
             </div>
 
@@ -116,7 +116,7 @@
 
             <div id="result__cards-wrapper">
                 <div id="result__cards" aria-live="polite">
-                    @include('components.products_cards')
+                    
                 </div>
 
                 <div id="result__nav" aria-label="Paginação dos resultados">

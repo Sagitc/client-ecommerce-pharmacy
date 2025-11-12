@@ -8,14 +8,14 @@ const buyBtns = document.querySelectorAll('.products__btn-buy');
 
 //  Events
 
-buyBtns.forEach(btn => {
-    btn.addEventListener('click', event => {
-        event.stopPropagation();
-        event.preventDefault();
+// buyBtns.forEach(btn => {
+//     btn.addEventListener('click', event => {
+//         event.stopPropagation();
+//         event.preventDefault();
 
-        addOnCart(btn.parentElement?.parentElement as HTMLElement)
-    });
-});
+//         addOnCart(btn.parentElement?.parentElement as HTMLElement)
+//     });
+// });
 
 
 //  Functions
@@ -68,10 +68,10 @@ buyBtns.forEach(btn => {
  * await getProducts('id', null, 1, 123);
  */
 export async function getProducts(
-        byWhat: 'id' | 'all' | 'related' | 'category',
+        byWhat: 'id' | 'all' | 'related' | 'category' | 'search',
         orderBy: 'selling' | 'views' | 'price' | null = 'selling',
         limit: number = 10,
-        identifier: number | null = null,
+        identifier: number | null | string = null,
         divToAppend: HTMLElement | null = null
     ) : Promise<void> {
 
@@ -106,6 +106,16 @@ export async function getProducts(
             }
 
             products = (await axios.get(`/api/products/category/${identifier}?limit=${limit}${orderBy ? `&orderBy=${orderBy}` : ''}`)).data.products;
+            break;
+        
+        case 'search':
+
+            if (!identifier) {
+                console.error('Identifier is required for fetching products by search.');
+                return;
+            }
+
+            products = (await axios.get(`/api/search?product_name=${identifier}&limit=${limit}${orderBy ? `&orderBy=${orderBy}` : ''}`)).data.products;
             break;
 
         default:
@@ -191,12 +201,4 @@ function toggleFavIcon(icon: Element) {
 
     }
     icon.classList.toggle('active');
-}
-
-function addOnCart(item: HTMLElement | undefined) {
-    // if (!item) return;
-
-    // const cart = document.querySelector('.cart') as HTMLElement;
-    // const itemClone = item.cloneNode(true) as HTMLElement;
-    // cart.appendChild(itemClone);
 }

@@ -26,6 +26,8 @@ Route::get('/product/{id}',             [ProductController::class, 'getProductBy
 Route::get('/product/{id}/related',     [ProductController::class, 'getRelatedProductsById']);
 Route::get('/products/category/{slug}', [ProductController::class, 'getProductsByCategorySlug']);
 
+Route::get('/search', [ProductController::class, 'getProductsBySearch']);
+
 // Route::get('/categories', [CategoryController::class, 'getAllCategories']);
 // Route::get('/categories/{slug}/metadata', [CategoryController::class, 'getCategoryMetadataBySlug']);
 

@@ -15,7 +15,7 @@ class CartController extends Controller {
 
         $validator = Validator::make(
 
-            $request->all(),
+            request()->all(),
             [
                 'ids'   => ['required', 'array', 'min:1'],
                 'ids.*' => ['numeric', 'min:1']
@@ -27,7 +27,7 @@ class CartController extends Controller {
                 'ids.*.numeric'=> 'Cada id deve ser um valor numérico.',
                 'ids.*.min'    => 'Cada id deve ser pelo menos 1.'
             ]
-            
+
         );
 
         if ($validator->fails()) {
@@ -41,7 +41,7 @@ class CartController extends Controller {
 
         }
 
-        $ids = $request->input('ids');
+        $ids = request()->input('ids');
 
         $products = Product::with('images')->whereIn('id', $ids)->get();
 
@@ -72,7 +72,7 @@ class CartController extends Controller {
 
         $validator = Validator::make(
             
-            $request->all(),
+            request()->all(),
             [  'zipcode'          => ['required', 'min:4']  ],
             [  'zipcode.required' => 'Zipcode é obrigatório.'  ]
 
@@ -94,7 +94,7 @@ class CartController extends Controller {
             'error' => null,
             'shipping' => [
 
-                'zipcode'  => $request->input('zipcode'),
+                'zipcode'  => request()->input('zipcode'),
                 'price'    => 15.00,
                 'days'     => 8
 
@@ -108,7 +108,7 @@ class CartController extends Controller {
         
         $validator = Validator::make(
 
-            $request->all(),
+            request()->all(),
 
             [
                 "cart" => ["required", "array", "min:1"],
@@ -131,7 +131,7 @@ class CartController extends Controller {
 
         $user = Auth::user();
 
-        $address = Address::where('id', $request->input('address_id'))->first();
+        $address = Address::where('id', request()->input('address_id'))->first();
 
         if ($address->user_id != $user->id) {
             return response()->json([
@@ -142,7 +142,7 @@ class CartController extends Controller {
             ], 400);
         }
 
-        $cart = $request->input('cart');
+        $cart = request()->input('cart');
         $products = Product::whereIn('id', \array_column($cart, 'product_id'))->get();
 
         $total = 0;

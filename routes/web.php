@@ -17,6 +17,7 @@ Route::get('/profile', function () {
 
 Route::get('/product/{id}', [ProductController::class, 'product_view'])->name('product');
 
+
 Route::post('/login', [UserController::class, 'login'])->name('login');
 
 Route::middleware('auth')->group(function () {
