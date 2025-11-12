@@ -177,7 +177,7 @@ class ProductController extends Controller
 
                     'id' => $product->id,
 
-                    'name' => $product->label,
+                    'label' => $product->label,
                     'SKU'  => $product->SKU,
 
                     'stock'       => $product->stock,
@@ -331,6 +331,116 @@ class ProductController extends Controller
                 'price'    => $product->price,
                 'image'    => asset($product->images->first()->image_path ?? 'images/products/default_generic.jpg'),
                 'category' => $product->category()->pluck('slug')->first(),
+            ];
+        });
+
+        return response()->json([
+            
+            'error'    => null,
+            'products' => $formattedProducts
+
+        ]);
+    }
+
+    public function getProductsByCategorySlug(Request $request, $slug)
+    {
+
+        $validator = Validator::make($request->query(), [
+            
+            'limit'   => ['sometimes', 'numeric'],
+            'orderBy' => ['sometimes', 'in:views,selling,price'],
+
+        ]);
+
+        if ($validator->fails()) {
+
+            return response()->json([
+
+                'error'    => $validator->errors()->first(),
+                'products' => []
+
+            ], 400);
+
+        }
+
+        $slugs_allowed = [
+            'medicamento',
+            'higiene-e-cuidados-pessoais',
+            'mamae-e-bebe',
+            'dermacosmeticos-e-beleza',
+            'saude-e-bem-estar'
+        ];
+
+        if (!in_array($slug, $slugs_allowed)) {
+
+            return response()->json([
+
+                'error'    => 'Invalid category slug.',
+                'products' => []
+
+            ], 400);
+        }
+
+        $limit   = $request->query('limit', 10);
+        
+        if ($request->query('orderBy')) {
+
+            switch ($request->query('orderBy')) {
+
+                case 'views':
+
+                    $orderBy = 'views_count';
+                    break;
+
+                case 'selling':
+
+                    $orderBy = 'sales_count';
+                    break;
+
+                case 'price':
+
+                    $orderBy = 'price';
+                    break;
+
+                default:
+
+                    $orderBy = 'sales_count';
+                    break;
+            }
+        } else {
+
+            $orderBy = 'sales_count';
+        }
+
+        $category = Category::where('slug', $slug)->first();
+
+        if (!$category) {
+
+            return response()->json([
+
+                'error'    => 'Category not found.',
+                'products' => []
+
+            ], 404);
+        }
+
+        $query = Product::query();
+
+        $query->where('category_id', $category->id);
+        $query->orderBy($orderBy, 'desc');
+        $query->with('category');
+        $query->limit($limit);
+
+        $products = $query->get();
+
+        $formattedProducts = $products->map( function ($product) use ($category) {
+            return [
+                'id'       => $product->id,
+                'label'    => $product->label,
+                'SKU'      => $product->SKU,
+                'price'    => $product->price,
+                'image'    => asset($product->images->first()->image_path ?? 'images/products/product_example.png'),
+                'category' => $category->slug,
             ];
         });
 

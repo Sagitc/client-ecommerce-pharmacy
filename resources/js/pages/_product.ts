@@ -62,8 +62,6 @@ async function fetchRelatedProducts() {
 
             let $products = response.data.products;
 
-            console.log($products[0].id);
-
             return $products;
 
         }
@@ -79,8 +77,6 @@ async function loadRelatedProducts() {
 
     const product = await fetchRelatedProducts();
 
-    console.log(product[0].image);
-
     if (!product) return;
 
     for (let i = 0; i < product.length; i++) {
@@ -88,8 +84,6 @@ async function loadRelatedProducts() {
         const cardProducts = document.createElement('a');
         cardProducts.href = `/product/${product[i].id}`;
         cardProducts.classList.add('products__card');
-
-        // console.log(products[i]?.main_image);
 
         cardProducts.innerHTML = `
         <button class="products__like">

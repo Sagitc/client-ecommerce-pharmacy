@@ -14,6 +14,7 @@ class CartController extends Controller {
     public function mount(Request $request) {
 
         $validator = Validator::make(
+
             $request->all(),
             [
                 'ids'   => ['required', 'array', 'min:1'],
@@ -26,6 +27,7 @@ class CartController extends Controller {
                 'ids.*.numeric'=> 'Cada id deve ser um valor numérico.',
                 'ids.*.min'    => 'Cada id deve ser pelo menos 1.'
             ]
+            
         );
 
         if ($validator->fails()) {

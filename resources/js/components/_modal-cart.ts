@@ -1,111 +1,145 @@
-export function initModalCart(): void {
-    // Declarations
-    const cartBtn = document.querySelector('#header__cart') as HTMLButtonElement;
-    const modal = document.querySelector('#modal__container') as HTMLDivElement;
-    const cartBtnClose = modal.querySelector('.modal__close-btn') as HTMLButtonElement;
+import axios from 'axios';
 
-    const quantitySelect = document.querySelector('#item-card__quantity') as HTMLSelectElement;
-    const customQuantityInput = document.querySelector('#custom-quantity-input') as HTMLInputElement;
+// Declarations
 
-    const focusableElements = getFocusableElements(modal) as HTMLElement[];
-    const firstFocusableElement = focusableElements[0] as HTMLElement;
-    const lastFocusableElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+const cartBtn = document.querySelector('#header__cart') as HTMLButtonElement;
+const modal = document.querySelector('#modal__container') as HTMLDivElement;
+const cartBtnClose = modal.querySelector('.modal__close-btn') as HTMLButtonElement;
 
+const quantitySelect = document.querySelector('#item-card__quantity') as HTMLSelectElement;
+const customQuantityInput = document.querySelector('#custom-quantity-input') as HTMLInputElement;
 
-    let elementThatOpenedModal: HTMLElement | null = null;
+const focusableElements = getFocusableElements(modal) as HTMLElement[];
+const firstFocusableElement = focusableElements[0] as HTMLElement;
+const lastFocusableElement = focusableElements[focusableElements.length - 1] as HTMLElement;
 
-    // Events
-    cartBtn.addEventListener('click', () => { openModal(); });
+let elementThatOpenedModal: HTMLElement | null = null;
 
-    cartBtnClose.addEventListener('click', () => { closeModal(); });
+// Events
 
-    //  Clique fora do modal carrinho
-    modal.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            closeModal();
+cartBtn.addEventListener('click', () => { openCart(); });
+cartBtnClose.addEventListener('click', () => { closeCart(); });
+
+//  Clique fora do modal carrinho
+modal.addEventListener('click', (event) => {
+    if (event.target === modal) {
+        closeCart();
+    }
+});
+
+if (!modal.classList.contains('not-logged')) {
+    quantitySelect.addEventListener('change', () => {
+        if (quantitySelect.value === 'selectQuantity') {
+            quantitySelect.classList.add('is-disabled');
+
+            customQuantityInput.classList.remove('is-disabled');
+            customQuantityInput.focus();
         }
     });
 
-    if (!modal.classList.contains('not-logged')) {
-        quantitySelect.addEventListener('change', () => {
-            if (quantitySelect.value === 'selectQuantity') {
-                quantitySelect.classList.add('is-disabled');
+    customQuantityInput.addEventListener('blur', () => {
 
-                customQuantityInput.classList.remove('is-disabled');
-                customQuantityInput.focus();
-            }
-        });
+        if (customQuantityInput.value === '' || customQuantityInput.value === '0') {
+            customQuantityInput.classList.add('is-disabled');
+            quantitySelect.classList.remove('is-disabled');
 
-        customQuantityInput.addEventListener('blur', () => {
+            customQuantityInput.value = '';
+            quantitySelect.value = '1';
+        }
 
-            if (customQuantityInput.value === '' || customQuantityInput.value === '0') {
-                customQuantityInput.classList.add('is-disabled');
-                quantitySelect.classList.remove('is-disabled');
+    });
+}
 
-                customQuantityInput.value = '';
-                quantitySelect.value = '1';
-            }
 
-        });
+// Functions
+
+export function openCart(): void {
+    elementThatOpenedModal = document.activeElement as HTMLElement;
+
+    modal.classList.remove('is-disabled');
+    document.body.style.overflow = 'hidden';
+
+    document.body.setAttribute('aria-hidden', 'true');
+    modal.setAttribute('aria-hidden', 'false');
+
+    modal.addEventListener('keydown', callEventKeydown);
+
+    firstFocusableElement.focus();
+}
+
+export function closeCart(): void {
+    modal.classList.add('is-disabled');
+    document.body.style.overflow = 'auto';
+
+    document.body.removeAttribute('aria-hidden');
+    modal.removeAttribute('aria-hidden');
+
+    modal.removeEventListener('keydown', callEventKeydown);
+
+    if (elementThatOpenedModal) {
+        elementThatOpenedModal.focus();
+        elementThatOpenedModal = null;
     }
+}
+
+export function addOnCart(product_id: number) {
+
+    axios.post('/api/cart/add', {
+        product_id: product_id,
+        quantity: 1
+    })
+    .then( response => {
+        console.log(response.data);
+    })
+    .catch( error => {
+        console.error('Error adding product to cart:', error);
+    });
+
+    updateCartTotal();
+
+}
+
+function removeFromCart() {
 
 
-    // Functions
-    function openModal(): void {
-        elementThatOpenedModal = document.activeElement as HTMLElement;
 
-        modal.classList.remove('is-disabled');
-        document.body.style.overflow = 'hidden';
+    updateCartTotal();
 
-        document.body.setAttribute('aria-hidden', 'true');
-        modal.setAttribute('aria-hidden', 'false');
+}
 
-        modal.addEventListener('keydown', callEventKeydown);
+function createProductElement() {
+    let product = document.createElement('div');
+}
 
-        firstFocusableElement.focus();
-    }
+function updateCartTotal() {
 
-    function closeModal(): void {
-        modal.classList.add('is-disabled');
-        document.body.style.overflow = 'auto';
+}
 
-        document.body.removeAttribute('aria-hidden');
-        modal.removeAttribute('aria-hidden');
+function callEventKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Escape') {
+        closeCart();
+    } else if (event.key === 'Tab') {
+        if (event.shiftKey) {
+            // Shift + Tab
+            if (document.activeElement === firstFocusableElement) {
+                event.preventDefault();
+                lastFocusableElement.focus();
+            }
+        } else {
+            // Tab
+            if (document.activeElement === lastFocusableElement) {
+                event.preventDefault();
+                firstFocusableElement.focus();
+            }
 
-        modal.removeEventListener('keydown', callEventKeydown);
-
-        if (elementThatOpenedModal) {
-            elementThatOpenedModal.focus();
-            elementThatOpenedModal = null;
         }
     }
+}
 
-    function callEventKeydown(event: KeyboardEvent): void {
-        if (event.key === 'Escape') {
-            closeModal();
-        } else if (event.key === 'Tab') {
-            if (event.shiftKey) {
-                // Shift + Tab
-                if (document.activeElement === firstFocusableElement) {
-                    event.preventDefault();
-                    lastFocusableElement.focus();
-                }
-            } else {
-                // Tab
-                if (document.activeElement === lastFocusableElement) {
-                    event.preventDefault();
-                    firstFocusableElement.focus();
-                }
-
-            }
-        }
-    }
-
-    function getFocusableElements(container: HTMLElement): HTMLElement[] {
-        return Array.from(
-            container.querySelectorAll<HTMLElement>(
-                'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled])'
-            )
+function getFocusableElements(container: HTMLElement): HTMLElement[] {
+    return Array.from(
+        container.querySelectorAll<HTMLElement>(
+            'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled])'
         )
-    }
+    )
 }
