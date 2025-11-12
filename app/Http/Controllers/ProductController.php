@@ -244,7 +244,7 @@ class ProductController extends Controller
             'product' => [
 
                 'id'          => $product->id,
-                'name'        => $product->label,
+                'label'       => $product->label,
                 'SKU'         => $product->SKU,
                 'description' => $product->description,
                 'stock'       => $product->stock,
@@ -255,6 +255,7 @@ class ProductController extends Controller
                 'price'       => $product->price,
                 'liked'       => $product->liked,
                 'images'      => $images,
+                'laboratory'  => $product->laboratory->label ?? null,
 
             ],
 
@@ -273,7 +274,8 @@ class ProductController extends Controller
 
         $validator = Validator::make($request->query(), [
 
-            'limit' => ['sometimes', 'numeric'],
+            'limit'   => ['sometimes', 'numeric'],
+            'orderBy' => ['sometimes', 'in:selling'],
 
         ]);
 
@@ -298,7 +300,10 @@ class ProductController extends Controller
         }
 
         $limit = $request->query('limit', 5);
+
         $product = Product::find($id);
+
+        $orderBy = $request->query('orderBy', null);
 
         if (!$product) {
 
@@ -312,13 +317,16 @@ class ProductController extends Controller
 
         $relatedProducts =  Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
+            ->when($orderBy === 'selling', function ($query) {
+                return $query->orderBy('sales_count', 'desc');
+            })
             ->limit($limit)
             ->get();
         
         $formattedProducts = $relatedProducts->map( function ($product) {
             return [
                 'id'       => $product->id,
-                'name'     => $product->label,
+                'label'    => $product->label,
                 'SKU'      => $product->SKU,
                 'price'    => $product->price,
                 'image'    => asset($product->images->first()->image_path ?? 'images/products/default_generic.jpg'),
@@ -331,6 +339,27 @@ class ProductController extends Controller
             'error'    => null,
             'products' => $formattedProducts
 
+        ]);
+    }
+
+    public function product_view($id)
+    {
+        $fakeRequest = new Request();
+        $response = $this->getProductById($fakeRequest, $id);
+
+        // Extract array from JsonResponse
+        $data = [];
+        if (method_exists($response, 'getData')) {
+            $data = $response->getData(true);
+        } else {
+            $data = json_decode($response->getContent(), true) ?: [];
+        }
+
+        $product = $data['product'] ?? null;
+
+        return view('pages/product', [
+            'product_id' => $id,
+            'product'    => $product,
         ]);
     }
 }

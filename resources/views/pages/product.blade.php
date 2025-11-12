@@ -1,13 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Título do produto aqui | Drogarias Camargo')
+@section('title', ($product['label']) . ' | Drogarias Camargo')
+
 
 @push('styles')
 @vite('resources/css/pages/product.css')
 @endpush
 
 @section('content')
-<section id="product">
+<section id="product" data-id="{{ $product['id'] }}">
     <div id="product__area" class="max-width">
         <div id="product__left">
             <div id="product__nav-area">
@@ -101,9 +102,9 @@
 
         <div id="product__right">
             <div id="product__heading">
-                <h1 id="product__title">Título do Produto aqui</h1>
+                <h1 id="product__title">{{ $product['label'] }}</h1>
                 <div id="product__info-area">
-                    <span>MARCA • SKU: 0000 • GRAMATURA</span>
+                    <span>{{  $product['laboratory'] }} • SKU: {{  $product['SKU'] }} • GRAMATURA</span>
                     <div id="product__avaliation">
                         <div id="product__avaliation-stars">
                             <button>
@@ -135,7 +136,7 @@
             <div id="product__action">
                 <div id="product__buy">
                     <div id="product__numbers">
-                        <span id="product__price">R$ 12,90</span>
+                        <span id="product__price">R$ {{ number_format($product['price'], 2, ',', '.') }}</span>
 
                         <input type="text" id="quantity__input" value="1" aria-label="Quantidade do produto">
                     </div>
@@ -175,7 +176,6 @@
     <div id="related__area" class="max-width">
         @include('components.section_top', ['section_title' => 'Produtos semelhantes'])
         <div id="related__content">
-            @include('components.products_cards')
         </div>
     </div>
 </section>
