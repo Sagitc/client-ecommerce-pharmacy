@@ -20,15 +20,15 @@ if (dotsArea) {
         if (i === 0) {
             dot.classList.add('active');
         }
-        
+
         dotsArea.appendChild(dot);
     }
 
     document.querySelectorAll('.banner1__dot').forEach(dot => {
         dot.addEventListener('click', () => {
             const slideIndex = parseInt(dot.getAttribute('data-slide') || '0');
-            
-            scrollBanner('direct', slideIndex); 
+
+            scrollBanner('direct', slideIndex);
         });
     });
 }
@@ -37,13 +37,14 @@ if (banner1__area) {
     banner1__area.addEventListener('mouseover', () => {
         banner1__arrowLeft.classList.add('active');
         banner1__arrowRight.classList.add('active');
-        
+
         clearInterval(bannerInterval);
     });
     banner1__area.addEventListener('mouseout', () => {
         banner1__arrowLeft.classList.remove('active');
         banner1__arrowRight.classList.remove('active');
 
+        clearInterval(bannerInterval);
         bannerInterval = setInterval(() => {
             scrollBanner('right');
         }, 3000);
@@ -69,7 +70,7 @@ function scrollBanner(direction: 'left' | 'right' | 'direct', destinationIndex?:
 
     let new_margin = 0;
     const banner_width = document.querySelector('.banner1__images')?.clientWidth || 0;
-    
+
     if (banner_width === 0) return;
 
     document.querySelector('.banner1__images.active')?.classList.remove('active');
