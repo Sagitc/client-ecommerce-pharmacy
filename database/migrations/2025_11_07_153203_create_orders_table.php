@@ -13,19 +13,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
+
             $table->id();
-            $table->foreignIdFor(User::class);
+
+            $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
+
             $table->string('status')->default('pending');
             $table->decimal('total', 10, 2);
 
-            $table->float('shipping_cost')->default(0);
-            $table->integer('shipping_days')->default(0);
+
             $table->string('shipping_zipcode')->nullable();
+            $table->string('shipping_street')->nullable();
             $table->string('shipping_number')->nullable();
             $table->string('shipping_complement')->nullable();
-            $table->string('shipping_country')->nullable();
-            $table->string('shipping_city')->nullable();
-            $table->string('shipping_state')->nullable();
 
             $table->timestamps();
         });

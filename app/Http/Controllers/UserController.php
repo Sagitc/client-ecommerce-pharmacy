@@ -13,6 +13,25 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
 
+    public function getUser(Request $request)
+    {
+        if (Auth::check()) {
+            return response()->json([
+
+                'id' => Auth::id(),
+                'name' => Auth::user()->name
+
+            ]);
+        } 
+
+        return response()->json([
+
+            'Message' => 'Não autenticado',
+            'Check' => Auth::check()
+
+        ], 401);
+    }
+
     public function register(Request $request)
     {
 
@@ -63,18 +82,9 @@ class UserController extends Controller
 
         ]);
 
-        return \response()->json([
-            "error" => null,
-            "user"  => $user->where('id', $user->id)->get()->map(function ($item) {
-                return [
-                    'id'    => $item->id,
-                    'name'  => $item->full_name,
-                    'email' => $item->email
-                ];
-            })
+        Auth::login($user);
 
-
-        ]);
+        return redirect()->intended(route('home'));
     }
 
     public function login(Request $request)

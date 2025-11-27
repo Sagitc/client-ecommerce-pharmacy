@@ -101,27 +101,25 @@
 
         <div class="catalog__btn-options">
             <button class="catalog__option active">
-                Dor de cabeça
+                Vitaminas e Suplementos
                 <span class="mobile-touch"></span>
             </button>
             <button class="catalog__option">
-                Dor muscular
+                Anticoncepcionais
+                <!-- FIltrar medicamentos de cólica também -->
                 <span class="mobile-touch"></span>
             </button>
             <button class="catalog__option">
-                Cólica
+                Higiene pessoal
                 <span class="mobile-touch"></span>
             </button>
             <button class="catalog__option">
-                Gripe e catarro
+                Mundo infatil
+                <!-- Fralda, lenço, leite, xpe -->
                 <span class="mobile-touch"></span>
             </button>
             <button class="catalog__option">
-                Febre
-                <span class="mobile-touch"></span>
-            </button>
-            <button class="catalog__option">
-                Dor na garganta
+                Lançamentos
                 <span class="mobile-touch"></span>
             </button>
         </div>

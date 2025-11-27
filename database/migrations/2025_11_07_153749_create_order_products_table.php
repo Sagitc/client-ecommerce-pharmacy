@@ -14,20 +14,23 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('order_products', function (Blueprint $table) {
+            
             $table->id();
-            $table->foreignIdFor(Order::class);
-            $table->foreignIdFor(Product::class);
+
+            $table->foreignIdFor(Order::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Product::class)->constrained()->onDelete('cascade');
+
             $table->integer('quantity')->default(1);
             $table->decimal('price', 10, 2);
+
             $table->timestamps();
         });
+        
     }
-
-    /**
-     * Reverse the migrations.
-     */
+    
     public function down(): void
     {
         Schema::dropIfExists('order_products');
     }
 };
+

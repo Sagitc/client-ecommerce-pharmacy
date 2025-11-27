@@ -27,6 +27,16 @@ modal.addEventListener('click', (event) => {
     }
 });
 
+// btnBuy.forEach( (button) => {
+//     button.addEventListener('click', () => {
+//         const productId = parseInt(button.getAttribute('data-product-id') || '0', 10);
+//         if (productId) {
+//             addOnCart(productId);
+//             openCart();
+//         }
+//     });
+// }
+
 if (!modal.classList.contains('not-logged')) {
     quantitySelect.addEventListener('change', () => {
         if (quantitySelect.value === 'selectQuantity') {
@@ -82,18 +92,20 @@ export function closeCart(): void {
     }
 }
 
-export function addOnCart(product_id: number) {
+export async function addOnCart(product_id: number) {
+
+    let response = (await axios.get('/user/get')).data;
 
     axios.post('/api/cart/add', {
-        product_id: product_id,
-        quantity: 1
+        id: product_id,
+        user_id: response.id
     })
-    .then( response => {
-        console.log(response.data);
-    })
-    .catch( error => {
-        console.error('Error adding product to cart:', error);
-    });
+        .then(response => {
+            console.log(response.data.cart);
+        })
+        .catch(error => {
+            console.error('Error adding product to cart:', error);
+        });
 
     updateCartTotal();
 

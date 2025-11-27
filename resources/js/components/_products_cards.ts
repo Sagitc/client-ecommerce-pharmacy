@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { openCart } from './_modal-cart';
+import { addOnCart, openCart } from './_modal-cart';
 
 //  Declarations
 
@@ -68,12 +68,12 @@ const buyBtns = document.querySelectorAll('.products__btn-buy');
  * await getProducts('id', null, 1, 123);
  */
 export async function getProducts(
-        byWhat: 'id' | 'all' | 'related' | 'category' | 'search',
-        orderBy: 'selling' | 'views' | 'price' | null = 'selling',
-        limit: number = 10,
-        identifier: number | null | string = null,
-        divToAppend: HTMLElement | null = null
-    ) : Promise<void> {
+    byWhat: 'id' | 'all' | 'related' | 'category' | 'search',
+    orderBy: 'selling' | 'views' | 'price' | string = 'selling',
+    limit: number = 10,
+    identifier: number | null | string = null,
+    divToAppend: HTMLElement | null = null
+): Promise<number> {
 
     let products;
 
@@ -82,7 +82,7 @@ export async function getProducts(
 
             if (!identifier) {
                 console.error('Identifier is required for fetching product by ID.');
-                return;
+                return 0;
             };
 
             products = (await axios.get(`/api/product/${identifier}`)).data.product;
@@ -92,7 +92,7 @@ export async function getProducts(
 
             if (!identifier) {
                 console.error('Identifier is required for fetching related products.');
-                return;
+                return 0;
             };
 
             products = (await axios.get(`/api/product/${identifier}/related?limit=${limit}${orderBy ? `&orderBy=${orderBy}` : ''}`)).data.products;
@@ -102,17 +102,17 @@ export async function getProducts(
 
             if (!identifier) {
                 console.error('Identifier is required for fetching products by category.');
-                return;
+                return 0;
             }
 
             products = (await axios.get(`/api/products/category/${identifier}?limit=${limit}${orderBy ? `&orderBy=${orderBy}` : ''}`)).data.products;
             break;
-        
+
         case 'search':
 
             if (!identifier) {
                 console.error('Identifier is required for fetching products by search.');
-                return;
+                return 0;
             }
 
             products = (await axios.get(`/api/search?product_name=${identifier}&limit=${limit}${orderBy ? `&orderBy=${orderBy}` : ''}`)).data.products;
@@ -125,6 +125,8 @@ export async function getProducts(
     }
 
     createProductElement(products, divToAppend as HTMLElement);
+
+    return products.length;
 
 }
 
@@ -162,7 +164,11 @@ function createProductElement(products: any, divToAppend: HTMLElement) {
             </div>`
 
         divToAppend.appendChild(productElement);
+
     }
+
+
+    const modal_buy = document.querySelector('#modal__container') as HTMLElement;
 
     const favIcons = divToAppend.querySelectorAll('.products__like');
     const addBtns = divToAppend.querySelectorAll('.products__btn-buy');
@@ -176,11 +182,33 @@ function createProductElement(products: any, divToAppend: HTMLElement) {
     });
 
     addBtns.forEach(btn => {
-        btn.addEventListener('click', (event) => {
-            event.stopPropagation();
-            event.preventDefault();
-            openCart();
-        });
+
+
+        if (modal_buy.classList.contains('not-logged')) {
+
+            btn.addEventListener('click', (event) => {
+                event.stopPropagation();
+                event.preventDefault();
+                openCart();
+            });
+
+        } else if (!modal_buy.classList.contains('not-logged')) {
+
+            btn.addEventListener('click', (event) => {
+                event.stopPropagation();
+                event.preventDefault();
+
+                const productId = parseInt((btn.parentElement?.parentElement as HTMLElement).getAttribute('data-product-id') || '0', 10);
+
+                if (productId) {
+                    addOnCart(productId);
+                    openCart();
+                }
+
+            });
+        }
+
+
     });
 
 }

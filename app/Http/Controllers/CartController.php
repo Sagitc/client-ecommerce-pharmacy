@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Address;
+use App\Models\Laboratory;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -63,6 +65,68 @@ class CartController extends Controller {
 
             'error' => null,
             'cart'  => $formattedProducts
+
+        ]);
+
+    }
+
+    public function add(Request $request) {
+
+        $validator = Validator::make(
+
+            request()->all(),
+            [
+                'id' => ['required', 'numeric'],
+                'user_id' => ['required', 'numeric']
+            ],
+            [
+                'id.required' => 'O campo id é obrigatório.',
+                'id.numeric'  => 'O campo id deve ser um valor numérico.',
+                'user_id.required' => 'O campo user_id é obrigatório.',
+                'user_id.numeric' => 'O campo user_id deve ser um valor numérico.'
+            ]
+        );
+
+        $id = request()->input('id');
+        $user_id = \request()->input('user_id');
+
+        $address = Address::where('user_id', $user_id)->first();
+
+        $product = Product::with('images')->where('id', $id)->first();
+
+        $order = Order::create([
+
+            "user_id" => $user_id,
+            "status"  => "Pending",
+            "total"   => 0,
+            "shipping_zipcode"    => ($address->value('zipcode')) ?? null,
+            "shipping_street"     => ($address->value('street')) ?? null,
+            "shipping_number"     => ($address->value('number')) ?? null,
+            "shipping_complement" => ($address->value('complement')) ?? null,
+
+        ]);
+
+        $order->products()->create([
+            
+        ]);
+
+        $formattedProduct = $product->map( function () use ($product) {
+
+            return [
+
+                "id" => $product->id,
+                "label" => $product->label,
+                "price" => $product->price,
+                "laboratory" => Laboratory::where('id', $product->laboratory_id)->value('label')
+
+            ];
+
+        });
+        
+        return response()->json([
+
+            'error' => null,
+            'cart'  => $formattedProduct
 
         ]);
 

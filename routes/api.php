@@ -31,11 +31,11 @@ Route::get('/search', [ProductController::class, 'getProductsBySearch']);
 // Route::get('/categories', [CategoryController::class, 'getAllCategories']);
 // Route::get('/categories/{slug}/metadata', [CategoryController::class, 'getCategoryMetadataBySlug']);
 
-// Route::post('/cart/mount', [CartController::class, 'mount']);
+Route::post('/cart/mount', [CartController::class, 'mount']);
+Route::post('/cart/add', [CartController::class, 'add']);
 // Route::get('/cart/shipping', [CartController::class, 'getShipping']);
 
 // Route::post('/user/login', [UserController::class, 'login'])->name('login');
-// Route::post('/user/register', [UserController::class, 'register']);
 
 // Route::middleware('auth:sanctum')->group( function () {
 //     Route::post('user/addresses', [UserController::class, 'createAddress']);

@@ -86,7 +86,7 @@
                         </button>
                     </div>
 
-                    <form id="signUp__form" action="" method="post">
+                    <form id="signUp__form" action="{{ route('register') }}" method="post">
                         @csrf
 
                         <input type="text" name="name" id="signUp__user" class="modal-login__input"

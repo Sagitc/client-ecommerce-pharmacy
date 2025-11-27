@@ -6,8 +6,9 @@ const collapseBtn = document.querySelectorAll('.result__heading-btn') as NodeLis
 const pageBtn = document.querySelectorAll('.result__nav-page') as NodeListOf<HTMLButtonElement>;
 const navBtns = document.querySelectorAll('.result__nav-btn') as NodeListOf<HTMLButtonElement>;
 const currentPageElement = document.querySelector('.result__nav-page.active') as HTMLButtonElement;
+
 let currentPage = currentPageElement ? parseInt(currentPageElement.textContent) : 1;
-const totalPages: number = pageBtn.length;
+
 const filterMobile = document.getElementById('mobile-filter') as HTMLButtonElement;
 
 const draggableIcon = document.querySelector('.dragIcon__filter-wrapper') as HTMLDivElement;
@@ -15,13 +16,57 @@ const draggableArea = document.getElementById('result__filter-box') as HTMLDivEl
 
 const queryString  = document.querySelector('#search-info__title')?.getAttribute('data-query-string') as string;
 const productsArea = document.querySelector('#result__cards') as HTMLDivElement;
+const navWrapper   = document.getElementById('result__nav-pagination') as HTMLDivElement;
 
 let isDragging: boolean = false;
 let startY: number;
 let deltaY: number;
 let closeThreshold: number = 100;
 
-getProducts('search', 'views', 30, queryString, productsArea);
+let productsQnt = await getProducts('search', 'views', 30, queryString, productsArea);
+const resultQntEl = document.getElementById('search-info__count') as HTMLSpanElement;
+const totalPages = Math.ceil(productsQnt / 40);
+
+const filterSelect = document.getElementById('filter__options') as HTMLSelectElement;
+
+filterSelect.addEventListener('change', async () => {
+    const selected = filterSelect.value;
+
+    // feedback visual
+    productsArea.innerHTML = '<div class="loading">Carregando...</div>';
+    
+    productsQnt = await getProducts('search', selected, 30, queryString, productsArea);
+
+    // atualizar contador de resultados
+    if (resultQntEl) {
+        if (productsQnt === 1) {
+            resultQntEl.textContent = `${productsQnt} resultado encontrado`;
+        } else {
+            resultQntEl.textContent = `${productsQnt} resultados encontrados`;
+        }
+    }
+
+    // resetar para a primeira página (UI)
+    document.querySelector('.result__nav-page.active')?.classList.remove('active');
+    const firstPageBtn = document.querySelector('.result__nav-page') as HTMLButtonElement | null;
+    if (firstPageBtn) {
+        firstPageBtn.classList.add('active');
+        firstPageBtn.setAttribute('aria-current', 'page');
+    }
+    currentPage = 1;
+
+    // ajustar estados dos botões prev/next
+    const prevBtn = document.getElementById('nav__prev') as HTMLButtonElement | null;
+    const nextBtn = document.getElementById('nav__next') as HTMLButtonElement | null;
+    if (prevBtn) {
+        prevBtn.disabled = true;
+        prevBtn.setAttribute('aria-disabled', 'true');
+    }
+    if (nextBtn) {
+        nextBtn.disabled = currentPage === totalPages;
+        nextBtn.setAttribute('aria-disabled', (currentPage === totalPages).toString());
+    }
+});
 
 
 //  Events
@@ -97,6 +142,15 @@ draggableIcon.addEventListener('touchend', () => {
     deltaY = 0;
 });
 
+if (productsQnt && resultQntEl) {
+    if (productsQnt === 1) {
+        resultQntEl.textContent = `${productsQnt} resultado encontrado`;
+    } else {
+        resultQntEl.textContent = `${productsQnt} resultados encontrados`;
+    }
+}
+
+createBtnPage(totalPages, navWrapper);
 
 
 //  Functions
@@ -137,4 +191,27 @@ function changePage(btn: HTMLButtonElement) {
     nextBtn.setAttribute('aria-disabled', (currentPage === totalPages).toString());
 
     //  Script para trocar a página dos resultados
+}
+
+function createBtnPage(num: number, divToAppend: HTMLElement): void {
+
+    for (let i = 0; i < num; i++) {
+    
+        let btn = document.createElement('button');
+        btn.classList.add('result__nav-page');
+        btn.setAttribute('aria-label', `Ir para a página ${i + 1}`);
+        btn.setAttribute('aria-current', 'false');
+        btn.textContent = (i + 1).toString();
+
+        divToAppend.appendChild(btn);
+
+        if (i + 1 === 1) {
+            btn.classList.add('active');
+            btn.setAttribute('aria-current', 'page');
+        }
+
+        btn.addEventListener('click', () => { changePage(btn) });
+
+    }
+
 }

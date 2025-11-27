@@ -1,6 +1,5 @@
 @extends('layouts.app')
 
-<!-- Colocar o título da página dinamicamente com base na consulta de busca -->
 @section('title', 'Resultados para "' . e(request('product_name')) . '" | Drogarias Camargo')
 
 @push('styles')
@@ -9,13 +8,11 @@
 
 @section('content')
 
-    <!-- Colocar o título da página dinamicamente com base na consulta de busca -->
-
     <div id="search-info" role="region" aria-labelledby="search-info__title">
         <div class="max-width" id="search-info__content">
             <div id="search-info__heading-wrapper">
                 <h1 id="search-info__title" data-query-string="{{ request('product_name') }}">Resultados para "{{ request('product_name') }}"</h1>
-                <span id="search-info__count">x resultados encontrados</span>
+                <span id="search-info__count"></span>
             </div>
 
             <button id="mobile-filter">Filtrar</button>
@@ -41,10 +38,10 @@
                     </div>
                     <div id="filter__content" aria-labelledby="filter-title">
                         <select name="filter__options" id="filter__options">
-                            <option value="relevance" selected>Mais relevantes</option>
-                            <option value="price_low_high">Menor preço</option>
-                            <option value="price_high_low">Maior preço</option>
-                            <option value="newest">Novidade</option>
+                            <option value="views" selected>Mais relevantes</option>
+                            <option value="price_low">Menor preço</option>
+                            <option value="price_high">Maior preço</option>
+                            <option value="selling">Mais vendidos</option>
                         </select>
                     </div>
                 </div>
@@ -124,18 +121,12 @@
                         Anterior
                         <span class="mobile-touch"></span>
                     </button>
-                    <button class="result__nav-page active" aria-current="page">
-                        1
-                        <span class="mobile-touch"></span>
-                    </button>
-                    <button class="result__nav-page">
-                        2
-                        <span class="mobile-touch"></span>
-                    </button>
-                    <button class="result__nav-page">
-                        3
-                        <span class="mobile-touch"></span>
-                    </button>
+                    <div id="result__nav-pagination">
+                        <!-- <button class="result__nav-page active" aria-current="page">
+                            1
+                            <span class="mobile-touch"></span>
+                        </button> -->
+                    </div>
                     <button class="result__nav-btn" id="nav__next" aria-label="Próxima página">
                         Próximo
                         <span class="mobile-touch"></span>

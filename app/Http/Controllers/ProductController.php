@@ -452,7 +452,7 @@ class ProductController extends Controller
 
             'product_name' => ['required', 'string'],
             'limit'        => ['sometimes', 'numeric'],
-            'orderBy'      => ['sometimes', 'in:views,selling,price'],
+            'orderBy'      => ['sometimes', 'in:views,selling,price_low,price_high'],
 
         ]);
 
@@ -485,6 +485,18 @@ class ProductController extends Controller
 
                 $orderBy = 'price';
                 break;
+            
+            case 'price_low':
+
+                $orderBy = 'price';
+                $orderDirection = 'asc';
+                break;
+
+            case 'price_high':
+
+                $orderBy = 'price';
+                $orderDirection = 'desc';
+                break;
 
             default:
 
@@ -492,7 +504,7 @@ class ProductController extends Controller
                 break;
         }
 
-        $products = Product::where('label', 'like', '%' . $product_name . '%')->orderBy($orderBy, 'desc')->limit($limit)->get();
+        $products = Product::where('label', 'like', '%' . $product_name . '%')->orderBy($orderBy, $orderDirection ?? 'desc')->limit($limit)->get();
 
         $formattedProducts = $products->map(function ($product) {
             return [

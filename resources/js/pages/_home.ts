@@ -8,7 +8,6 @@ const daily_area     = document.querySelector('#daily__content') as HTMLElement;
 
 const catalogBtns = document.querySelectorAll('.catalog__option');
 
-
 getProducts('all', 'selling', 10, null, most_sell_area);
 getProducts('related', 'selling', 10, 1, catalog_area);
 getProducts('all', 'selling', 10, null, daily_area);
