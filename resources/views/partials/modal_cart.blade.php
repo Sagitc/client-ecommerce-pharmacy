@@ -25,45 +25,7 @@
       <!-- MODAL'S BODY -->
       <div class="modal__body">
 
-        <div class="modal__item-card">
-
-          <!-- ITEM'S CONTENT -->
-          <div class="item-card__details">
-
-            <div class="item-card__image-wrapper">
-              <img src="{{ asset('images/products/product_example.png') }}" alt="Transmissor Medtronic" class="item-card__image">
-            </div>
-
-            <div class="item-card__info">
-              <span class="item-card__name">Algum produto comprado de exemplo...</span>
-              <span class="item-card__brand">CIMED</span>
-            </div>
-
-            <button aria-label="Remover item" class="item-card__delete-btn">
-              <img src="{{ asset('images/icons/icon_trash_black.svg') }}" alt="Ícone de remover item">
-            </button>
-
-          </div>
-
-
-          <!-- ITEM'S BOTTOM -->
-          <div class="item-card__bottom">
-
-            <span class="item-card__price">R$ 3.770,00</span>
-
-            <select name="item-quantity" id="item-card__quantity">
-              <option value="1" selected>1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="selectQuantity">Selecionar quantidade</option>
-            </select>
-
-            <input type="number" class="is-disabled" id="custom-quantity-input" min="1" max="99" value="0" aria-label="Quantidade personalizada">
-
-          </div>
-        </div>
+        
 
       </div>
 

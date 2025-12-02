@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Database\Migrations\Migration;
@@ -13,11 +14,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('order_products', function (Blueprint $table) {
+        Schema::create('cart_products', function (Blueprint $table) {
             
             $table->id();
 
-            $table->foreignIdFor(Order::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Cart::class)   ->constrained()->onDelete('cascade');
             $table->foreignIdFor(Product::class)->constrained()->onDelete('cascade');
 
             $table->integer('quantity')->default(1);
@@ -30,7 +31,7 @@ return new class extends Migration
     
     public function down(): void
     {
-        Schema::dropIfExists('order_products');
+        Schema::dropIfExists('cart_products');
     }
 };
 

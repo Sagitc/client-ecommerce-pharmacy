@@ -32,7 +32,9 @@ Route::get('/search', [ProductController::class, 'getProductsBySearch']);
 // Route::get('/categories/{slug}/metadata', [CategoryController::class, 'getCategoryMetadataBySlug']);
 
 Route::post('/cart/mount', [CartController::class, 'mount']);
-Route::post('/cart/add', [CartController::class, 'add']);
+Route::post('/cart/add',   [CartController::class, 'add']);
+Route::get('/cart/get',    [CartController::class, 'getCart']);
+Route::post('/cart/remove', [CartController::class, 'removeItem']);
 // Route::get('/cart/shipping', [CartController::class, 'getShipping']);
 
 // Route::post('/user/login', [UserController::class, 'login'])->name('login');
