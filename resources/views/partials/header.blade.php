@@ -16,7 +16,7 @@
                 <span class="cart__icon-wrapper"><img src="{{ asset('images/icons/icon_cart_white.svg') }}" alt="Carrinho de compras"></span>
                 <span>
                     Carrinho<br>
-                    <span id="cart__count">R$ 0,00</span>
+                    <span id="cart__amount">R$ 0,00</span>
                 </span>
             </button>
             <div id="header__menu-wrapper">

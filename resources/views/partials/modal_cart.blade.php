@@ -25,8 +25,6 @@
       <!-- MODAL'S BODY -->
       <div class="modal__body">
 
-        
-
       </div>
 
       <!-- MODAL'S FOOTER -->

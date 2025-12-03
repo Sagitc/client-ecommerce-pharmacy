@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getFocusableElements } from '../app';
 
 // Declarations
 
@@ -272,7 +273,13 @@ async function updateCart(products: CartProduct[]): Promise<void> {
             console.error('Error removing cart:', error);
         });
 
+        document.querySelector('#cart__amount')!.textContent = `R$ 0,00`;
+
         return;
+    }
+
+    if (tamanho > 0 && modal.querySelector('.modal__checkout-btn')?.hasAttribute('disabled')) {
+        modal.querySelector('.modal__checkout-btn')?.removeAttribute('disabled');
     }
 
     for (let i = 0; i < products.length; i++) {
@@ -286,6 +293,8 @@ async function updateCart(products: CartProduct[]): Promise<void> {
         itemsEl.textContent = `${tamanho} item(s)`;
 
     }
+
+    document.querySelector('#cart__amount')!.textContent = `R$ ${soma.toFixed(2).replace('.', ',')}`;
 
 }
 
@@ -331,12 +340,4 @@ function callEventKeydown(event: KeyboardEvent): void {
 
         }
     }
-}
-
-function getFocusableElements(container: HTMLElement): HTMLElement[] {
-    return Array.from(
-        container.querySelectorAll<HTMLElement>(
-            'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled])'
-        )
-    )
 }

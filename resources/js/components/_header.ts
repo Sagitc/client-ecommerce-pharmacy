@@ -83,6 +83,7 @@ export function initHeader(): void {
         document.getElementById('user-menu__area')?.classList.add('is-disabled');
     });
 
+
     //  Functions
     function toggleMobileMenu(): void {
 
@@ -125,34 +126,4 @@ export function initHeader(): void {
             mobileCart.classList.add('is-disabled');
         }
     }
-
-    // async function checkAuthStatus(): Promise<boolean> {
-
-    //     try {
-
-    //         const response = await axios.get<User>('/api/user/status');
-    //         return true;
-
-    //     } catch (error) {
-
-    //         if (axios.isAxiosError(error) && error.response?.status === 401) {
-    //             console.log('User is not authenticated.');
-    //         } else {
-    //             console.error('An error occurred while checking auth status:', error);
-    //         }
-
-    //         return false;
-    //     }
-    // }
-
-    // async function initializeAuthStatus(): Promise<void> {
-    //     try {
-    //         const status = await checkAuthStatus();
-    //         isLogged = status;
-    //         console.log('User logged in status:', isLogged);
-    //     } catch (error) {
-    //         console.error('An error occurred while initializing auth status:', error);
-    //         isLogged = false;
-    //     }
-    // }
 }

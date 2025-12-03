@@ -88,7 +88,7 @@
     padding: var(--spacing-sm) var(--spacing-md);
 }
 
-#cart__count {
+#cart__amount {
     font-weight: bold;
 }
 
