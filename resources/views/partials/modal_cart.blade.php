@@ -37,7 +37,7 @@
           <span class="modal__subtotal-value">R$ 3.770,00</span>
         </div>
 
-        <button class="modal__checkout-btn">Conferir cesta</button>
+        <button class="modal__checkout-btn">Ir para o checkout</button>
 
       </div>
     @endauth

@@ -230,6 +230,7 @@ class ProductController extends Controller
         $images = $product->images->map(function (ProductImage $image) {
 
             return asset($image->image_path);
+            
         })->toArray();
 
         if (empty($images)) {

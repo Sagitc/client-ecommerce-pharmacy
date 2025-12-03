@@ -76,18 +76,19 @@ class CartController extends Controller
 
             request()->all(),
             [
-                'id'               => ['required', 'numeric'],
+                'product_id'               => ['required', 'numeric'],
                 'user_id'          => ['required', 'numeric'],
                 'product_quantity' => ['required', 'numeric']
             ],
             [
-                'id.required' => 'O campo id é obrigatório.',
-                'id.numeric'  => 'O campo id deve ser um valor numérico.',
+                'product_id.required' => 'O campo product_id é obrigatório.',
+                'product_id.numeric'  => 'O campo product_id deve ser um valor numérico.',
                 'user_id.required' => 'O campo user_id é obrigatório.',
                 'user_id.numeric' => 'O campo user_id deve ser um valor numérico.',
                 'product_quantity.numeric' => 'O campo product_quantity deve ser um valor numérico.',
                 'product_quantity.required' => 'O campo product_quantity é obrigatório.'
             ]
+
         );
 
         if ($validator->fails()) {
@@ -100,29 +101,62 @@ class CartController extends Controller
             ], 400);
         }
 
-        $id       = \request()->input('id');
-        $user_id  = \request()->input('user_id');
-        $quantity = \request()->input('product_quantity');
+        $product_id = \request()->input('product_id');
+        $user_id    = \request()->input('user_id');
+        $quantity   = \request()->input('product_quantity');
 
-        $address = Address::where('user_id', $user_id)->first();
+        $product = Product::with('images')->where('id', $product_id)->first();
 
-        $product = Product::with('images')->where('id', $id)->first();
+        $cart      = Cart::where('user_id', $user_id)->first();
+        $cartItem  = $cart ? $cart->products()->where('product_id', $product_id)->first() : null;
+
+        if ($cartItem) {
+
+            $cartItem->quantity = $cartItem->quantity + 1;
+            $cartItem->price = $product->price * $cartItem->quantity;
+            $cartItem->save();
+
+            $formattedProduct = [
+
+                "id"         => $product->id,
+                "label"      => $product->label,
+                "price"      => $product->price,
+                "quantity"   => $cartItem->quantity,
+                "laboratory" => Laboratory::where('id', $product->laboratory_id)->value('label'),
+                "main_image" => asset($product->images->first()->image_path ?? 'storage/images/default.png')
+
+            ];
+
+            return response()->json([
+
+                'error' => null,
+                'cart'  => $formattedProduct
+
+            ]);
+            
+        } 
 
         if (Cart::where('user_id', $user_id)->exists()) {
+
             $order = Cart::where('user_id', $user_id)->first();
+
         } else {
+
             $order = Cart::create([
 
                 "user_id" => $user_id,
                 "total"   => 0
 
             ]);
+
         }
 
         $order->products()->create([
+
             "product_id" => $product->id,
             "quantity"   => $quantity,
             "price"      => ($product->price * $quantity)
+
         ]);
 
         $formattedProduct = [
@@ -130,8 +164,9 @@ class CartController extends Controller
             "id" => $product->id,
             "label" => $product->label,
             "price" => $product->price,
-            "main_image" => asset($product->images->first()->image_path ?? 'storage/images/default.png'),
-            "laboratory" => Laboratory::where('id', $product->laboratory_id)->value('label')
+            "quantity" => $quantity,
+            "laboratory" => Laboratory::where('id', $product->laboratory_id)->value('label'),
+            "main_image" => asset($product->images->first()->image_path ?? 'storage/images/default.png')
 
         ];
 
@@ -141,6 +176,66 @@ class CartController extends Controller
             'cart'  => $formattedProduct
 
         ]);
+    }
+
+    public function updateItem(Request $request)
+    {
+        $validator = Validator::make(
+
+            request()->all(),
+            [
+                'product_id'       => ['required', 'numeric'],
+                'user_id'          => ['required', 'numeric'],
+                'product_quantity' => ['required', 'numeric']
+            ],
+            [
+                'product_id.required' => 'O campo product_id é obrigatório.',
+                'product_id.numeric'  => 'O campo product_id deve ser um valor numérico.',
+                'user_id.required' => 'O campo user_id é obrigatório.',
+                'user_id.numeric' => 'O campo user_id deve ser um valor numérico.',
+                'product_quantity.numeric' => 'O campo product_quantity deve ser um valor numérico.',
+                'product_quantity.required' => 'O campo product_quantity é obrigatório.'
+            ]
+
+        );
+
+        if ($validator->fails()) {
+
+            return response()->json([
+
+                'error' => $validator->errors()->first(),
+                'cart'  => []
+
+            ], 400);
+        }
+
+        $product_id = \request()->input('product_id');
+        $user_id    = \request()->input('user_id');
+        $quantity   = \request()->input('product_quantity');
+
+        $cart      = Cart::where('user_id', $user_id)->first();
+        $cartItem  = $cart ? $cart->products()->where('product_id', $product_id)->first() : null;
+
+        if (!$cartItem) {
+
+            return response()->json([
+
+                'error' => 'Item do pedido não encontrado.',
+                'cart'  => []
+
+            ], 404);
+        }
+
+        $cartItem->quantity = $quantity;
+        $cartItem->price    = $cartItem->price * $quantity;
+        $cartItem->save();
+
+        return response()->json([
+
+            'error' => null
+
+        ]);
+
     }
 
     public function removeItem(Request $request)
@@ -170,7 +265,7 @@ class CartController extends Controller
         }
         
         $product_id = \request()->input('product_id');
-        $user_id = \request()->input('user_id');
+        $user_id    = \request()->input('user_id');
 
         $cart = Cart::where('user_id', $user_id)->first();
         
@@ -185,6 +280,47 @@ class CartController extends Controller
         }
 
         $cart->products()->where('product_id', $product_id)->delete();
+
+        return response()->json([
+            'error' => null
+        ]);
+    }
+
+    public function removeCart(Request $request)
+    {
+        $validator = Validator::make(
+
+            request()->all(),
+            [
+                'user_id'    => ['required', 'numeric']
+            ],
+            [
+                'user_id.required'    => 'O campo user_id é obrigatório.',
+                'user_id.numeric'     => 'O campo user_id deve ser um valor numérico.'
+            ]
+        );
+
+        if ($validator->fails()) {
+
+            return response()->json([
+
+                'error' => $validator->errors()->first()
+
+            ], 400);
+        }
+        
+        $user_id = \request()->input('user_id');
+        $cart    = Cart::where('user_id', $user_id)->first();
+        
+
+        if ($cart) {
+            $cart->products()->delete();
+            $cart->delete();
+        }
+
+        return response()->json([
+            'error' => null
+        ]);
     }
 
     public function getCart(Request $request)

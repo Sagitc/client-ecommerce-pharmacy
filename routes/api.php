@@ -33,8 +33,12 @@ Route::get('/search', [ProductController::class, 'getProductsBySearch']);
 
 Route::post('/cart/mount', [CartController::class, 'mount']);
 Route::post('/cart/add',   [CartController::class, 'add']);
+Route::post('/cart/removeItem', [CartController::class, 'removeItem']);
+Route::post('/cart/updateItem', [CartController::class, 'updateItem']);
+Route::post('/cart/removeCart', [CartController::class, 'removeCart']);
+
 Route::get('/cart/get',    [CartController::class, 'getCart']);
-Route::post('/cart/remove', [CartController::class, 'removeItem']);
+
 // Route::get('/cart/shipping', [CartController::class, 'getShipping']);
 
 // Route::post('/user/login', [UserController::class, 'login'])->name('login');

@@ -176,19 +176,20 @@
     text-align: center;
 }
 
-#custom-quantity-input {
+.custom-quantity-input {
     display: flex;
     width: calc(70px - (var(--spacing-md) * 2));
     height: calc(40px - (var(--spacing-xs) * 2));
     border-radius: var(--border-radius-xl);
-    padding: var(--spacing-xs) var(--spacing-md);
+    min-width: 50px;
+    padding: var(--spacing-md) var(--spacing-md);
     border: none;
     background-color: #e0e0e0;
     outline: none;
     text-align: center;
 }
 
-#custom-quantity-input { 
+.custom-quantity-input { 
    -moz-appearance: textfield;
    appearance: textfield;
 
@@ -231,10 +232,6 @@
 
 .modal__checkout-btn:hover {
     background-color: #FA3F25;
-}
-
-.item-card__bottom #custom-quantity-input.is-disabled {
-    display: none;
 }
 
 .modal__guest-message,

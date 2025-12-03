@@ -26,6 +26,7 @@ const iconTrash = '/images/icons/icon_trash_black.svg';
 
 let elementThatOpenedModal: HTMLElement | null = null;
 
+
 // Events
 
 cartBtn.addEventListener('click', () => { openCart(); });
@@ -37,33 +38,6 @@ modal.addEventListener('click', (event) => {
         closeCart();
     }
 });
-
-// if (!modal.classList.contains('not-logged')) {
-
-//     const quantitySelect = document.querySelector('#item-card__quantity') as HTMLSelectElement;
-
-//     quantitySelect.addEventListener('change', () => {
-//         if (quantitySelect.value === 'selectQuantity') {
-//             quantitySelect.classList.add('is-disabled');
-
-//             customQuantityInput.classList.remove('is-disabled');
-//             customQuantityInput.focus();
-//         }
-//     });
-
-//     customQuantityInput.addEventListener('blur', () => {
-
-//         if (customQuantityInput.value === '' || customQuantityInput.value === '0') {
-//             customQuantityInput.classList.add('is-disabled');
-//             quantitySelect.classList.remove('is-disabled');
-
-//             customQuantityInput.value = '';
-//             quantitySelect.value = '1';
-//         }
-
-//     });
-// }
-
 
 if (!modal.classList.contains('not-logged')) {
 
@@ -79,6 +53,7 @@ if (!modal.classList.contains('not-logged')) {
     }
 
 }
+
 
 // Functions
 
@@ -116,7 +91,7 @@ export async function addOnCart(product_id: number) {
     let response = (await axios.get('/user/get')).data;
 
     await axios.post('/api/cart/add', {
-        id: product_id,
+        product_id: product_id,
         user_id: response.id,
         product_quantity: 1
     })
@@ -129,43 +104,67 @@ export async function addOnCart(product_id: number) {
 
 }
 
-async function removeFromCart(product_id: number) {
+async function getCart(): Promise<undefined> {
 
     let user = (await axios.get('/user/get')).data.id;
 
-    axios.post('/api/cart/remove', {
-        product_id: product_id,
-        user_id: user
-    })
-        .then(response => {
-            getCart();
-        })
-        .catch(error => {
-            console.error('Error removing product from cart:', error);
-        });
+    return await axios.get('/api/cart/get', {
+
+        params: { user_id: user }
+
+    }).then(response => {
+
+        if (response.data.cart.length === 0) {
+            divToAppend.innerHTML =
+                `
+            <div class="modal__empty-message">
+                <span class="modal__guest-text">Seu carrinho está vazio...<br>vamos mudar isso!</span>
+            </div>
+        `;
+            updateCart(response.data.cart as CartProduct[]);
+            return;
+        }
+
+        createCartProductElement(response.data.cart as CartProduct[]);
+        updateCart(response.data.cart as CartProduct[]);
+
+        return response.data.cart.length;
+
+    }).catch(error => {
+        console.error('Error fetching cart data:', error);
+    });
 
 }
 
-async function createCartProductElement(productData: any) {
+async function getProductRegister(product_id: number): Promise<any> {
+
+    let response = await axios.get(`/api/product/${product_id}`, {
+        params: { product_id: product_id }
+    });
+
+    return response.data.product;
+}
+
+function createCartProductElement(productData: any): void {
 
     divToAppend.innerHTML = '';
 
     for (let i = 0; i < productData.length; i++) {
         let product = document.createElement('div');
         product.classList.add('modal__item-card');
-        product.setAttribute('data-product-id', productData[i].id);
+        product.setAttribute('data-product-id', productData[i]!.id.toString());
 
         let productContent = `
           <!-- ITEM'S CONTENT -->
           <div class="item-card__details">
 
             <div class="item-card__image-wrapper">
-              <img src="${productData[i].main_image}" class="item-card__image">
+              <img src="${productData[i]?.main_image}" class="item-card__image">
             </div>
 
             <div class="item-card__info">
-              <span class="item-card__name">${productData[i].label}</span>
-              <span class="item-card__brand">${productData[i].laboratory}</span>
+              <span class="item-card__name">${productData[i]?.label}</span>
+              <span class="item-card__brand">${productData[i]?.laboratory}</span>
             </div>
 
             <button aria-label="Remover item" class="item-card__delete-btn">
@@ -174,22 +173,12 @@ async function createCartProductElement(productData: any) {
 
           </div>
 
-
           <!-- ITEM'S BOTTOM -->
           <div class="item-card__bottom">
 
-            <span class="item-card__price">R$ ${productData[i].price.toFixed(2).replace('.', ',')}</span>
+            <span class="item-card__price">R$ ${(productData[i]!.price * productData[i]!.quantity).toFixed(2).replace('.', ',')}</span>
 
-            <select name="item-quantity" id="item-card__quantity">
-              <option value="1" selected>1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="selectQuantity">Selecionar quantidade</option>
-            </select>
-
-            <input type="number" class="is-disabled" id="custom-quantity-input" min="1" max="99" value="0" aria-label="Quantidade personalizada">
+            <input type="number" class="custom-quantity-input" min="1" max="99" value="${productData[i]?.quantity}" aria-label="Quantidade personalizada">
 
           </div>`;
 
@@ -199,6 +188,7 @@ async function createCartProductElement(productData: any) {
     }
 
     const removeItemBtns = modal.querySelectorAll('.item-card__details .item-card__delete-btn') as NodeListOf<HTMLButtonElement>;
+    const quantityInputs = modal.querySelectorAll('.custom-quantity-input') as NodeListOf<HTMLInputElement>;
 
     removeItemBtns.forEach((button) => {
 
@@ -212,47 +202,113 @@ async function createCartProductElement(productData: any) {
         });
 
     });
-}
 
-async function getCart() {
+    quantityInputs.forEach((input) => {
 
-    let user = (await axios.get('/user/get')).data.id;
+        input.addEventListener('change', async () => {
 
-    return await axios.get('/api/cart/get', {
+            const productCard = input?.closest('.modal__item-card') as HTMLDivElement;
+            const productId = parseInt(productCard.getAttribute('data-product-id')!) as number;
+            const newQuantity = parseInt(input.value) as number;
 
-        params: { user_id: user }
+            let product = await getProductRegister(productId);
 
-    }).then(response => {
-        
-        createCartProductElement(response.data.cart);
-        updateCart(response.data.cart as CartProduct[]);
+            if (isNaN(newQuantity) || !Number.isInteger(newQuantity)) {
+                input.value = '1';
+                await updateItem(productId, 1);
+                return;
+            } else if (newQuantity < 1) {
+                await updateItem(productId, 0);
+                return;
+            } else if (newQuantity >= 1 && newQuantity <= 99) {
+                await updateItem(productId, newQuantity);
+                return;
+            }
+        });
 
-        return response.data.cart.length;
-
-    }).catch(error => {
-        console.error('Error fetching cart data:', error);
     });
 
 }
 
-function updateCart(products: CartProduct[]): void {
+async function removeFromCart(product_id: number) {
+
+    let user = (await axios.get('/user/get')).data.id;
+
+    axios.post('/api/cart/removeItem', {
+        product_id: product_id,
+        user_id: user
+    })
+        .then(response => {
+            getCart();
+        })
+        .catch(error => {
+            console.error('Error removing product from cart:', error);
+        });
+
+}
+
+async function updateCart(products: CartProduct[]): Promise<void> {
 
     let soma: number = 0;
     let tamanho: number = products.length;
 
+    let totalEl = modal.querySelector('.modal__subtotal-value') as HTMLSpanElement;
+    let itemsEl = modal.querySelector('.modal__item-count') as HTMLSpanElement;
+
+    if (tamanho === 0) {
+        totalEl.textContent = `R$ 0,00`;
+        itemsEl.textContent = `0 item(s)`;
+
+        modal.querySelector('.modal__checkout-btn')?.setAttribute('disabled', 'true');
+
+        let user = (await axios.get('/user/get')).data.id;
+
+        await axios.post('/api/cart/removeCart', {
+            user_id: user
+
+        }).then(response => {
+            return;
+        }).catch(error => {
+            console.error('Error removing cart:', error);
+        });
+
+        return;
+    }
+
     for (let i = 0; i < products.length; i++) {
 
         let price: number = products[i]!.price;
-        let quantity: number = products[i]!.quantity;
+        let dbQuantity: number = products[i]!.quantity;
 
-        soma += price * quantity;
+        soma += price * dbQuantity;
+
+        totalEl.textContent = `R$ ${soma.toFixed(2).replace('.', ',')}`;
+        itemsEl.textContent = `${tamanho} item(s)`;
+
     }
 
-    const totalEl = modal.querySelector('.modal__subtotal-value') as HTMLSpanElement;
-    const itemsEl = modal.querySelector('.modal__item-count') as HTMLSpanElement;
+}
 
-    totalEl.textContent = `R$ ${soma.toFixed(2).replace('.', ',')}`;
-    itemsEl.textContent = `${tamanho} item(s)`;
+async function updateItem(id_product: number, quantity: number): Promise<void> {
+
+    let user = (await axios.get('/user/get')).data.id;
+
+    if (quantity === 0) {
+        await removeFromCart(id_product);
+        return;
+    }
+
+    await axios.post('/api/cart/updateItem', {
+        product_id: id_product,
+        user_id: user,
+        product_quantity: quantity
+    })
+        .then(response => {
+            getCart();
+        })
+        .catch(error => {
+            console.error('Error updating product in cart:', error);
+        });
 
 }
 
