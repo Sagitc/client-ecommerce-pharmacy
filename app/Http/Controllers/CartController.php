@@ -69,7 +69,7 @@ class CartController extends Controller
         ]);
     }
 
-    public function add(Request $request)
+    public function addItemToCart(Request $request)
     {
 
         $validator = Validator::make(
@@ -116,30 +116,34 @@ class CartController extends Controller
             $cartItem->price = $product->price * $cartItem->quantity;
             $cartItem->save();
 
-            $formattedProduct = [
+            $cartItems = $cart->products()->get();
 
-                "id"         => $product->id,
-                "label"      => $product->label,
-                "price"      => $product->price,
-                "quantity"   => $cartItem->quantity,
-                "laboratory" => Laboratory::where('id', $product->laboratory_id)->value('label'),
-                "main_image" => asset($product->images->first()->image_path ?? 'storage/images/default.png')
+            $formattedCart = $cartItems->map(function ($item) {
 
-            ];
+                $products = Product::with('images')->where('id', $item->product_id)->first();
+
+                return [
+
+                    'id'          => $products->id,
+                    'label'       => $products->label,
+                    'price'       => $products->price,
+                    'quantity'    => $item->quantity,
+                    'laboratory'  => $products->laboratory->label,
+                    'main_image'  => $products->main_image,
+                ];
+            })->toArray();
 
             return response()->json([
 
                 'error' => null,
-                'cart'  => $formattedProduct
+                'cart'  => $formattedCart
 
             ]);
-            
-        } 
+        }
 
         if (Cart::where('user_id', $user_id)->exists()) {
 
             $order = Cart::where('user_id', $user_id)->first();
-
         } else {
 
             $order = Cart::create([
@@ -148,7 +152,6 @@ class CartController extends Controller
                 "total"   => 0
 
             ]);
-
         }
 
         $order->products()->create([
@@ -159,26 +162,38 @@ class CartController extends Controller
 
         ]);
 
-        $formattedProduct = [
+        $cartItems = $order->products()->get();
 
-            "id" => $product->id,
-            "label" => $product->label,
-            "price" => $product->price,
-            "quantity" => $quantity,
-            "laboratory" => Laboratory::where('id', $product->laboratory_id)->value('label'),
-            "main_image" => asset($product->images->first()->image_path ?? 'storage/images/default.png')
+        $cartTotal = 0;
 
-        ];
+        $formattedCart = $cartItems->map(function ($item) use (&$cartTotal) {
+
+            $products = Product::with('images')->where('id', $item->product_id)->first();
+            $cartTotal += $products->price * $item->quantity;
+
+            return [
+
+                'id'          => $products->id,
+                'label'       => $products->label,
+                'price'       => $products->price,
+                'quantity'    => $item->quantity,
+                'laboratory'  => $products->laboratory->label,
+                'main_image'  => $products->main_image,
+            ];
+        })->toArray();
+
+        $order->total = $cartTotal;
+        $order->save();
 
         return response()->json([
 
             'error' => null,
-            'cart'  => $formattedProduct
+            'cart'  => $formattedCart
 
         ]);
     }
 
-    public function updateItem(Request $request)
+    public function updateItemQuantity(Request $request)
     {
         $validator = Validator::make(
 
@@ -227,18 +242,41 @@ class CartController extends Controller
         }
 
         $cartItem->quantity = $quantity;
-        $cartItem->price    = $cartItem->price * $quantity;
         $cartItem->save();
+
+        $cartItems = $cart->products()->get();
+        
+        $cartTotal = 0;
+
+        $formattedCart = $cartItems->map(function ($item) use (&$cartTotal) {
+
+            $products = Product::with('images')->where('id', $item->product_id)->first();
+
+            $cartTotal += $products->price * $item->quantity;
+
+            return [
+
+                'id'          => $products->id,
+                'label'       => $products->label,
+                'price'       => $products->price,
+                'quantity'    => $item->quantity,
+                'laboratory'  => $products->laboratory->label,
+                'main_image'  => $products->main_image,
+            ];
+        })->toArray();
+
+        $cart->total = $cartTotal;
+        $cart->save();
 
         return response()->json([
 
-            'error' => null
+            'error' => null,
+            'cart'  => $formattedCart
 
         ]);
-
     }
 
-    public function removeItem(Request $request)
+    public function removeFromCart(Request $request)
     {
         $validator = Validator::make(
 
@@ -263,12 +301,12 @@ class CartController extends Controller
 
             ], 400);
         }
-        
+
         $product_id = \request()->input('product_id');
         $user_id    = \request()->input('user_id');
 
         $cart = Cart::where('user_id', $user_id)->first();
-        
+
 
         if (!$cart || !$cart->products()->where('product_id', $product_id)->exists()) {
 
@@ -281,47 +319,72 @@ class CartController extends Controller
 
         $cart->products()->where('product_id', $product_id)->delete();
 
+        $cartItems = $cart->products()->get();
+
+        $cartTotal = 0;
+
+        $formattedCart = $cartItems->map(function ($item) use (&$cartTotal) {
+
+            $products = Product::with('images')->where('id', $item->product_id)->first();
+
+            $cartTotal += $products->price * $item->quantity;
+
+            return [
+
+                'id'          => $products->id,
+                'label'       => $products->label,
+                'price'       => $products->price,
+                'quantity'    => $item->quantity,
+                'laboratory'  => $products->laboratory->label,
+                'main_image'  => $products->main_image,
+            ];
+        })->toArray();
+
+        $cart->total = $cartTotal;
+        $cart->save();
+
         return response()->json([
-            'error' => null
+            'error' => null,
+            'cart' => $formattedCart
         ]);
     }
 
-    public function removeCart(Request $request)
-    {
-        $validator = Validator::make(
+    // public function removeCart(Request $request)
+    // {
+    //     $validator = Validator::make(
 
-            request()->all(),
-            [
-                'user_id'    => ['required', 'numeric']
-            ],
-            [
-                'user_id.required'    => 'O campo user_id é obrigatório.',
-                'user_id.numeric'     => 'O campo user_id deve ser um valor numérico.'
-            ]
-        );
+    //         request()->all(),
+    //         [
+    //             'user_id'    => ['required', 'numeric']
+    //         ],
+    //         [
+    //             'user_id.required'    => 'O campo user_id é obrigatório.',
+    //             'user_id.numeric'     => 'O campo user_id deve ser um valor numérico.'
+    //         ]
+    //     );
 
-        if ($validator->fails()) {
+    //     if ($validator->fails()) {
 
-            return response()->json([
+    //         return response()->json([
 
-                'error' => $validator->errors()->first()
+    //             'error' => $validator->errors()->first()
 
-            ], 400);
-        }
-        
-        $user_id = \request()->input('user_id');
-        $cart    = Cart::where('user_id', $user_id)->first();
-        
+    //         ], 400);
+    //     }
 
-        if ($cart) {
-            $cart->products()->delete();
-            $cart->delete();
-        }
+    //     $user_id = \request()->input('user_id');
+    //     $cart    = Cart::where('user_id', $user_id)->first();
 
-        return response()->json([
-            'error' => null
-        ]);
-    }
+
+    //     if ($cart) {
+    //         $cart->products()->delete();
+    //         $cart->delete();
+    //     }
+
+    //     return response()->json([
+    //         'error' => null
+    //     ]);
+    // }
 
     public function getCart(Request $request)
     {
@@ -364,9 +427,12 @@ class CartController extends Controller
 
         $cartItems = $order->products()->get();
 
-        $formattedCart = $cartItems->map(function ($item) {
+        $cartTotal = 0;
+
+        $formattedCart = $cartItems->map(function ($item) use(&$cartTotal) {
 
             $products = Product::with('images')->where('id', $item->product_id)->first();
+            $cartTotal += $products->price * $item->quantity;
 
             return [
 
@@ -379,10 +445,17 @@ class CartController extends Controller
             ];
         });
 
+        $order->total = $cartTotal;
+        $order->save();
+
         return response()->json([
 
             'error' => null,
-            'cart'  => $formattedCart
+            'cart'  => $formattedCart,
+            'total_items' => $formattedCart->sum('quantity'),
+            'total_price' => $formattedCart->sum(function ($item) {
+                return $item['price'] * $item['quantity'];
+            })
 
         ]);
     }

@@ -21,6 +21,7 @@ class Product extends Model {
         'EAN',
         'sales_count',
         'views_count',
+        'total_rating',
 
         'cost',
         'price',
@@ -60,6 +61,12 @@ class Product extends Model {
     public function formula(): BelongsTo    {
 
         return $this->belongsTo(Formula::class);
+
+    }
+
+    public function rates(): HasMany    {
+
+        return $this->hasMany(ProductRate::class);
 
     }
 

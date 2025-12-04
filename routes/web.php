@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -24,6 +25,11 @@ Route::post('/register', [UserController::class, 'register'])->name('register');
 Route::middleware('auth')->group(function () {
 
     Route::get('/user/get', [UserController::class, 'getUser']);
-    Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
+    Route::get('/cart/get', [CartController::class, 'getCart']);
+    Route::post('/cart/add', [CartController::class, 'addItemToCart']);
+    Route::post('/cart/remove', [CartController::class, 'removeFromCart']);
+    Route::post('/cart/update-quantity', [CartController::class, 'updateItemQuantity']);
+
+    Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 });

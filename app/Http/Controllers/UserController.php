@@ -19,7 +19,7 @@ class UserController extends Controller
             return response()->json([
 
                 'id' => Auth::id(),
-                'name' => Auth::user()->name
+                'name' => Auth::user()->full_name
 
             ]);
         } 

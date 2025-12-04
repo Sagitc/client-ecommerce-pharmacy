@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { addOnCart, openCart } from './_modal-cart';
+import { openCart, addOnCart } from './_cartModal';
+import { addItemToCart } from '../services/cartService';
+import { updateCartState } from '@/helpers/cartHandler';
 
 //  Declarations
 
@@ -183,34 +185,15 @@ function createProductElement(products: any, divToAppend: HTMLElement) {
 
     addBtns.forEach(btn => {
 
-
-        if (modal_buy.classList.contains('not-logged')) {
-
-            btn.addEventListener('click', (event) => {
-                event.stopPropagation();
-                event.preventDefault();
-                openCart();
-            });
-
-        } else if (!modal_buy.classList.contains('not-logged')) {
-
-            btn.addEventListener('click', (event) => {
-                event.stopPropagation();
-                event.preventDefault();
-
-                const productId = parseInt((btn.parentElement?.parentElement as HTMLElement).getAttribute('data-product-id') || '0', 10);
-
-                if (productId) {
-                    addOnCart(productId);
-                    openCart();
-                }
-
-            });
-        }
+        btn.addEventListener('click', (event) => {
+            event.stopPropagation();
+            event.preventDefault();
+            addOnCart(parseInt((btn.parentElement?.parentElement?.getAttribute('data-product-id') as string)));
+            openCart();
+        });
 
 
     });
-
 }
 
 function toggleFavIcon(icon: Element) {

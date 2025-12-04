@@ -26,6 +26,7 @@ return new class extends Migration  {
             $table->integer('EAN'        )->unique();
             $table->integer('sales_count')->default(0);
             $table->integer('views_count')->default(0);
+            $table->integer('total_rating')->default(0);
 
             $table->float('cost' );
             $table->float('price');
