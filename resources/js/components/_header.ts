@@ -1,6 +1,8 @@
-import axios from 'axios';
+import * as userHandler from '@/helpers/userHandler';
+import * as userService from '@/services/userService';
 
 export function initHeader(): void {
+    
     //  Declarations
     const header = document.querySelector('.header__content') as HTMLDivElement;
     const userMenuArea = document.querySelector('#header__menu-wrapper') as HTMLDivElement;
@@ -23,8 +25,6 @@ export function initHeader(): void {
     let deltaY: number;
 
     const closeThreshold = 100;
-
-    let isLogged: boolean = false;
 
     //  Events
     mobileMenuButton.addEventListener('click', toggleMobileMenu);

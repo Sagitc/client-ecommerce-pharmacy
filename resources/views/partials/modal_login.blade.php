@@ -89,7 +89,7 @@
                     <form id="signUp__form" action="{{ route('register') }}" method="post">
                         @csrf
 
-                        <input type="text" name="name" id="signUp__user" class="modal-login__input"
+                        <input type="text" name="full_name" id="signUp__user" class="modal-login__input"
                             placeholder="Nome e sobrenome" required>
 
                         <div class="modal__input-wrapper">

@@ -48,6 +48,7 @@ function renderCartModal(): void {
 
     (modal.querySelector('.modal__subtotal-value') as HTMLSpanElement).textContent = `R$ ${totalPrice.toFixed(2).replace('.', ',')}`;
     (modal.querySelector('.modal__item-count') as HTMLSpanElement).textContent = `${itemCount} item(s)`;
+    (document.querySelector('#cart__amount') as HTMLSpanElement).textContent = `R$ ${totalPrice.toFixed(2).replace('.', ',')}`;
 }
 
 cartHandler.subscribe(renderCartModal);

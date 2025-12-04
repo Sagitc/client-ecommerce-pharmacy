@@ -14,8 +14,6 @@ Route::get('/ping', function () {
     return response()->json(['pong' => true]);
 });
 
-Route::middleware('auth:sanctum')->get('/user/status', [UserController::class, 'userStatus']);
-
 Route::get('/products',                 [ProductController::class, 'getAllProducts']);
 Route::get('/product/{id}',             [ProductController::class, 'getProductById']);
 Route::get('/product/{id}/related',     [ProductController::class, 'getRelatedProductsById']);

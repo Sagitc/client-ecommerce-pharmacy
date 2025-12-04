@@ -19,7 +19,11 @@ class UserController extends Controller
             return response()->json([
 
                 'id' => Auth::id(),
-                'name' => Auth::user()->full_name
+                'full_name' => Auth::user()->full_name,
+                'email' =>  Auth::user()->email,
+                'cpf' =>  Auth::user()->cpf,
+                'phone_number' =>  Auth::user()->phone_number,
+                'role' =>  Auth::user()->role,
 
             ]);
         } 
@@ -38,7 +42,7 @@ class UserController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'name'                  => 'required|string|max:255',
+                'full_name'             => 'required|string|max:255',
                 'cpf'                   => ['required', 'unique:users', new CpfOrEmailRule],
                 'email'                 => 'required|string|email|max:255|unique:users',
                 'password'              => 'required|string|min:8',
@@ -114,25 +118,6 @@ class UserController extends Controller
         ])->onlyInput('identifier');
     }
 
-    public function userStatus(Request $request)
-    {
-
-        $user = Auth::user();
-
-        return response()->json([
-
-            'error' => null,
-            'user'  => [
-                'id'         => $user->id,
-                'full_name' => $user->full_name,
-                'email'      => $user->email,
-                'cpf'        => $user->cpf,
-                'phone_number' => $user->phone_number,
-            ]
-
-        ]);
-    }
-
     public function createAddress(Request $request)
     {
 
@@ -189,7 +174,7 @@ class UserController extends Controller
             'country'    => $request->input('country'),
             'city'       => $request->input('city'),
             'state'      => $request->input('state'),
-            'zipcode'   => $request->input('zipcode'),
+            'zipcode'    => $request->input('zipcode'),
 
         ]);
 
