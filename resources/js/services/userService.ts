@@ -23,14 +23,20 @@ interface UserApiResponse {
  * Busca o ID do usuário atual.
  * @return Uma promessa que resolve para o ID do usuário.
  */
-export async function fetchUser(): Promise<User> {
+export async function fetchUser(): Promise<User | null> {
     try {
         const response = await axios.get<UserApiResponse>('/user/get');
-        const data = response.data;
-        return data;
+        
+        if (response.data && response.data.id) {
+            return response.data as User;
+        }
+
+        return null;
+
     } catch (error) {
-        console.error('Error fetching user ID:', error);
-        throw error;
+
+        return null;
+        
     }
 }
 
@@ -77,15 +83,28 @@ export async function createAddress(addressData: UserAddressData): Promise<UserA
 
 /**
  * Busca os endereços do usuário.
- * @param user_id ID do usuário cujos endereços serão buscados.
  * @returns Uma promessa que resolve para uma lista dos endereços do usuário.
  */
-export async function fetchUserAddresses(user_id: number): Promise<UserAddressData[]> {
+export async function fetchUserAddresses(): Promise<UserAddressData[]> {
     try {
-        const response = await axios.get<UserAddressData[]>(`/user/${user_id}/addresses`);
+        const response = await axios.get<UserAddressData[]>(`/user/addresses`);
         return response.data;
     } catch (error) {
         console.error('Error fetching user addresses:', error);
+        throw error;
+    }
+}
+
+/**
+ * Busca os favoritos do usuário.
+ * @returns Uma promessa que resolve para uma lista dos IDs dos produtos favoritos do usuário.
+ */
+export async function fetchUserFavorites(): Promise<number[]> {
+    try {
+        const response = await axios.get('/user/favorites');
+        return response.data.favorites;
+    } catch (error) {
+        console.error('Error fetching user favorites:', error);
         throw error;
     }
 }

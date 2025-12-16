@@ -13,13 +13,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_rates', function (Blueprint $table) {
+        Schema::create('favorites', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignIdFor(Product::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
-            $table->unsignedTinyInteger('rating');
-            $table->text('review')->nullable();
+            $table->foreignIdFor(Product::class)->constrained()->onDelete('cascade');
 
             $table->timestamps();
         });
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_rates');
+        Schema::dropIfExists('favorites');
     }
 };

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Address;
 use App\Models\User;
+use App\Models\Favorite;
 use App\Rules\CpfOrEmailRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -189,13 +190,13 @@ class UserController extends Controller
                 'country'    => $address->country,
                 'city'       => $address->city,
                 'state'      => $address->state,
-                'zipcode'   => $address->zipcode,
+                'zipcode'    => $address->zipcode,
             ]
 
         ]);
     }
 
-    public function getAddresses(Request $request)
+    public function getUserAddresses(Request $request)
     {
 
         $user = Auth::user();
@@ -211,13 +212,50 @@ class UserController extends Controller
                 'country'    => $address->country,
                 'city'       => $address->city,
                 'state'      => $address->state,
-                'zipcode'   => $address->zipcode,
+                'zipcode'    => $address->zipcode,
             ];
         });
 
         return response()->json([
             'error'     => null,
             'addresses' => $addresses
+        ]);
+    }
+
+    public function getUserFavorites(Request $request)
+    {
+        $user = Auth::user();
+
+        $user = User::find($user->id);
+
+        $favorites = $user->favorites()->pluck('product_id')->toArray();
+
+        return response()->json([
+            'error' => null,
+            'favorites' => $favorites
+        ]);
+    }
+
+    public function addUserFavorite(Request $request)
+    {
+
+        $request->validate([
+            'product_id' => 'required|integer|exists:products,id',
+        ],
+        [
+            'product_id.required' => 'Product ID is required.',
+            'product_id.integer'  => 'Product ID must be an integer.',
+            'product_id.exists'   => 'Product does not exist.',
+        ]);
+
+        $user = Auth::user();
+
+        $user->favorites()->create([
+            'product_id' => $request->input('product_id'),
+        ]);
+
+        return response()->json([
+            'message' => 'Product added to favorites successfully.'
         ]);
     }
 

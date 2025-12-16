@@ -25,6 +25,13 @@ Route::post('/register', [UserController::class, 'register'])->name('register');
 Route::middleware('auth')->group(function () {
 
     Route::get('/user/get', [UserController::class, 'getUser']);
+    Route::get('/user/favorites', [UserController::class, 'getUserFavorites']);
+    Route::get('/user/addresses', [UserController::class, 'getUserAddresses']);
+
+    Route::post('/user/favorites/add', [UserController::class, 'addUserFavorite']);
+    Route::post('/user/favorites/remove', [UserController::class, 'removeUserFavorite']);
+    Route::post('/user/addresses/add', [UserController::class, 'addUserAddress']);
+    Route::post('/user/addresses/remove', [UserController::class, 'removeUserAddress']);
 
     Route::get('/cart/get', [CartController::class, 'getCart']);
     Route::post('/cart/add', [CartController::class, 'addItemToCart']);

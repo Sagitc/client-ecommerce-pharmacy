@@ -23,15 +23,6 @@ const buyBtns = document.querySelectorAll('.products__btn-buy');
 //  Functions
 
 /**
- * 
- * @param byWhat 
- * @param orderBy 
- * @param limit 
- * @param identifier 
- * @param divToAppend 
- * @returns 
- */
-/**
  * Busca produtos a partir de diferentes critérios e cria os elementos DOM correspondentes.
  *
  * @remarks
@@ -168,9 +159,6 @@ function createProductElement(products: any, divToAppend: HTMLElement) {
         divToAppend.appendChild(productElement);
 
     }
-
-
-    const modal_buy = document.querySelector('#modal__container') as HTMLElement;
 
     const favIcons = divToAppend.querySelectorAll('.products__like');
     const addBtns = divToAppend.querySelectorAll('.products__btn-buy');

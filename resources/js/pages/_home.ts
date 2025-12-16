@@ -1,3 +1,5 @@
+import * as userService from "@/services/userService";
+import * as userHandler from "@/helpers/userHandler";
 import { getProducts } from "@/components/_products_cards";
 
 //  Declarations
@@ -20,6 +22,23 @@ catalogBtns.forEach(btn => {
 
 
 //  Functions
+
+async function loadInitialUser() {
+    try {
+        const user = await userService.fetchUser();
+
+        if (user && user.id) {
+            userHandler.setUser(user);
+        } else {
+            userHandler.clearUser();
+        }
+    } catch (error) {
+        console.error('Error loading initial user:', error);
+        userHandler.clearUser();
+    }
+}
+
+loadInitialUser();
 
 function filterCatalog(btn: Element) {
 

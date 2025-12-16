@@ -1,5 +1,6 @@
 import * as userHandler from '@/helpers/userHandler';
 import * as userService from '@/services/userService';
+import { openCart } from './_cartModal';
 
 export function initHeader(): void {
     
@@ -32,7 +33,7 @@ export function initHeader(): void {
     mobileSearchButton.addEventListener('click', toggleMobileSearch);
     mobileSearchCloseBtn.addEventListener('click', toggleMobileSearch);
 
-    mobileCartButton.addEventListener('click', toggleMobileCart);
+    mobileCartButton.addEventListener('click', openCart);
 
     draggableIcon.addEventListener('touchstart', (e: TouchEvent) => {
         isDragging = true;
@@ -86,6 +87,8 @@ export function initHeader(): void {
 
     //  Functions
     function toggleMobileMenu(): void {
+    
+        const isLogged = userHandler.isLoggedIn();
 
         if (!isLogged) {
             document.querySelector('.mobile-menu__nav')?.classList.add('is-disabled');
@@ -116,14 +119,6 @@ export function initHeader(): void {
             mobileSearch.classList.remove('is-disabled');
         } else {
             mobileSearch.classList.add('is-disabled');
-        }
-    }
-
-    function toggleMobileCart(): void {
-        if (mobileCart.classList.contains('is-disabled')) {
-            mobileCart.classList.remove('is-disabled');
-        } else {
-            mobileCart.classList.add('is-disabled');
         }
     }
 }
