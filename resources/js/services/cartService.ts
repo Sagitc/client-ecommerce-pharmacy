@@ -20,7 +20,7 @@ interface CartApiResponse {
  */
 export async function fetchCart(): Promise<ProductCartProps[]> {
     try {
-        const userId = (await fetchUser()).id;
+        const userId = (await fetchUser())?.id;
         const response = await axios.get<CartApiResponse>('/cart/get', {
             params: { user_id: userId }
         });
@@ -39,7 +39,7 @@ export async function fetchCart(): Promise<ProductCartProps[]> {
  */
 export async function addItemToCart(product_id: number, quantity: number = 1): Promise<ProductCartProps[]> {
     try {
-        const userId = (await fetchUser()).id;
+        const userId = (await fetchUser())?.id;
 
         const response = await axios.post<CartApiResponse>('/cart/add', {
             product_id: product_id,
@@ -62,7 +62,7 @@ export async function addItemToCart(product_id: number, quantity: number = 1): P
  */
 export async function removeItemFromCart(product_id: number): Promise<ProductCartProps[]> {
     try {
-        const userId = (await fetchUser()).id;
+        const userId = (await fetchUser())?.id;
 
         const response = await axios.post<CartApiResponse>('/cart/remove', {
             product_id: product_id,
@@ -85,7 +85,7 @@ export async function removeItemFromCart(product_id: number): Promise<ProductCar
  */
 export async function updateCartItemQuantity(product_id: number, quantity: number): Promise<ProductCartProps[]> {
     try {
-        const userId = (await fetchUser()).id;
+        const userId = (await fetchUser())?.id;
 
         const response = await axios.post<CartApiResponse>('/cart/update-quantity', {
             product_id: product_id,

@@ -181,7 +181,7 @@
     width: calc(70px - (var(--spacing-md) * 2));
     height: calc(40px - (var(--spacing-xs) * 2));
     border-radius: var(--border-radius-xl);
-    min-width: 50px;
+    min-width: 60px;
     padding: var(--spacing-md) var(--spacing-md);
     border: none;
     background-color: #e0e0e0;
@@ -189,10 +189,28 @@
     text-align: center;
 }
 
-.custom-quantity-input { 
-   -moz-appearance: textfield;
-   appearance: textfield;
+.custom-quantity-input {
+    /* Para Chrome, Safari, Edge e Opera */
+    -webkit-appearance: none;
+    margin: 0; /* Corrige um pequeno bug de margem no Firefox */
 
+    /* Para Firefox */
+    -moz-appearance: textfield;
+}
+
+/* Opcional: Para remover as setas no Microsoft Edge Legacy e IE */
+.custom-quantity-input::-ms-clear,
+.custom-quantity-input::-ms-reveal {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+/* Opcional: Para remover as setas de spinner no Chrome/Safari */
+.custom-quantity-input::-webkit-outer-spin-button,
+.custom-quantity-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .modal__footer {
@@ -257,6 +275,7 @@
         height: 100%;
         padding: 0;
     }
+
     .modal {
         margin: 0;
         max-width: calc(100% - (var(--spacing-md) * 2));

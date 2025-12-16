@@ -71,7 +71,8 @@ async function loadInitialCart(): Promise<void> {
         cartHandler.updateCartState(initialItems);
     } catch (error) {
         console.error('Error loading initial cart data:', error);
-    }   
+    }
+     
 }
 
 loadInitialCart();
@@ -111,7 +112,7 @@ function createCartProductElement(productData: any): void {
 
             <span class="item-card__price">R$ ${(productData[i]!.price * productData[i]!.quantity).toFixed(2).replace('.', ',')}</span>
 
-            <input type="number" class="custom-quantity-input" min="1" max="99" value="${productData[i]?.quantity}" aria-label="Quantidade personalizada">
+            <input type="number" name="quantity" class="custom-quantity-input" min="1" max="99" value="${productData[i]?.quantity}" aria-label="Quantidade personalizada">
 
           </div>`;
 

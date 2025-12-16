@@ -248,14 +248,44 @@ class UserController extends Controller
             'product_id.exists'   => 'Product does not exist.',
         ]);
 
-        $user = Auth::user();
+
+        $userId = Auth::user()->id;
+        $user = User::find($userId);
 
         $user->favorites()->create([
             'product_id' => $request->input('product_id'),
         ]);
 
+        $favorites = $user->favorites()->pluck('product_id')->toArray();
+
         return response()->json([
-            'message' => 'Product added to favorites successfully.'
+            'message'   => 'Product added to favorites successfully.',
+            'favorites' => $favorites
+        ]);
+    }
+
+    public function removeUserFavorite(Request $request)
+    {
+
+        $request->validate([
+            'product_id' => 'required|integer|exists:products,id',
+        ],
+        [
+            'product_id.required' => 'Product ID is required.',
+            'product_id.integer'  => 'Product ID must be an integer.',
+            'product_id.exists'   => 'Product does not exist.',
+        ]);
+
+        $userId = Auth::user()->id;
+        $user = User::find($userId);
+
+        $user->favorites()->where('product_id', $request->input('product_id'))->delete();
+        
+        $favorites = $user->favorites()->pluck('product_id')->toArray();
+
+        return response()->json([
+            'message'   => 'Product removed from favorites successfully.',
+            'favorites' => $favorites
         ]);
     }
 

@@ -1,15 +1,40 @@
 import axios from 'axios';
 import type { User } from '../types/user.interface';
 
+
 // --- ESTADO INTERNO ---
 
 let currentUser: User | null = null;
 
+let userFavs: number[] = [];
+
 const LISTENERS: Function[] = [];
 
 
-// --- OBSERVER PATTERN ---
+// --- API CALLS ---
 
+/**
+ * Fetches the list of favorite product IDs for the current user.
+ * @returns A promise that resolves to an array of favorite product IDs.
+ */
+export async function fetchUserFavorites(): Promise<number[]> {
+    try {
+        const userId = currentUser?.id;
+
+        if (!userId) {
+            throw new Error('User not logged in');
+        }
+
+        const response = await axios.get<{ favorites: number[] }>(`/user/favorites`);
+        return response.data.favorites;
+    } catch (error) {
+        console.error('Error fetching user favorites:', error);
+        throw new Error('Failed to fetch user favorites');
+    }
+}
+
+
+// --- OBSERVER PATTERN ---
 
 /**
  * Adiciona uma função de callback para ser executada quando o carrinho mudar.
@@ -50,6 +75,14 @@ export function getUserProfile(): User | null {
 }
 
 /**
+ * Retorna uma cópia da lista de IDs dos produtos favoritos do usuário.
+ * @returns Uma cópia do array de IDs dos produtos favoritos.
+ */
+export function getUserFavorites(): number[] {
+    return [...userFavs];
+}
+
+/**
  * Verifica se um usuário está logado.
  * @returns Retorna true se um usuário estiver logado, caso contrário, false.
  */
@@ -74,6 +107,15 @@ export function getUserId(): number | null {
  */
 export function setUser(profile: User): void {
     currentUser = profile;
+    notifyListeners();
+}
+
+/**
+ * Define a lista de IDs dos produtos favoritos do usuário.
+ * @param favorites O array de IDs dos produtos favoritos.
+ */
+export function setUserFavorites(favorites: number[]): void {
+    userFavs = favorites;
     notifyListeners();
 }
 

@@ -1,7 +1,8 @@
 import axios from 'axios';
+import * as userService from '../services/userService';
+import * as userHandler from '../helpers/userHandler';
 import { openCart, addOnCart } from './_cartModal';
-import { addItemToCart } from '../services/cartService';
-import { updateCartState } from '@/helpers/cartHandler';
+
 
 //  Declarations
 
@@ -21,6 +22,18 @@ const buyBtns = document.querySelectorAll('.products__btn-buy');
 
 
 //  Functions
+
+async function loadInitialFavs() {
+
+    try {
+        const favs = await userService.fetchUserFavorites();
+        userHandler.setUserFavorites(favs);
+    } catch (error) {
+        console.error('Failed to load initial favorites:', error);
+    }
+}
+
+loadInitialFavs();
 
 /**
  * Busca produtos a partir de diferentes critérios e cria os elementos DOM correspondentes.
@@ -123,6 +136,12 @@ export async function getProducts(
 
 }
 
+
+/**
+ * Cria elementos de produto e os anexa a um contêiner DOM fornecido.
+ * @param products Lista de produtos a serem exibidos.
+ * @param divToAppend Elemento DOM onde os elementos de produto serão anexados.
+ */
 function createProductElement(products: any, divToAppend: HTMLElement) {
 
     for (let i = 0; i < products.length; i++) {
@@ -131,10 +150,22 @@ function createProductElement(products: any, divToAppend: HTMLElement) {
         productElement.href = `/product/${products[i]?.id}`;
         productElement.classList.add('products__card');
         productElement.setAttribute('data-product-id', products[i]?.id);
+        
+        let imgFavHTML: string;
+
+        if (userHandler.getUserFavorites().includes(products[i]?.id)) {
+
+            imgFavHTML = `<img src="images/icons/icon_fav_filled.svg" aria-pressed="true" alt="Ícone de favoritar">`
+
+        } else {
+
+            imgFavHTML = `<img src="images/icons/icon_fav_outline.svg" aria-pressed="false" alt="Ícone de favoritar">`
+            
+        }
 
         productElement.innerHTML = `
             <button class="products__like">
-                <img src="images/icons/icon_fav_outline.svg" aria-pressed="false" alt="Ícone de favoritar">
+                ` + imgFavHTML + `
                 <span class="mobile-touch"></span>
             </button>
 
@@ -167,7 +198,8 @@ function createProductElement(products: any, divToAppend: HTMLElement) {
         icon.addEventListener('click', event => {
             event.stopPropagation();
             event.preventDefault();
-            toggleFavIcon(icon)
+
+            toggleFavs(icon);
         });
     });
 
@@ -184,20 +216,41 @@ function createProductElement(products: any, divToAppend: HTMLElement) {
     });
 }
 
-function toggleFavIcon(icon: Element) {
+/**
+ * Alterna o estado de favorito de um produto.
+ * @param icon Elemento do ícone de favorito que foi clicado.
+ * @returns Uma promessa que resolve quando a operação for concluída.
+ */
+async function toggleFavs(icon: Element) {
+
+    let user = userHandler.getUserProfile();
+
+    if (!user) {
+        alert('Você precisa estar logado para favoritar produtos.');
+        return;
+    }
+
+    let productId = parseInt((icon.parentElement?.getAttribute('data-product-id') as string));
 
     if (icon.classList.contains('active')) {
 
         icon.setAttribute('aria-pressed', 'false');
         icon.querySelector('img')?.setAttribute('src', '/images/icons/icon_fav_outline.svg');
 
+        let favorites = await userService.removeFavoriteProduct(productId);
+        userHandler.setUserFavorites(favorites);
+
     } else {
 
         icon.setAttribute('aria-pressed', 'true');
         icon.querySelector('img')?.setAttribute('src', '/images/icons/icon_fav_filled.svg');
 
-        //  Script para adicionar aos favoritos do perfil
+        let favorites = await userService.addFavoriteProduct(productId);
+        userHandler.setUserFavorites(favorites);
 
     }
+
     icon.classList.toggle('active');
+
 }
+

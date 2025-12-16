@@ -2,6 +2,7 @@ import axios from 'axios';
 import type { User, UserRegistrationData, UserLoginData, UserAddressData } from '../types/user.interface';
 
 // --- TYPES ---
+
 interface UserApiResponse {
 
     id: number;
@@ -105,6 +106,38 @@ export async function fetchUserFavorites(): Promise<number[]> {
         return response.data.favorites;
     } catch (error) {
         console.error('Error fetching user favorites:', error);
+        throw error;
+    }
+}
+
+/**
+ * Adiciona um produto aos favoritos do usuário.
+ * @param productId O ID do produto a ser adicionado aos favoritos.
+ */
+export async function addFavoriteProduct(productId: number): Promise<number[]> {
+    try {
+
+        const response = await axios.post('/user/favorites/add', { product_id: productId });
+        return response.data.favorites;
+
+    } catch (error) {
+
+        console.error('Error adding favorite product:', error);
+        throw error;
+
+    }
+}
+
+/**
+ * Remove um produto dos favoritos do usuário.
+ * @param productId O ID do produto a ser removido dos favoritos.
+ */
+export async function removeFavoriteProduct(productId: number): Promise<number[]> {
+    try {
+        const response = await axios.post('/user/favorites/remove', { product_id: productId });
+        return response.data.favorites;
+    } catch (error) {
+        console.error('Error removing favorite product:', error);
         throw error;
     }
 }
