@@ -7,18 +7,11 @@ import { openCart, addOnCart } from './_cartModal';
 //  Declarations
 
 const buyBtns = document.querySelectorAll('.products__btn-buy');
-
+let favsIds: number[] = [];
 
 //  Events
 
-// buyBtns.forEach(btn => {
-//     btn.addEventListener('click', event => {
-//         event.stopPropagation();
-//         event.preventDefault();
 
-//         addOnCart(btn.parentElement?.parentElement as HTMLElement)
-//     });
-// });
 
 
 //  Functions
@@ -142,7 +135,11 @@ export async function getProducts(
  * @param products Lista de produtos a serem exibidos.
  * @param divToAppend Elemento DOM onde os elementos de produto serão anexados.
  */
-function createProductElement(products: any, divToAppend: HTMLElement) {
+async function createProductElement(products: any, divToAppend: HTMLElement) {
+
+    const favs = await userService.fetchUserFavorites();
+    userHandler.setUserFavorites(favs);
+    favsIds = userHandler.getUserFavorites().map((p: any) => p.id);
 
     for (let i = 0; i < products.length; i++) {
 
@@ -150,17 +147,14 @@ function createProductElement(products: any, divToAppend: HTMLElement) {
         productElement.href = `/product/${products[i]?.id}`;
         productElement.classList.add('products__card');
         productElement.setAttribute('data-product-id', products[i]?.id);
-        
+
         let imgFavHTML: string;
 
-        if (userHandler.getUserFavorites().includes(products[i]?.id)) {
-
+        if (favsIds.includes(products[i]?.id)) {
             imgFavHTML = `<img src="images/icons/icon_fav_filled.svg" aria-pressed="true" alt="Ícone de favoritar">`
 
         } else {
-
             imgFavHTML = `<img src="images/icons/icon_fav_outline.svg" aria-pressed="false" alt="Ícone de favoritar">`
-            
         }
 
         productElement.innerHTML = `
@@ -221,7 +215,7 @@ function createProductElement(products: any, divToAppend: HTMLElement) {
  * @param icon Elemento do ícone de favorito que foi clicado.
  * @returns Uma promessa que resolve quando a operação for concluída.
  */
-async function toggleFavs(icon: Element) {
+export async function toggleFavs(icon: Element) {
 
     let user = userHandler.getUserProfile();
 

@@ -1,4 +1,7 @@
+import { addOnCart, openCart } from '@/components/_cartModal';
 import { getFocusableElements } from '../app';
+import * as userHandler from '../helpers/userHandler';
+import * as userService from '../services/userService';
 
 //  DECLARATIONS
 const options: NodeListOf<Element> = document.querySelectorAll('.info__option-btn');
@@ -9,7 +12,7 @@ const profilePasswordBtn: HTMLButtonElement | null = document.querySelector('#pe
 const profileNumberBtn: HTMLButtonElement | null = document.querySelector('#perfil__number button');
 const profileEmailBtn: HTMLButtonElement | null = document.querySelector('#perfil__email button');
 const addressAddBtn: HTMLButtonElement | null = document.querySelector('#modal__resume-address__add');
-const creditAddBtn: HTMLButtonElement | null = document.querySelector('#modal__resume-credit__add');    
+const creditAddBtn: HTMLButtonElement | null = document.querySelector('#modal__resume-credit__add');
 
 const modalAddress: HTMLDivElement | null = document.querySelector('#modal__resume-address');
 const modalCredit: HTMLDivElement | null = document.querySelector('#modal__resume-credit');
@@ -54,6 +57,7 @@ const modalInfos = {
 };
 
 const modalCloseBtn: NodeListOf<Element> = document.querySelectorAll('.modal__close');
+const divToAppend: HTMLDivElement | null = document.querySelector('#favorites__content');
 
 let elementThatOpenedModal: HTMLElement | null = null;
 
@@ -80,7 +84,7 @@ options.forEach(btn => {
     });
 });
 
-for( const key in modalInfos ) {
+for (const key in modalInfos) {
     const obj = modalInfos[key as keyof typeof modalInfos];
 
     obj.btn?.addEventListener('click', () => {
@@ -95,6 +99,7 @@ modalCloseBtn.forEach(btn => {
     });
 });
 
+loadUserFavorites();
 
 //  FUNCTIONS
 
@@ -194,3 +199,102 @@ function toggleModal(modal: HTMLDivElement | null): void {
 
     firstElement?.focus();
 }
+
+async function loadUserFavorites(): Promise<void> {
+
+    if (!divToAppend) return;
+
+    divToAppend.innerHTML = '';
+
+    let products = await userService.fetchUserFavorites();
+    userHandler.setUserFavorites(products);
+
+    createFavsProductElement(products);
+
+}
+
+function createFavsProductElement(products: any) {
+
+    if (!divToAppend) return;
+
+    for (let i = 0; i < products.length; i++) {
+
+        let productElement = document.createElement('a');
+        productElement.href = `/product/${products[i]?.id}`;
+        productElement.classList.add('products__card');
+        productElement.setAttribute('data-product-id', products[i]?.id);
+
+        let imgFavHTML: string;
+
+        if (userHandler.getUserFavorites().includes(products[i])) {
+            imgFavHTML = `<img src="images/icons/icon_fav_filled.svg" aria-pressed="true" alt="Ícone de favoritar">`
+
+        } else {
+            imgFavHTML = `<img src="images/icons/icon_fav_outline.svg" aria-pressed="false" alt="Ícone de favoritar">`
+
+        }
+
+        productElement.innerHTML = `
+                    <button class="products__like">
+                        ` + imgFavHTML + `
+                        <span class="mobile-touch"></span>
+                    </button>
+        
+                    <div class="products__image">
+                        <img src="${products[i]?.image}" alt="Imagem do produto">
+        
+                        <button class="products__btn-buy">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="11" y="4" width="2" height="16" fill="#fff" />
+                                <rect x="4" y="11" width="16" height="2" fill="#fff" />
+                            </svg>
+                            <span class="mobile-touch"></span>
+                        </button>
+                    </div>
+        
+                    <div class="products__text">
+                        <h3 class="products__title">${products[i]?.label}</h3>
+        
+                        <span class="products__price">R$ ${products[i]?.price.toFixed(2).replace('.', ',')}</span>
+                    </div>`
+
+        divToAppend.appendChild(productElement);
+
+    }
+
+    const favIcons = divToAppend.querySelectorAll('.products__like');
+    const addBtns = divToAppend.querySelectorAll('.products__btn-buy');
+
+    favIcons.forEach(icon => {
+        icon.addEventListener('click', event => {
+            event.stopPropagation();
+            event.preventDefault();
+
+            removeFav(icon);
+        });
+    });
+
+    addBtns.forEach(btn => {
+
+        btn.addEventListener('click', (event) => {
+            event.stopPropagation();
+            event.preventDefault();
+            addOnCart(parseInt((btn.parentElement?.parentElement?.getAttribute('data-product-id') as string)));
+            openCart();
+        });
+
+
+    });
+}
+
+async function removeFav(btn: any): Promise<void> {
+
+    let productId = parseInt((btn.parentElement?.getAttribute('data-product-id') as string));
+
+    let favorites = await userService.removeFavoriteProduct(productId);
+    userHandler.setUserFavorites(favorites);
+
+    loadUserFavorites();
+
+}
+

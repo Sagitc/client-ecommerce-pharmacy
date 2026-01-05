@@ -228,11 +228,21 @@ class UserController extends Controller
 
         $user = User::find($user->id);
 
-        $favorites = $user->favorites()->pluck('product_id')->toArray();
+        // $favorites = $user->favorites()->pluck('product_id')->toArray();
+
+        $products = $user->favorites()->with('product')->get()->map(function ($favorite) {
+            return [
+                'id'           => $favorite->product->id,
+                'label'        => $favorite->product->label,
+                'description'  => $favorite->product->description,
+                'price'        => $favorite->product->price,
+                'image'        => $favorite->product->main_image,
+            ];
+        });
 
         return response()->json([
             'error' => null,
-            'favorites' => $favorites
+            'favorites' => $products
         ]);
     }
 
