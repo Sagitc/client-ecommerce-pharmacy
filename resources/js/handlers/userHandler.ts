@@ -105,7 +105,7 @@ export function getUserId(): number | null {
  * Define o perfil do usuário atual.
  * @param profile O objeto User representando o perfil do usuário.
  */
-export function setUser(profile: User): void {
+export function setUser(profile: User | null): void {
     currentUser = profile;
     notifyListeners();
 }

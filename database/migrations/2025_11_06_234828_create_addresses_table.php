@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('country');
             $table->string('complement')->nullable();
             $table->foreignIdFor(User::class);
+            $table->boolean('is_default')->default(false);
             $table->timestamps();
         });
     }

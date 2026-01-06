@@ -1,6 +1,6 @@
 import { addOnCart, openCart } from '@/components/_cartModal';
 import { getFocusableElements } from '../app';
-import * as userHandler from '../helpers/userHandler';
+import * as userHandler from '../handlers/userHandler';
 import * as userService from '../services/userService';
 
 //  DECLARATIONS
@@ -285,6 +285,7 @@ function createFavsProductElement(products: any) {
 
 
     });
+
 }
 
 async function removeFav(btn: any): Promise<void> {

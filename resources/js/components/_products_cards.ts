@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as userService from '../services/userService';
-import * as userHandler from '../helpers/userHandler';
+import * as userHandler from '../handlers/userHandler';
 import { openCart, addOnCart } from './_cartModal';
 
 
@@ -17,6 +17,10 @@ let favsIds: number[] = [];
 //  Functions
 
 async function loadInitialFavs() {
+
+    if (!userService.fetchUser() != null) {
+        return;
+    }
 
     try {
         const favs = await userService.fetchUserFavorites();
@@ -77,6 +81,7 @@ export async function getProducts(
     let products;
 
     switch (byWhat) {
+        
         case 'id':
 
             if (!identifier) {
@@ -121,6 +126,7 @@ export async function getProducts(
 
             products = (await axios.get(`/api/products?limit=${limit}${orderBy ? `&orderBy=${orderBy}` : ''}`)).data.products;
             break;
+        
     }
 
     createProductElement(products, divToAppend as HTMLElement);
@@ -137,10 +143,18 @@ export async function getProducts(
  */
 async function createProductElement(products: any, divToAppend: HTMLElement) {
 
-    const favs = await userService.fetchUserFavorites();
-    userHandler.setUserFavorites(favs);
-    favsIds = userHandler.getUserFavorites().map((p: any) => p.id);
+    let profile = await userService.fetchUser();
+    userHandler.setUser(profile);
 
+
+    if (profile == null) {
+        favsIds = [];
+    } else {
+        const favs = await userService.fetchUserFavorites();
+        userHandler.setUserFavorites(favs);
+        favsIds = userHandler.getUserFavorites().map((p: any) => p.id);
+    }
+    
     for (let i = 0; i < products.length; i++) {
 
         let productElement = document.createElement('a');
@@ -152,7 +166,6 @@ async function createProductElement(products: any, divToAppend: HTMLElement) {
 
         if (favsIds.includes(products[i]?.id)) {
             imgFavHTML = `<img src="images/icons/icon_fav_filled.svg" aria-pressed="true" alt="Ícone de favoritar">`
-
         } else {
             imgFavHTML = `<img src="images/icons/icon_fav_outline.svg" aria-pressed="false" alt="Ícone de favoritar">`
         }

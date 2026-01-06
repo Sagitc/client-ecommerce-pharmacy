@@ -1,6 +1,7 @@
 import axios from 'axios';
-import { createFocusTrapHandler, getFocusableElements } from '@/helpers/focusTrapHandler';
-import * as cartHandler from '@/helpers/cartHandler';
+import { createFocusTrapHandler, getFocusableElements } from '@/handlers/focusTrapHandler';
+import * as userService from '@/services/userService';
+import * as cartHandler from '@/handlers/cartHandler';
 import * as cartService from '@/services/cartService';
 
 // Declarations
@@ -66,6 +67,10 @@ export async function addOnCart(product_id: number): Promise<void> {
 
 async function loadInitialCart(): Promise<void> {
     
+    if (!userService.fetchUser() != null) {
+        return;
+    }
+
     try {
         const initialItems = await cartService.fetchCart();
         cartHandler.updateCartState(initialItems);

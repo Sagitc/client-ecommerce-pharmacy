@@ -19,6 +19,7 @@ class Address extends Model
         'state',
         'zipcode',
         'country',
+        'is_default'
     ];
 
     public function user(): BelongsTo

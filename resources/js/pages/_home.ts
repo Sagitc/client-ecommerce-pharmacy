@@ -1,5 +1,5 @@
 import * as userService from "@/services/userService";
-import * as userHandler from "@/helpers/userHandler";
+import * as userHandler from "@/handlers/userHandler";
 import { getProducts } from "@/components/_products_cards";
 
 //  Declarations

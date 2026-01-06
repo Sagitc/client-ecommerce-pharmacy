@@ -1,4 +1,4 @@
-import * as userHandler from '@/helpers/userHandler';
+import * as userHandler from '@/handlers/userHandler';
 import * as userService from '@/services/userService';
 import { openCart } from './_cartModal';
 
