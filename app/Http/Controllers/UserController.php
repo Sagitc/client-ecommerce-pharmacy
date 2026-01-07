@@ -119,109 +119,6 @@ class UserController extends Controller
         ])->onlyInput('identifier');
     }
 
-    public function createAddress(Request $request)
-    {
-
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'street'       => 'required|string|max:255',
-                'number'       => 'required|string|max:20',
-                'complement'   => 'nullable|string|max:255',
-                'country'      => 'required|string|max:100',
-                'city'         => 'required|string|max:255',
-                'state'        => 'required|string|size:2',
-                'zipcode'     => 'required|string|max:20'
-            ],
-            [
-                'street.required'       => 'Street is required',
-                'street.string'         => 'Street must be a string',
-                'street.max'            => 'Street must not exceed 255 characters',
-                'number.required'       => 'Number is required',
-                'number.string'         => 'Number must be a string',
-                'number.max'            => 'Number must not exceed 20 characters',
-                'complement.string'     => 'Complement must be a string',
-                'complement.max'        => 'Complement must not exceed 255 characters',
-                'city.required'         => 'City is required',
-                'city.string'           => 'City must be a string',
-                'city.max'              => 'City must not exceed 255 characters',
-                'state.required'        => 'State is required',
-                'state.string'          => 'State must be a string',
-                'state.size'            => 'State must be exactly 2 characters',
-                'zipcode.required'     => 'Zip code is required',
-                'zipcode.string'       => 'Zip code must be a string',
-                'zipcode.size'         => 'Zip code must be exactly 20 characters'
-            ]
-        );
-
-        if ($validator->fails()) {
-
-            return response()->json([
-
-                'error' => $validator->errors()->first(),
-                'addresses' => null
-
-            ], 400);
-        }
-
-        $user = Auth::user();
-
-        $address = Address::create([
-
-            'user_id'    => $user->id,
-            'street'     => $request->input('street'),
-            'number'     => $request->input('number'),
-            'complement' => $request->input('complement'),
-            'country'    => $request->input('country'),
-            'city'       => $request->input('city'),
-            'state'      => $request->input('state'),
-            'zipcode'    => $request->input('zipcode'),
-
-        ]);
-
-        return response()->json([
-
-            'error'     => null,
-            'addresses' => [
-                'id'         => $address->id,
-                'street'     => $address->street,
-                'number'     => $address->number,
-                'complement' => $address->complement,
-                'country'    => $address->country,
-                'city'       => $address->city,
-                'state'      => $address->state,
-                'zipcode'    => $address->zipcode,
-            ]
-
-        ]);
-    }
-
-    public function getUserAddresses(Request $request)
-    {
-
-        $user = Auth::user();
-
-        $user = User::find($user->id);
-
-        $addresses = $user->addresses()->get()->map(function ($address) {
-            return [
-                'id'         => $address->id,
-                'street'     => $address->street,
-                'number'     => $address->number,
-                'complement' => $address->complement,
-                'country'    => $address->country,
-                'city'       => $address->city,
-                'state'      => $address->state,
-                'zipcode'    => $address->zipcode,
-            ];
-        });
-
-        return response()->json([
-            'error'     => null,
-            'addresses' => $addresses
-        ]);
-    }
-
     public function getUserFavorites(Request $request)
     {
         $user = Auth::user();
@@ -287,7 +184,7 @@ class UserController extends Controller
         ]);
 
         $userId = Auth::user()->id;
-        $user = User::find($userId);
+        $user   = User::find($userId);
 
         $user->favorites()->where('product_id', $request->input('product_id'))->delete();
         

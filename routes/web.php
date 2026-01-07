@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
@@ -30,8 +31,12 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/user/favorites/add', [UserController::class, 'addUserFavorite']);
     Route::post('/user/favorites/remove', [UserController::class, 'removeUserFavorite']);
-    Route::post('/user/addresses/add', [UserController::class, 'addUserAddress']);
-    Route::post('/user/addresses/remove', [UserController::class, 'removeUserAddress']);
+
+    Route::post('/user/addresses/add', [AddressController::class, 'addAddress']);
+    Route::post('/user/addresses/remove', [AddressController::class, 'removeAddress']);
+    Route::post('/user/addresses/update', [AddressController::class, 'updateAddress']);
+    Route::post('/user/addresses/set-default', [AddressController::class, 'setDefaultAddress']);
+    Route::get('/user/addresses', [AddressController::class, 'getAddresses']);
 
     Route::get('/cart/get', [CartController::class, 'getCart']);
     Route::post('/cart/add', [CartController::class, 'addItemToCart']);

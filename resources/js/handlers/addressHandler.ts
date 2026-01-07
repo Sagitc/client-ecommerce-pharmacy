@@ -2,8 +2,22 @@
 
 // --- ESTADO INTERNO ---
 
-let addresses = [];
+export interface Address {
+    id: number;
+    zipcode: string;
+    street: string;
+    number: string;
+    city: string;
+    state: string;
+    country: string;
+    complement?: string;
+    is_default: boolean;
+}
+
+let addresses: Address[] = [];
 const listeners: Function[] = [];
+
+
 
 
 // --- OBSERVER PATTERN ---
@@ -39,3 +53,18 @@ function notifyListeners(): void {
 // --- LÓGICA E GETTERS ---
 
 
+export function getAddresses(): Address[] {
+    return [...addresses];
+}
+
+export function getMainAddress(): Address | null {
+    return addresses.find(address => address.is_default) || null;
+}
+
+
+// --- STATE MODIFIERS ---
+
+export function setAddresses(AddressList: Address[]): void {
+    addresses = AddressList;
+    notifyListeners();
+}
