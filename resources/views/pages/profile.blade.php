@@ -28,32 +28,14 @@
         </button>
 
         <form class="modal__content">
-            <div class="modal__options-checkbox">
+            <!-- <div class="modal__options-checkbox">
                 <input selected type="radio" name="address__option1" id="address__option1">
                 <label class="modal__option-checkbox__title" for="address__option1">
                     <h4>Rua João de Carvalho, 9873</h4>
                     <span class="modal__option-checkbox__description modal__address-region">Anchieta • 00.000-000</span>
                     <span class="modal__option-checkbox__description modal__address-receiver">Eduardo de cáprio</span>
                 </label>
-            </div>
-
-            <div class="modal__options-checkbox">
-                <input type="radio" name="address__option1" id="address__option2">
-                <label class="modal__option-checkbox__title" for="address__option2">
-                    <h4>Rua João de Carvalho, 9873</h4>
-                    <span class="modal__option-checkbox__description modal__address-region">Anchieta • 00.000-000</span>
-                    <span class="modal__option-checkbox__description modal__address-receiver">Eduardo de cáprio</span>
-                </label>
-            </div>
-
-            <div class="modal__options-checkbox">
-                <input type="radio" name="address__option1" id="address__option3">
-                <label class="modal__option-checkbox__title" for="address__option3">
-                    <h4>Rua João de Carvalho, 9873</h4>
-                    <span class="modal__option-checkbox__description modal__address-region">Anchieta • 00.000-000</span>
-                    <span class="modal__option-checkbox__description modal__address-receiver">Eduardo de cáprio</span>
-                </label>
-            </div>
+            </div> -->
         </form>
 
         <div class="modal__act">
@@ -169,31 +151,41 @@
             <span class="mobile-touch"></span>
         </button>
 
-        <form class="modal__content">
+        <form class="modal__content" action="{{ route('addAddress') }}" method="POST">
+            @csrf
+            <div class="modal__form-group">
+                <label for="address-add__receiver">Responsável</label>
+                <input type="text" name="receiver_name" id="address-add__receiver" aria-label="Campo para digitar o nome do responsável">
+            </div>
+
+            <div class="modal__form-group">
+                <label for="address-add__receiver_number">Número do responsável</label>
+                <input type="tel" name="receiver_phone" id="address-add__receiver_number" aria-label="Campo para digitar o número do responsável">
+            </div>
+
             <div class="modal__form-group">
                 <label for="address-add__zipcode">CEP</label>
-                <input type="text" name="address_zipcode" id="address-add__zipcode" aria-label="Campo para digitar o CEP">
+                <input type="text" name="zipcode" id="address-add__zipcode" aria-label="Campo para digitar o CEP">
             </div>
 
             <div class="modal__form-group">
-                <label for="address-add__street">Endereço</label>
-                <input type="text" name="address_street" id="address-add__street" aria-label="Campo para digitar a rua e número">
+                <label for="address-add__street">Rua</label>
+                <input type="text" name="street" id="address-add__street" aria-label="Campo para digitar a rua">
             </div>
 
             <div class="modal__form-group">
-                <label for="address-add__district">Bairro</label>
-                <input type="text" name="address_district" id="address-add__district" aria-label="Campo para digitar o bairro">
+                <label for="address-add__number">Número</label>
+                <input type="text" name="number" id="address-add__number" aria-label="Campo para digitar o número">
             </div>
 
             <div class="modal__form-group">
                 <label for="address-add__complement">Complemento</label>
-                <input type="text" name="address_complement" id="address-add__complement" aria-label="Campo para digitar o complemento">
+                <input type="text" name="complement" id="address-add__complement" aria-label="Campo para digitar o complemento">
             </div>
 
-
             <div class="modal__form-group">
-                <label for="address_receiver">Nome do receptor</label>
-                <input type="text" name="address_receiver" id="modal__address-add-receiver" aria-label="Campo para digitar o nome do receptor">
+                <label for="address-add__district">Bairro</label>
+                <input type="text" name="district" id="address-add__district" aria-label="Campo para digitar o bairro">
             </div>
 
             <button type="submit" class="modal__act-main">Adicionar endereço</button>
@@ -326,6 +318,7 @@
                         </div>
 
                         <button id="address__change">Alterar endereço</button>
+                        <button id="address__create" class="is-disabled">Adicionar endereço</button>
                     </div>
 
                     <div id="resume__credit" class="box">

@@ -12,13 +12,13 @@ class Address extends Model
 
     public $fillable = [
         'user_id',
+        'receiver_name',
+        'receiver_phone',
         'street',
         'number',
         'complement',
-        'city',
-        'state',
+        'district',
         'zipcode',
-        'country',
         'is_default'
     ];
 

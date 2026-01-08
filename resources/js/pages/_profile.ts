@@ -2,6 +2,9 @@ import { addOnCart, openCart } from '@/components/_cartModal';
 import { getFocusableElements } from '../app';
 import * as userHandler from '../handlers/userHandler';
 import * as userService from '../services/userService';
+import * as addressHandler from '../handlers/addressHandler';
+import * as addressService from '../services/addressService';
+
 
 //  DECLARATIONS
 const options: NodeListOf<Element> = document.querySelectorAll('.info__option-btn');
@@ -26,10 +29,10 @@ const params: URLSearchParams = new URLSearchParams(window.location.search);
 const tab: string | null = params.get('tab');
 
 const modalInfos = {
-    address: {
-        btn: resumeAddressBtn,
-        modal: modalAddress
-    },
+    // address: {
+    //     btn: resumeAddressBtn,
+    //     modal: modalAddress
+    // },
     credit: {
         btn: resumeCreditBtn,
         modal: modalCredit
@@ -63,6 +66,12 @@ let elementThatOpenedModal: HTMLElement | null = null;
 
 
 //  EVENTS
+
+userHandler.setUser(await userService.fetchUser());
+let user = userHandler.getUserProfile();
+
+loadUserAddresses();
+loadUserFavorites();
 
 let btnActiveOnLoad: Element | null = null;
 
@@ -99,7 +108,83 @@ modalCloseBtn.forEach(btn => {
     });
 });
 
-loadUserFavorites();
+resumeAddressBtn?.addEventListener('click', () => {
+    toggleModal(modalAddress);
+
+    let content = document.querySelector('#modal__resume-address .modal__content');
+    let addresses = addressHandler.getAddresses();
+    let mainAddress = addressHandler.getMainAddress();
+
+    if (!content || !addresses || addresses.length === 0) return;
+
+    content.innerHTML = '';
+
+    for (let x = 0; addresses.length > x; x++) {
+        let addressElements = document.createElement('div');
+        addressElements.classList.add('modal__options-checkbox');
+        addressElements.setAttribute('data-address-id', addresses[x]!.id.toString());
+
+        addressElements.innerHTML = `
+            <input selected type="radio" ${addresses[x]!.id === mainAddress?.id ? 'checked' : ''} name="address__option" id="address__option${x}">
+            <label class="modal__option-checkbox__title" for="address__option${x}">
+                <h4>${addresses[x]!.street}, ${addresses[x]!.number}</h4>
+                <span class="modal__option-checkbox__description modal__address-region">${addresses[x]!.district} • ${addresses[x]!.zipcode}</span>
+                <span class="modal__option-checkbox__description modal__address-receiver">${addresses[x]!.receiver_name}</span>
+            </label>
+            <button type="button" aria-label="Remover item" class="item-card__delete-btn">
+              <img src="/images/icons/icon_trash_black.svg" alt="Ícone de remover item">
+            </button>
+        `
+        content.appendChild(addressElements);
+    }
+
+    content.querySelectorAll('.item-card__delete-btn').forEach(btn => {
+        btn.addEventListener('click', async (event) => {
+            event.preventDefault();
+            let address_id = parseInt((btn.parentElement?.getAttribute('data-address-id') as string));
+
+            await addressService.removeAddress(address_id);
+            addressHandler.setAddresses(await addressService.fetchAddresses());
+
+            loadUserAddresses();
+
+            // Reopen modal to refresh addresses
+            toggleModal(modalAddress);
+            resumeAddressBtn?.click();
+
+        });
+    });
+
+    // Remove o listener antigo e adiciona um novo para evitar múltiplas execuções
+    const saveBtn = document.querySelector('#modal__resume-address__save');
+    const newSaveBtn = saveBtn?.cloneNode(true) as HTMLElement;
+    saveBtn?.parentNode?.replaceChild(newSaveBtn, saveBtn);
+    
+    newSaveBtn?.addEventListener('click', async () => {
+        let selectedAddressRadio: HTMLInputElement | null = content.querySelector('input[name="address__option"]:checked');
+
+        if (!selectedAddressRadio) return;
+
+        let selectedAddressDiv: HTMLDivElement | null = selectedAddressRadio.parentElement as HTMLDivElement;
+
+        if (!selectedAddressDiv) return;
+
+        let selectedAddressId: number = parseInt((selectedAddressDiv.getAttribute('data-address-id') as string));
+
+        if (!selectedAddressId || selectedAddressId === mainAddress?.id) {
+            toggleModal(modalAddress);
+            return;
+        }
+
+        await addressService.setDefaultAddress(selectedAddressId);
+        addressHandler.setAddresses(await addressService.fetchAddresses());
+
+        loadUserAddresses();
+
+        toggleModal(modalAddress);
+    });
+
+});
 
 //  FUNCTIONS
 
@@ -210,6 +295,57 @@ async function loadUserFavorites(): Promise<void> {
     userHandler.setUserFavorites(products);
 
     createFavsProductElement(products);
+
+}
+
+async function loadUserAddresses(): Promise<void> {
+
+    addressHandler.setAddresses(await addressService.fetchAddresses());
+
+    if (addressHandler.getAddresses().length === 0) {
+
+        const addressSection: HTMLDivElement | null = document.querySelector('#address__main') as HTMLDivElement;
+        const addressCreateBtn: HTMLButtonElement | null = document.querySelector('#address__create');
+        const addressesListModal: HTMLDivElement | null = document.querySelector('#modal__resume-address') as HTMLDivElement;
+
+        addressCreateBtn?.classList.remove('is-disabled');
+        
+        document.querySelector('#address__change')?.classList.add('is-disabled');
+
+        if (!addressSection) return;
+
+        addressSection.innerHTML = `<p>Você ainda não possui endereços cadastrados.</p>`;
+
+        addressCreateBtn?.addEventListener('click', () => {
+            elementThatOpenedModal = addressCreateBtn;
+            toggleModal(modalAddressAdd);
+        });
+
+        addressesListModal?.classList.contains('is-disabled') ? null : addressesListModal.classList.add('is-disabled');
+
+        return;
+
+    } else if (addressHandler.getAddresses().length > 0) {
+        document.querySelector('#address_change')?.classList.contains('is-disabled') ?
+            document.querySelector('#address__change')?.classList.remove('is-disabled') : null;
+
+        document.querySelector('#address__create')?.classList.contains('is-disabled') ?
+            null : document.querySelector('#address__create')?.classList.add('is-disabled');
+    }
+
+    let mainAddress = addressHandler.getMainAddress();
+
+    if (!mainAddress) return;
+
+    const mainStreet: HTMLSpanElement | null = document.querySelector('#address__street');
+    const mainComplement: HTMLSpanElement | null = document.querySelector('#address__complements');
+    const mainContact: HTMLSpanElement | null = document.querySelector('#address__contact');
+
+    if (!mainStreet || !mainComplement || !mainContact) return;
+
+    mainStreet.textContent = `${mainAddress.street}, ${mainAddress.number} (${mainAddress.complement ?? mainAddress.complement})`;
+    mainComplement.textContent = `CEP ${mainAddress.zipcode} • ${mainAddress.district}`;
+    mainContact.textContent = `${mainAddress.receiver_name} • ${mainAddress.receiver_phone}`;
 
 }
 

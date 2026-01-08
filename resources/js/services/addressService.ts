@@ -43,7 +43,7 @@ export async function addAddress(addressData: Omit<Address, 'id' | 'is_default'>
 
 export async function removeAddress(addressId: number): Promise<Address[]> {
     try {
-        const response = await axios.post<AddressApiResponse>('/user/addresses/remove', { id: addressId });
+        const response = await axios.post<AddressApiResponse>('/user/addresses/remove', { address_id: addressId });
         return response.data.addresses;
     } catch (error) {
         console.error('Error removing address:', error);
@@ -63,7 +63,7 @@ export async function updateAddress(addressData: Address): Promise<Address[]> {
 
 export async function setDefaultAddress(addressId: number): Promise<Address[]> {
     try {
-        const response = await axios.post<AddressApiResponse>('/user/addresses/set-default', { id: addressId });
+        const response = await axios.post<AddressApiResponse>('/user/addresses/set-default', { address_id: addressId });
         return response.data.addresses;
     } catch (error) {
         console.error('Error setting default address:', error);

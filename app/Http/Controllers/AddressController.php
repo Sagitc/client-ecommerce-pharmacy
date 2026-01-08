@@ -25,12 +25,12 @@ class AddressController extends Controller
         foreach ($addresses as $address) {
             $result[] = [
                 'id' => $address->id,
+                'receiver_name' => $address->receiver_name,
+                'receiver_phone' => $address->receiver_phone,
                 'street' => $address->street,
+                'zipcode' => $address->zipcode,
                 'number' => $address->number,
-                'neighborhood' => $address->neighborhood,
-                'city' => $address->city,
-                'state' => $address->state,
-                'country' => $address->country,
+                'district' => $address->district,
                 'complement' => $address->complement,
                 'is_default' => $address->is_default,
             ];
@@ -56,21 +56,19 @@ class AddressController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
+            'receiver_name' => 'nullable|string|max:255',
+            'receiver_phone' => 'nullable|string|max:20',
+            'zipcode' => 'required|string|max:20',
             'street' => 'required|string|max:255',
             'number' => 'required|string|max:50',
-            'neighborhood' => 'required|string|max:100',
-            'city' => 'required|string|max:100',
-            'state' => 'required|string|max:100',
-            'country' => 'required|string|max:100',
+            'district' => 'required|string|max:100',
             'complement' => 'nullable|string|max:255',
             ],
             [
                 'street.required' => 'Street is required',
                 'number.required' => 'Number is required',
-                'neighborhood.required' => 'Neighborhood is required',
-                'city.required' => 'City is required',
-                'state.required' => 'State is required',
-                'country.required' => 'Country is required',
+                'district.required' => 'District is required',
+                'zipcode.required' => 'Zipcode is required',
             ]
         );
 
@@ -81,14 +79,17 @@ class AddressController extends Controller
             ], 400);
         }
 
+        $isDefault = $user->addresses()->count() < 1;
+
         $user->addresses()->create([
+            'receiver_name' => $request->input('receiver_name', $user->full_name),
+            'receiver_phone' => $request->input('receiver_phone', $user->phone_number),
             'street' => $request->input('street'),
+            'zipcode' => $request->input('zipcode'),
             'number' => $request->input('number'),
-            'neighborhood' => $request->input('neighborhood'),
-            'city' => $request->input('city'),
-            'state' => $request->input('state'),
-            'country' => $request->input('country'),
+            'district' => $request->input('district'),
             'complement' => $request->input('complement'),
+            'is_default' => $isDefault,
         ]);
 
         $addresses = $user->addresses;
@@ -98,23 +99,18 @@ class AddressController extends Controller
         foreach ($addresses as $address) {
             $result[] = [
                 'id' => $address->id,
+                'receiver_name' => $address->receiver_name,
+                'receiver_phone' => $address->receiver_phone,
                 'street' => $address->street,
+                'zipcode' => $address->zipcode,
                 'number' => $address->number,
-                'neighborhood' => $address->neighborhood,
-                'city' => $address->city,
-                'state' => $address->state,
-                'country' => $address->country,
+                'district' => $address->district,
                 'complement' => $address->complement,
                 'is_default' => $address->is_default,
             ];
         }
 
-        return response()->json([
-            'error' => null,
-            'addresses' => $result
-        ], 201);
-
-
+        return \redirect()->intended(route('profile'));
 
     }
 
@@ -150,6 +146,16 @@ class AddressController extends Controller
 
         $addressId = $request->input('address_id');
 
+        if ($user->addresses()->where('id', $addressId)->where('is_default', true)->exists()) {
+            
+            if ($user->addresses()->count() > 1 ) {
+                $newDefaultAddress = $user->addresses()->where('id', '!=', $addressId)->first();
+                $newDefaultAddress->is_default = true;
+                $newDefaultAddress->save();
+            }
+
+        }
+
         $user->addresses()->where('id', $addressId)->delete();
 
         $addresses = $user->addresses;
@@ -159,12 +165,12 @@ class AddressController extends Controller
         foreach ($addresses as $address) {
             $result[] = [
                 'id' => $address->id,
+                'receiver_name' => $address->receiver_name,
+                'receiver_phone' => $address->receiver_phone,
                 'street' => $address->street,
+                'zipcode' => $address->zipcode,
                 'number' => $address->number,
-                'neighborhood' => $address->neighborhood,
-                'city' => $address->city,
-                'state' => $address->state,
-                'country' => $address->country,
+                'district' => $address->district,
                 'complement' => $address->complement,
                 'is_default' => $address->is_default,
             ];
@@ -192,13 +198,12 @@ class AddressController extends Controller
             $request->all(),
             [
                 'address_id'     => 'required|integer|exists:addresses,id',
+                'receiver_name'  => 'nullable|string|max:255',
+                'receiver_phone' => 'nullable|string|max:20',
                 'zipcode'        => 'nullable|string|max:20',
                 'street'         => 'nullable|string|max:255',
                 'number'         => 'nullable|string|max:50',
-                'neighborhood'   => 'nullable|string|max:100',
-                'city'           => 'nullable|string|max:100',
-                'state'          => 'nullable|string|max:100',
-                'country'        => 'nullable|string|max:100',
+                'district'       => 'nullable|string|max:100',
                 'complement'     => 'nullable|string|max:255',
             ],
             [
@@ -209,7 +214,7 @@ class AddressController extends Controller
         );
 
         $validator->after(function ($validator) use ($request) {
-            $updateFields = ['zipcode', 'street', 'number', 'neighborhood', 'city', 'state', 'country', 'complement'];
+            $updateFields = ['receiver_name', 'receiver_phone', 'zipcode', 'street', 'number', 'district', 'complement'];
             $hasUpdateField = false;
             
             foreach ($updateFields as $field) {
@@ -242,7 +247,7 @@ class AddressController extends Controller
         }
 
         $updateData = [];
-        foreach (['zipcode', 'street', 'number', 'neighborhood', 'city', 'state', 'country', 'complement'] as $field) {
+        foreach (['receiver_name', 'receiver_phone', 'zipcode', 'street', 'number', 'district', 'complement'] as $field) {
             if ($request->has($field) && $request->input($field) !== null) {
                 $updateData[$field] = $request->input($field);
             }
@@ -259,12 +264,12 @@ class AddressController extends Controller
         foreach ($addresses as $addr) {
             $result[] = [
                 'id' => $addr->id,
+                'receiver_name'  => $addr->receiver_name,
+                'receiver_phone' => $addr->receiver_phone,
                 'street' => $addr->street,
+                'zipcode' => $addr->zipcode,
                 'number' => $addr->number,
-                'neighborhood' => $addr->neighborhood,
-                'city' => $addr->city,
-                'state' => $addr->state,
-                'country' => $addr->country,
+                'district' => $addr->district,
                 'complement' => $addr->complement,
                 'is_default' => $addr->is_default,
             ];
@@ -335,12 +340,12 @@ class AddressController extends Controller
         foreach ($addresses as $address) {
             $result[] = [
                 'id' => $address->id,
-                'street' => $address->street,
-                'number' => $address->number,
-                'neighborhood' => $address->neighborhood,
-                'city' => $address->city,
-                'state' => $address->state,
-                'country' => $address->country,
+                'receiver_name'  => $address->receiver_name,
+                'receiver_phone' => $address->receiver_phone,
+                'street'  => $address->street,
+                'zipcode' => $address->zipcode,
+                'number'  => $address->number,
+                'district'    => $address->district,
                 'complement' => $address->complement,
                 'is_default' => $address->is_default,
             ];

@@ -4,20 +4,18 @@
 
 export interface Address {
     id: number;
+    receiver_name: string;
+    receiver_phone: string;
     zipcode: string;
     street: string;
     number: string;
-    city: string;
-    state: string;
-    country: string;
+    district: string;
     complement?: string;
     is_default: boolean;
 }
 
 let addresses: Address[] = [];
 const listeners: Function[] = [];
-
-
 
 
 // --- OBSERVER PATTERN ---

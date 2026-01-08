@@ -12,12 +12,12 @@ return new class extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
+            $table->string('receiver_name');
+            $table->string('receiver_phone');
             $table->string('zipcode');
             $table->string('street');
             $table->string('number');
-            $table->string('city');
-            $table->string('state');
-            $table->string('country');
+            $table->string('district');
             $table->string('complement')->nullable();
             $table->foreignIdFor(User::class);
             $table->boolean('is_default')->default(false);

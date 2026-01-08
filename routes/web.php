@@ -32,7 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/user/favorites/add', [UserController::class, 'addUserFavorite']);
     Route::post('/user/favorites/remove', [UserController::class, 'removeUserFavorite']);
 
-    Route::post('/user/addresses/add', [AddressController::class, 'addAddress']);
+    Route::post('/user/addresses/add', [AddressController::class, 'addAddress'])->name('addAddress');
     Route::post('/user/addresses/remove', [AddressController::class, 'removeAddress']);
     Route::post('/user/addresses/update', [AddressController::class, 'updateAddress']);
     Route::post('/user/addresses/set-default', [AddressController::class, 'setDefaultAddress']);
