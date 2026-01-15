@@ -6,6 +6,7 @@ use App\Models\Address;
 use App\Models\User;
 use App\Models\Favorite;
 use App\Rules\CpfOrEmailRule;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -79,7 +80,7 @@ class UserController extends Controller
 
         $user = User::create([
 
-            'full_name'    => $request->input('name'),
+            'full_name'    => $request->input('full_name'),
             'cpf'          => $request->input('cpf'),
             'email'        => $request->input('email'),
             'password'     => Hash::make($request->input('password')),
@@ -117,6 +118,83 @@ class UserController extends Controller
         return back()->withErrors([
             'identifier' => 'Credenciais inválidas.'
         ])->onlyInput('identifier');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $validate = Validator::make(
+             $request->all(),
+        [
+            'current_password'      => 'required|string',
+            'new_password'          => 'required|string|min:8|different:current_password',
+            'new_password_confirmation' => 'required|string|same:new_password',
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'error' => $validate->errors()->first(),
+            ], 400);
+        }
+
+        $user = Auth::user();
+
+        if (!Hash::check($request->input('current_password'), $user->password)) {
+            return response()->json([
+                'error' => 'Current password is incorrect.',
+            ], 400);
+        }
+
+        User::where('id', $user->id)->update([
+            'password' => Hash::make($request->input('new_password')),
+        ]);
+
+        return redirect(route('profile'));
+    }
+
+    public function updatePhone(Request $request)
+    {
+        $validate = Validator::make(
+             $request->all(),
+        [
+            'new_phone_number' => 'required|string|max:15',
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'error' => $validate->errors()->first(),
+            ], 400);
+        }
+
+        $user = Auth::user();
+
+        User::where('id', $user->id)->update([
+            'phone_number' => $request->input('new_phone_number'),
+        ]);
+
+        return redirect(route('profile'));
+    }
+
+    public function updateEmail(Request $request)
+    {
+        $validate = Validator::make(
+             $request->all(),
+        [
+            'new_email' => 'required|string|email|max:255',
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'error' => $validate->errors()->first(),
+            ], 400);
+        }
+
+        $user = Auth::user();
+
+        User::where('id', $user->id)->update([
+            'email' => $request->input('new_email'),
+        ]);
+
+        return redirect(route('profile'));
     }
 
     public function getUserFavorites(Request $request)

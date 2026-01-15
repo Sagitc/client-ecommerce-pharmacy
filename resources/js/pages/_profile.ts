@@ -4,6 +4,7 @@ import * as userHandler from '../handlers/userHandler';
 import * as userService from '../services/userService';
 import * as addressHandler from '../handlers/addressHandler';
 import * as addressService from '../services/addressService';
+import * as profileService from '../services/profileService';
 
 
 //  DECLARATIONS
@@ -64,6 +65,8 @@ const divToAppend: HTMLDivElement | null = document.querySelector('#favorites__c
 
 let elementThatOpenedModal: HTMLElement | null = null;
 
+let userOrders = await profileService.fetchUserOrders();
+console.log(userOrders);
 
 //  EVENTS
 
@@ -147,8 +150,7 @@ resumeAddressBtn?.addEventListener('click', () => {
             addressHandler.setAddresses(await addressService.fetchAddresses());
 
             loadUserAddresses();
-
-            // Reopen modal to refresh addresses
+            
             toggleModal(modalAddress);
             resumeAddressBtn?.click();
 

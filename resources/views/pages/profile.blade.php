@@ -81,7 +81,8 @@
             <span class="mobile-touch"></span>
         </button>
 
-        <form class="modal__content">
+        <form class="modal__content" action="{{ route('updatePassword') }}" method="POST">
+            @csrf
             <div class="modal__form-group">
                 <label for="current_password">Senha atual</label>
                 <input type="password" name="current_password" id="modal__profile-current_password" aria-label="Campo para digitar a senha atual">
@@ -93,8 +94,8 @@
             </div>
 
             <div class="modal__form-group">
-                <label for="confirm_new_password">Confirmar nova senha</label>
-                <input type="password" name="confirm_new_password" id="modal__profile-confirm" aria-label="Campo para confirmar a nova senha">
+                <label for="new_password_confirmation">Confirmar nova senha</label>
+                <input type="password" name="new_password_confirmation" id="modal__profile-confirm" aria-label="Campo para confirmar a nova senha">
             </div>
 
             <button type="submit" class="modal__act-main">Salvar</button>
@@ -111,10 +112,12 @@
             <span class="mobile-touch"></span>
         </button>
 
-        <form class="modal__content">
+        <form class="modal__content" action=" {{ route('updatePhone') }} " method="POST">
+            @csrf
+
             <div class="modal__form-group">
-                <label for="new_number">Novo número</label>
-                <input type="text" name="new_number" id="modal__profile-new_number" aria-label="Campo para digitar o novo número de telefone">
+                <label for="new_phone_number">Novo número</label>
+                <input type="text" name="new_phone_number" id="modal__profile-new_number" aria-label="Campo para digitar o novo número de telefone">
             </div>
 
             <button type="submit" class="modal__act-main">Salvar</button>
@@ -122,7 +125,7 @@
     </div>
 </div>
 
-<div id="modal__profile-email" class="modal-container is-disabled" aria-hidden="true" role="dialog" aria-modal="true"1>
+<div id="modal__profile-email" class="modal-container is-disabled" aria-hidden="true" role="dialog" aria-modal="true">
     <div class="modal__box">
         <button type="button" class="modal__close" aria-label="Fechar modal">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -131,7 +134,8 @@
             <span class="mobile-touch"></span>
         </button>
 
-        <form class="modal__content">
+        <form class="modal__content" action=" {{ route('updateEmail') }} " method="POST">
+            @csrf
             <div class="modal__form-group">
                 <label for="new_email">Novo email</label>
                 <input type="email" name="new_email" id="modal__profile-new_email" aria-label="Campo para digitar o novo email">
@@ -261,6 +265,7 @@
         </div>
 
         <div id="info__result">
+
             <div id="info__resume" class="">
                 <div id="resume__latest" class="box">
                     <h3>Últimos Pedidos</h3>
@@ -341,11 +346,11 @@
             <div id="info__profile" class="is-disabled">
                 <div id="perfil__name" class="box">
                     <h3>Nome</h3>
-                    <span id="perfil__name-value">Cauã de Souza Santos</span>
+                    <span id="perfil__name-value">{{ Auth::user()->full_name }}</span>
                 </div>
                 <div id="perfil__cpf" class="box">
                     <h3>CPF</h3>
-                    <span id="perfil__cpf-value">123.456.789-00</span>
+                    <span id="perfil__cpf-value">{{ Auth::user()->cpf }}</span>
                 </div>
                 <div id="perfil__gender" class="box">
                     <h3>Gênero</h3>
@@ -365,14 +370,14 @@
                 <div id="perfil__number" class="box">
                     <h3>Telefone</h3>
                     <div class="perfil__wrapper">
-                        <span id="perfil__number-value">(21) 99999-9999</span>
+                        <span id="perfil__number-value">{{ Auth::user()->phone_number }}</span>
                         <button class="perfil__change">Alterar</button>
                     </div>
                 </div>
                 <div id="perfil__email" class="box">
                     <h3>Email</h3>
                     <div class="perfil__wrapper">
-                        <span id="perfil__email-value">caua@example.com</span>
+                        <span id="perfil__email-value">{{ Auth::user()->email }}</span>
                         <button class="perfil__change">Alterar</button>
                     </div>
                 </div>
@@ -456,6 +461,7 @@
                     @include('components.products_cards')
                 </div>
             </div>
+            
         </div>
     </div>
 </div>
