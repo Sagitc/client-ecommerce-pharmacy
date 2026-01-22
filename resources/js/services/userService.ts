@@ -128,6 +128,45 @@ export async function addFavoriteProduct(productId: number): Promise<number[]> {
     }
 }
 
+
+/**
+ * Faz upload do avatar do usuário.
+ * @param avatarFile O arquivo do avatar a ser enviado.
+ * @returns Uma promessa que resolve para a URL do avatar enviado.
+ */
+export async function uploadUserAvatar(avatarFile: File): Promise<string> {
+
+    try {
+        const formData = new FormData();
+        formData.append('avatar', avatarFile);
+
+        const response = await axios.post('/avatar/upload', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
+        return response.data.avatarUrl;
+
+    } catch (error) {
+        console.error('Error uploading user avatar:', error);
+        throw error;
+    }
+}
+
+/**
+ * Deleta o avatar do usuário.
+ */
+export async function deleteUserAvatar(): Promise<void> {
+
+    try {
+        await axios.post('/avatar/delete');
+    } catch (error) {
+        console.error('Error deleting user avatar:', error);
+        throw error;
+    }
+}
+
 /**
  * Remove um produto dos favoritos do usuário.
  * @param productId O ID do produto a ser removido dos favoritos.

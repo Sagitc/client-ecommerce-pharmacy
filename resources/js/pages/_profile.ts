@@ -28,6 +28,14 @@ const modalAddressAdd: HTMLDivElement | null = document.querySelector('#modal__a
 const modalCreditAdd: HTMLDivElement | null = document.querySelector('#modal__credit-add');
 const modalChangeAvatar: HTMLDivElement | null = document.querySelector('#modal__change-avatar');
 
+const formChangeAvatar: HTMLFormElement | null = document.querySelector('#form_change_avatar');
+const formRemoveAvatar: HTMLFormElement | null = document.querySelector('#form_remove_avatar');
+
+const btnChangeAvatar: HTMLButtonElement | null = document.querySelector('#new_avatar-btn');
+const btnRemoveAvatar: HTMLButtonElement | null = document.querySelector('#remove_avatar-btn');
+
+const inputChangeAvatar: HTMLInputElement | null = document.querySelector('input[name="avatar"]');
+
 const params: URLSearchParams = new URLSearchParams(window.location.search);
 const tab: string | null = params.get('tab');
 
@@ -66,9 +74,6 @@ const modalCloseBtn: NodeListOf<Element> = document.querySelectorAll('.modal__cl
 const divToAppend: HTMLDivElement | null = document.querySelector('#favorites__content');
 
 let elementThatOpenedModal: HTMLElement | null = null;
-
-let userOrders = await profileService.fetchUserOrders();
-console.log(userOrders);
 
 //  EVENTS
 
@@ -193,6 +198,18 @@ resumeAddressBtn?.addEventListener('click', () => {
         toggleModal(modalAddress);
     });
 
+});
+
+btnChangeAvatar?.addEventListener('click', () => {
+    inputChangeAvatar?.click();
+});
+
+inputChangeAvatar?.addEventListener('change', () => {
+    formChangeAvatar?.submit();
+});
+
+btnRemoveAvatar?.addEventListener('click', () => {
+    formRemoveAvatar?.submit();
 });
 
 //  FUNCTIONS

@@ -17,7 +17,7 @@ return new class extends Migration  {
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('phone_number');
-            $table->string('avatar')->default('http://127.0.0.1:8000/avatars/user_default_black.svg');
+            $table->string('avatar')->nullable();
             $table->string('role')->default('customer');
             $table->rememberToken();
             $table->timestamps();

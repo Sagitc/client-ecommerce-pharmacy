@@ -10,7 +10,7 @@
 <div id="greeting">
     <div id="greeting__content" class="max-width">
         <div id="greeting__avatar">
-            <img id="greeting__avatar-img" src="{{ Auth::user()->avatar }}" alt="Avatar do Usuário">
+            <img id="greeting__avatar-img" src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('avatars/user_default_black.svg') }}" alt="Avatar do Usuário">
             <div id="greeting__avatar-change__area">
                 <img src=" {{ asset('images/icons/icon_image_edit.svg') }}" alt="ícone de trocar avatar">
             </div>
@@ -24,7 +24,7 @@
     <div class="modal__box">
 
         <div class="current-avatar">
-            <img src="{{ Auth::user()->avatar }}" alt="Imagem do usuário">
+            <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('avatars/user_default_black.svg') }}" alt="Imagem do usuário">
         </div>
 
         <button type="button" class="modal__close" aria-label="Fechar modal">
@@ -34,21 +34,21 @@
             <span class="mobile-touch"></span>
         </button>
 
-        <form action="" method="post" id="form_change_avatar">
+        <form action="{{ route('uploadAvatar') }}" method="post" id="form_change_avatar" enctype="multipart/form-data">
             @csrf
-            <input type="file" name="new_avatar" style="display: none;" accept="image/*">
+            <input type="file" name="avatar" style="display: none;" id="avatarInput" accept="image/*">
 
-            <button id="new_avatar-btn">Alterar foto de perfils</button>
+            <button type="button" id="new_avatar-btn">Alterar foto de perfil</button>
 
         </form>
 
-        <form action="" method="post" id="form_remove_avatar">
+        <form action="{{ route('deleteAvatar') }}" method="post" id="form_remove_avatar">
             @csrf
 
             @if(Auth::user()->avatar !== "http://127.0.0.1:8000/avatars/user_default_black.svg")
-            <button id="remove_avatar-btn">Remover foto de perfil</button>
+            <button type="button" id="remove_avatar-btn">Remover foto de perfil</button>
             @else
-            <button id="remove_avatar-btn" disabled>Remover foto de perfil</button>
+            <button type="button" id="remove_avatar-btn" disabled>Remover foto de perfil</button>
             @endif
 
         </form>
