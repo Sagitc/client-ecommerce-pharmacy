@@ -98,6 +98,13 @@
     align-items: center;
 }
 
+.user__icon-wrapper img{
+    width: var(--image-xs);
+    height: var(--image-xs);
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 #header__mobile {
     display: flex;
     align-items: center;

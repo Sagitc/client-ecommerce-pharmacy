@@ -10,10 +10,49 @@
 <div id="greeting">
     <div id="greeting__content" class="max-width">
         <div id="greeting__avatar">
-            <img src="{{ asset('images/user_avatar.png') }}" alt="Avatar do Usuário">
+            <img id="greeting__avatar-img" src="{{ Auth::user()->avatar }}" alt="Avatar do Usuário">
+            <div id="greeting__avatar-change__area">
+                <img src=" {{ asset('images/icons/icon_image_edit.svg') }}" alt="ícone de trocar avatar">
+            </div>
         </div>
         <!-- Colocar nome do usuário de forma dinâmica -->
         <h1>Bem-vindo(a), {{ Auth::user()->full_name }}!</h1>
+    </div>
+</div>
+
+<div id="modal__change-avatar" class="modal-container is-disabled" role="dialog" aria-modal="true">
+    <div class="modal__box">
+
+        <div class="current-avatar">
+            <img src="{{ Auth::user()->avatar }}" alt="Imagem do usuário">
+        </div>
+
+        <button type="button" class="modal__close" aria-label="Fechar modal">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M18 6L6 18M6 6l12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span class="mobile-touch"></span>
+        </button>
+
+        <form action="" method="post" id="form_change_avatar">
+            @csrf
+            <input type="file" name="new_avatar" style="display: none;" accept="image/*">
+
+            <button id="new_avatar-btn">Alterar foto de perfils</button>
+
+        </form>
+
+        <form action="" method="post" id="form_remove_avatar">
+            @csrf
+
+            @if(Auth::user()->avatar !== "http://127.0.0.1:8000/avatars/user_default_black.svg")
+            <button id="remove_avatar-btn">Remover foto de perfil</button>
+            @else
+            <button id="remove_avatar-btn" disabled>Remover foto de perfil</button>
+            @endif
+
+        </form>
+
     </div>
 </div>
 
@@ -461,7 +500,7 @@
                     @include('components.products_cards')
                 </div>
             </div>
-            
+
         </div>
     </div>
 </div>

@@ -26,6 +26,7 @@ class UserController extends Controller
                 'cpf' =>  Auth::user()->cpf,
                 'phone_number' =>  Auth::user()->phone_number,
                 'role' =>  Auth::user()->role,
+                'avatar' =>  Auth::user()->avatar,
 
             ]);
         } 

@@ -17,6 +17,7 @@ const profileNumberBtn: HTMLButtonElement | null = document.querySelector('#perf
 const profileEmailBtn: HTMLButtonElement | null = document.querySelector('#perfil__email button');
 const addressAddBtn: HTMLButtonElement | null = document.querySelector('#modal__resume-address__add');
 const creditAddBtn: HTMLButtonElement | null = document.querySelector('#modal__resume-credit__add');
+const changeAvatarBtn: HTMLButtonElement | null = document.querySelector('#greeting__avatar-change__area');
 
 const modalAddress: HTMLDivElement | null = document.querySelector('#modal__resume-address');
 const modalCredit: HTMLDivElement | null = document.querySelector('#modal__resume-credit');
@@ -25,6 +26,7 @@ const modalNumber: HTMLDivElement | null = document.querySelector('#modal__profi
 const modalEmail: HTMLDivElement | null = document.querySelector('#modal__profile-email');
 const modalAddressAdd: HTMLDivElement | null = document.querySelector('#modal__address-add');
 const modalCreditAdd: HTMLDivElement | null = document.querySelector('#modal__credit-add');
+const modalChangeAvatar: HTMLDivElement | null = document.querySelector('#modal__change-avatar');
 
 const params: URLSearchParams = new URLSearchParams(window.location.search);
 const tab: string | null = params.get('tab');
@@ -109,6 +111,11 @@ modalCloseBtn.forEach(btn => {
     btn.addEventListener('click', () => {
         toggleModal(btn.parentElement?.parentElement as HTMLDivElement);
     });
+});
+
+changeAvatarBtn?.addEventListener('click', () => {
+    elementThatOpenedModal = changeAvatarBtn;
+    toggleModal(modalChangeAvatar);
 });
 
 resumeAddressBtn?.addEventListener('click', () => {

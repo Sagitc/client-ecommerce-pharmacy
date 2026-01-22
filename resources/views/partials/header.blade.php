@@ -21,7 +21,9 @@
             </button>
             <div id="header__menu-wrapper">
                 <button @auth id="header__user-menu" @else id="header__user" @endauth class="header__user" data-toggle="modal-login">
-                    <span class="user__icon-wrapper"><img src="{{ asset('images/icons/icon_user_white.svg') }}" alt="Menu do usuário"></span>
+                    <span class="user__icon-wrapper">
+                        <img @auth src="{{ Auth::user()->avatar === 'http://127.0.0.1:8000/avatars/user_default_black.svg' ? 'http://127.0.0.1:8000/avatars/user_default_white.svg' : Auth::user()->avatar }}" @endauth @guest src="http://127.0.0.1:8000/avatars/user_default_white.svg" @endguest alt="Ícone do usuário">
+                    </span>
                     <span>
                         @auth
                             Olá,<br>
