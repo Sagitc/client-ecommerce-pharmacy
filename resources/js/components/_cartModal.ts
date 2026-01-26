@@ -67,7 +67,7 @@ export async function addOnCart(product_id: number): Promise<void> {
 
 async function loadInitialCart(): Promise<void> {
     
-    if (!userService.fetchUser() != null) {
+    if (userService.fetchUser() == null) {
         return;
     }
 

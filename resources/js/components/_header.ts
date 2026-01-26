@@ -1,5 +1,5 @@
 import * as userHandler from '@/handlers/userHandler';
-import * as userService from '@/services/userService';
+
 import { openCart } from './_cartModal';
 
 export function initHeader(): void {
