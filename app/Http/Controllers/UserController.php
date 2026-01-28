@@ -212,7 +212,7 @@ class UserController extends Controller
                 'label'        => $favorite->product->label,
                 'description'  => $favorite->product->description,
                 'price'        => $favorite->product->price,
-                'image'        => $favorite->product->main_image,
+                'image'        => asset($favorite->product->images->first()->image_path ?? null),
             ];
         });
 

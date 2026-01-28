@@ -52,6 +52,9 @@
 }
 
 .products__text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     background-color: #fff;
     border-radius: var(--spacing-sm);
     padding: var(--spacing-sm) var(--spacing-md);

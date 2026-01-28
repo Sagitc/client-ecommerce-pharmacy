@@ -2,6 +2,7 @@ import axios from 'axios';
 import * as userService from '../services/userService';
 import * as userHandler from '../handlers/userHandler';
 import { openCart, addOnCart } from './_cartModal';
+import type { Product } from '@/types/product.interface';
 
 
 //  Declarations
@@ -76,7 +77,7 @@ export async function getProducts(
     limit: number = 10,
     identifier: number | null | string = null,
     divToAppend: HTMLElement | null = null
-): Promise<number> {
+): Promise<Product | Product[] | number> {
 
     let products;
 
@@ -129,9 +130,11 @@ export async function getProducts(
         
     }
 
+    divToAppend!.innerHTML = '';
+
     createProductElement(products, divToAppend as HTMLElement);
 
-    return products.length;
+    return products;
 
 }
 
@@ -141,7 +144,7 @@ export async function getProducts(
  * @param products Lista de produtos a serem exibidos.
  * @param divToAppend Elemento DOM onde os elementos de produto serão anexados.
  */
-async function createProductElement(products: any, divToAppend: HTMLElement) {
+export async function createProductElement(products: any, divToAppend: HTMLElement) {
 
     let profile = await userService.fetchUser();
     userHandler.setUser(profile);

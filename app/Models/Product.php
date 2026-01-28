@@ -74,4 +74,18 @@ class Product extends Model {
         return $this->hasMany(OrderProducts::class);
     }
 
+    public function categoryMetadatas() {
+        return $this->belongsToMany(
+            CategoryMetadata::class, 
+            'product_metadata', 
+            'product_id', 
+            'category_metadata_id'
+        );
+    }
+
+    public function metadataValues() {
+        return $this->belongsToMany(MetadataValue::class, 'product_metadatas', 'product_id', 'metadata_value_id');
+    }
 }
+
+

@@ -91,7 +91,9 @@
 
 <section id="banner2">
     <div class="banner2__area max-width">
-        <div id="banner2__img"></div>
+        <div id="banner2__img">
+            <img src="{{ asset('images/banners/promotional_nivea.png') }}" alt="Imagem promocional de dermocosméticos">
+        </div>
     </div>
 </section>
 
@@ -132,8 +134,12 @@
 
 <section id="banner3">
     <div class="banner3__area max-width">
-        <div class="banner3__img"></div>
-        <div class="banner3__img"></div>
+        <div class="banner3__img" >
+            <img src="{{ asset('images/banners/promotional_vitaminas.png') }}" alt="">
+        </div>
+        <div class="banner3__img">
+            <img src="{{ asset('images/banners/promotional_secret.png') }}" alt="">
+        </div>
     </div>
 </section>
 
@@ -141,6 +147,68 @@
     <div class="daily__area max-width">
         @include('components.section_top', ['section_title' => 'Promoções diárias'])
         <div id="daily__content">
+            
+        </div>
+    </div>
+</section>
+
+<section id="promotional-brands">
+    <div id="promotional-brands__area" class="max-width">
+        <h2 class="promotional-brands__title">Marcas em destaque</h2>
+
+        <div id="promotional-brands__logos">
+            <a href="#" class="promotional-brands__logo">
+                <img src="{{ asset('images/logos/brand_loreal_promotional.png') }}" alt="Logo da marca Nivea">
+            </a>
+            <a href="#" class="promotional-brands__logo">
+                <img src="{{ asset('images/logos/brand_neoquimica_promotional.png') }}" alt="Logo da marca Vichy">
+            </a>
+            <a href="#" class="promotional-brands__logo">
+                <img src="{{ asset('images/logos/brand_neutrogena_promotional.png') }}" alt="Logo da marca Roche">
+            </a>
+            <a href="#" class="promotional-brands__logo">
+                <img src="{{ asset('images/logos/brand_johnsonsBaby_promotional.png') }}" alt="Logo da marca Scholl">
+            </a>
+            <a href="#" class="promotional-brands__logo">
+                <img src="{{ asset('images/logos/brand_vitafor_promotional.png') }}" alt="Logo da marca Adidas">
+            </a>
+        </div>
+    </div>
+</section>
+
+<section id="promotional-discount">
+    <div id="promotional-discount__area" class="max-width">
+        <h2 id="promotiona-discount__title">Separamos alguns descontos apenas para você!</h2>
+
+        <div id="promotional-discount__cards">
+            <a href="#" class="promotional-discount__card">
+                <img src="{{ asset('images/banners/promotional_card1.png') }}" alt="Imagem de desconto promocional">
+            </a>
+            <a href="#" class="promotional-discount__card">
+                <img src="{{ asset('images/banners/promotional_card2.png') }}" alt="Imagem de desconto promocional">
+            </a>
+            <a href="#" class="promotional-discount__card">
+                <img src="{{ asset('images/banners/promotional_card3.png') }}" alt="Imagem de desconto promocional">
+            </a>
+            <a href="#" class="promotional-discount__card">
+                <img src="{{ asset('images/banners/promotional_card4.png') }}" alt="Imagem de desconto promocional">
+            </a>
+            <a href="#" class="promotional-discount__card">
+                <img src="{{ asset('images/banners/promotional_card5.png') }}" alt="Imagem de desconto promocional">
+            </a>
+            <a href="#" class="promotional-discount__card">
+                <img src="{{ asset('images/banners/promotional_card6.png') }}" alt="Imagem de desconto promocional">
+            </a>
+            
+        </div>
+        
+    </div>
+</section>
+
+<section id="dermocare" class="dermocare">
+    <div class="dermocare__area max-width">
+        @include('components.section_top', ['section_title' => 'Cuidados para sua pele'])
+        <div id="dermocare__content">
             
         </div>
     </div>

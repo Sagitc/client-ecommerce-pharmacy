@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\CategoryMetadata;
+use App\Models\Laboratory;
 use App\Models\MetadataValue;
 use App\Models\Product;
 use App\Models\ProductImage;
@@ -326,12 +327,13 @@ class ProductController extends Controller
 
         $formattedProducts = $relatedProducts->map(function ($product) {
             return [
-                'id'       => $product->id,
-                'label'    => $product->label,
-                'SKU'      => $product->SKU,
-                'price'    => $product->price,
-                'image'    => asset($product->images->first()->image_path ?? 'images/products/default_generic.jpg'),
-                'category' => $product->category()->pluck('slug')->first(),
+                'id'         => $product->id,
+                'label'      => $product->label,
+                'SKU'        => $product->SKU,
+                'price'      => $product->price,
+                'image'      => asset($product->images->first()->image_path ?? 'images/products/default_generic.jpg'),
+                'category'   => $product->category()->pluck('slug')->first(),
+                'laboratory' => $product->laboratory->label ?? null,
             ];
         });
 
@@ -435,6 +437,7 @@ class ProductController extends Controller
                 'price'    => $product->price,
                 'image'    => asset($product->images->first()->image_path ?? 'images/products/product_example.png'),
                 'category' => $category->slug,
+                'laboratory' => $product->laboratory->label ?? null,
             ];
         });
 
@@ -515,6 +518,7 @@ class ProductController extends Controller
                 'price'    => $product->price,
                 'image'    => asset($product->images->first()->image_path ?? 'images/products/product_example.png'),
                 'category' => $product->category()->pluck('slug')->first(),
+                'laboratory' => $product->laboratory->label ?? null,
             ];
         });
 

@@ -149,9 +149,37 @@ input[type='number'] {
 
 #result__cards {
     display: grid;
-    grid-template-columns: repeat(4, minmax(160px, 250px));
+    grid-template-columns: repeat(3, 250px);
     justify-items: center;
     row-gap: var(--spacing-lg);
+    column-gap: var(--spacing-lg);
+    width: fit-content;
+    margin: 0 auto;
+}
+
+#result__cards .products__card {
+    height: 350px;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+}
+
+#result__cards .products__image img {
+    height: 12rem;
+}
+
+#result__cards .products__title {
+    max-width: 14rem;
+    margin-bottom: var(--spacing-md);
+}
+
+#result__cards .products__price {
+    font-size: var(--font-size-lg);
+}
+
+#result__cards .products__text {
+    padding: var(--spacing-md) var(--spacing-lg);
+    flex: 1;
 }
 
 #result__nav {
@@ -218,6 +246,19 @@ input[type='number'] {
     transform: translateY(-100%);
     visibility: visible;
     transition: transform 0.6s ease;
+}
+
+#result__filters-created {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.laboratory__checkbox {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
 }
 
 @media (max-width: 576px) {

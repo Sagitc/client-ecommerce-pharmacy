@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class MetadataValue extends Model   {
 
@@ -19,6 +20,11 @@ class MetadataValue extends Model   {
 
         return $this->belongsTo(CategoryMetadata::class);
 
+    }
+
+    public function productMetadata(): HasMany
+    {
+        return $this->hasMany(ProductMetadata::class, 'metadata_value_id');
     }
 
 }

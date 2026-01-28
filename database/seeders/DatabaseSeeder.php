@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder {
             SubCategorySeeder::class,
             FormulaSeeder::class,
             AddressSeeder::class,
+            ProductMetadataValueSeeder::class,
         ]);
         
     }

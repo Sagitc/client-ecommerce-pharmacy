@@ -3,6 +3,7 @@
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MetadataController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserAvatarController;
@@ -24,6 +25,11 @@ Route::get('/product/{id}', [ProductController::class, 'product_view'])->name('p
 
 Route::post('/login', [UserController::class, 'login'])->name('login');
 Route::post('/register', [UserController::class, 'register'])->name('register');
+
+Route::get('/metadata', [MetadataController::class, 'index']);
+Route::get('/metadata/{metadataId}', [MetadataController::class, 'getMetadataValues']);
+Route::get('/metadata/category/{categorySlug}', [MetadataController::class, 'getMetadataByCategory']);
+Route::get('/metadata/product/{productId}', [MetadataController::class, 'getMetadataByProduct']);
 
 Route::middleware('auth')->group(function () {
 

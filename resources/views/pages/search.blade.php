@@ -62,32 +62,8 @@
                     </div>
                 </div>
 
-                <div id="result__method" class="filter-box__area">
-                    <div class="result__heading">
-                        <h3 class="result__heading-title" id="method-title">Métodos</h3>
-                        <button class="result__heading-btn" aria-expanded="true" aria-controls="method__content" aria-label="Expandir filtro de métodos">
-                            <img src="{{ asset('images/icon_arrow-down_secondary.svg') }}" alt="">
-                            <span class="mobile-touch"></span>
-                        </button>
-                    </div>
-                    <div id="method__content" aria-labelledby="method-title">
-                        <div class="method__checkbox">
-                            <input type="checkbox" id="method1" name="method1">
-                            <label for="method1">Comprimido</label>
-                        </div>
-                        <div class="method__checkbox">
-                            <input type="checkbox" id="method2" name="method2">
-                            <label for="method2">Capsula</label>
-                        </div>
-                        <div class="method__checkbox">
-                            <input type="checkbox" id="method3" name="method3">
-                            <label for="method3">Solução</label>
-                        </div>
-                        <div class="method__checkbox">
-                            <input type="checkbox" id="method4" name="method4">
-                            <label for="method4">Retal</label>
-                        </div>
-                    </div>
+                <div id="result__filters-created">
+                    
                 </div>
 
                 <div id="result__price" class="filter-box__area">
