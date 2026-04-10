@@ -76,7 +76,7 @@ class CartController extends Controller
 
             request()->all(),
             [
-                'product_id'               => ['required', 'numeric'],
+                'product_id'       => ['required', 'numeric'],
                 'user_id'          => ['required', 'numeric'],
                 'product_quantity' => ['required', 'numeric']
             ],

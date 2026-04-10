@@ -40,10 +40,6 @@ const params: URLSearchParams = new URLSearchParams(window.location.search);
 const tab: string | null = params.get('tab');
 
 const modalInfos = {
-    // address: {
-    //     btn: resumeAddressBtn,
-    //     modal: modalAddress
-    // },
     credit: {
         btn: resumeCreditBtn,
         modal: modalCredit

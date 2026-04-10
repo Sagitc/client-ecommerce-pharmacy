@@ -326,8 +326,13 @@
 
 
 @media (max-width: 576px) {
+
+    body {
+        gap: 0;
+    }
+
     #main-banner {
-        margin-top: calc(60px + var(--spacing-lg));
+        margin-top: calc(var(--spacing-lg));
     }
 
     .benefits__content {

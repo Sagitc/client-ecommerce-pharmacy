@@ -31,7 +31,6 @@ body {
     padding-top: 85px;
     display: flex;
     flex-direction: column;
-    gap: var(--body-gap);
 }
 
 main {
@@ -69,6 +68,13 @@ button {
 .is-disabled {
     display: none !important;
 }
+
+@media (max-width: 768px) {
+    main {
+        gap: 3rem;
+    }
+}
+
 
 @media (max-width: 768px) {
     .mobile-touch {
