@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  # --- BANCO DE DADOS (MySQL) ---
+  db:
+    image: mysql:8.0
+    container_name: meu_projeto_db
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: ecommerce_camargo
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: root
+      MYSQL_USER: laravel_user
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - projeto-network
+
+  # --- BACKEND (Laravel API) ---
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: ecommerce-camargo-api
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./api:/var/www
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=ecommerce_camargo
+      - DB_USERNAME=laravel_user
+      - DB_PASSWORD=root
+    depends_on:
+      - db
+    networks:
+      - projeto-network
+
+  # --- FRONTEND (Next.js) ---
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: ecommerce-camargo-web
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./web:/app
+      - /app/node_modules # Evita que o node_modules local sobrescreva o do container
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api
+    depends_on:
+      - api
+    networks:
+      - projeto-network
+
+volumes:
+  db_data:
+
+networks:
+  projeto-network:
+    driver: bridge

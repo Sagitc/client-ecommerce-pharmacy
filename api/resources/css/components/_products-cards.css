@@ -1,0 +1,114 @@
+.products__card {
+    position: relative;
+    border-radius: var(--spacing-sm);
+    border: 1px solid var(--color-bg);
+    width: 14rem;
+    min-width: 160px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.products__like {
+    position: absolute;
+    top: var(--spacing-sm);
+    left: var(--spacing-sm);
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    z-index: 900;
+}
+
+.products__like img {
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    padding: 0;
+}
+
+.products__image {
+    padding: var(--spacing-sm) 0;
+    position: relative;
+}
+
+.products__image img{
+    width: 100%;
+    height: 10rem;
+    object-fit: contain;
+}
+
+.products__btn-buy {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom: var(--spacing-sm);
+    right: var(--spacing-sm);
+    background-color: #D9504E;
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-sm);
+    z-index: 900;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.products__text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #fff;
+    border-radius: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+}
+
+.products__title {
+    font-size: var(--font-size-sm);
+    font-weight: normal;
+    margin: var(--spacing-sm) 0;
+    max-width: 13rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow-wrap: break-word;
+    margin-bottom: var(--spacing-lg);
+}
+
+.products__price {
+    font-size: var(--font-size-md);
+    font-weight: bold;
+    margin: 0;
+}
+
+@media (max-width: 576px) {
+    .products__nav {
+        display: none;
+    }
+
+    .products__card {
+        width: 11rem;
+        min-width: 160px;
+    }
+
+    .products__title {
+        max-width: 9rem;
+    }
+}
+
+@media (min-width: 577px) and (max-width: 768px) {
+
+    .products__card {
+        width: 12rem;
+        min-width: 180px;
+    }
+
+    .products__title {
+        max-width: 11rem;
+        font-size: var(--font-size-xs);
+    }
+
+    .products__price {
+        font-size: var(--font-size-sm);
+    }
+}
