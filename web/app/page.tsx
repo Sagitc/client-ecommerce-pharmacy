@@ -1,6 +1,5 @@
 import CartBtn from "@/components/cart-btn"
 import { HeaderMain } from "@/components/header-main"
-import { Button } from "@/components/ui/button"
 import { ShoppingBasket } from "lucide-react"
 
 export default function Page() {
@@ -14,7 +13,7 @@ export default function Page() {
       />
       <HeaderMain />
 
-      
+
     </div>
   )
 }
