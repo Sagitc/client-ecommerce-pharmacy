@@ -13,6 +13,8 @@ export default function Page() {
         icon={<ShoppingBasket className="size-6" />}
       />
       <HeaderMain />
+
+      
     </div>
   )
 }

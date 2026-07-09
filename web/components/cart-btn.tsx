@@ -20,7 +20,7 @@ export default function CartBtn({ className, variant, size, icon }: Props) {
                     className={className}
                     variant={variant}
                 >
-                    {icon || <ShoppingCart className="size-6" />}
+                    {icon || <ShoppingCart className="size-5" />}
                 </Button>
             </SheetTrigger>
             <SheetContent>
