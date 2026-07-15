@@ -3,15 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 import { Menu, Search, ShoppingCart, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import InputSearch from "@/components/input-search";
+import InputSearch from "@/components/Header/Header.input";
 import MenuMain from "@/components/Menu/Index";
-import CartMain from "./Cart/Index";
+import CartMain from "@/components/Cart/Index";
 
 
 export function HeaderMain() {
 
     const [isSearching, setIsSearching] = useState<boolean>(false);
-
     const searchContainerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -29,6 +28,7 @@ export function HeaderMain() {
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
+        
     }, [isSearching]);
 
     return (
@@ -99,7 +99,7 @@ export function HeaderMain() {
                 <InputSearch
                     isSearching={isSearching}
                     setIsSearching={setIsSearching}
-                    className={`bg-muted md:hidden mt-2 ${isSearching ? "flex" : "hidden"}`} 
+                    className={`md:hidden mt-2 ${isSearching ? "flex" : "hidden"}`} 
                 />
             </div>
         </div>
