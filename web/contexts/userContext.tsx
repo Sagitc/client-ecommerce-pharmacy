@@ -12,6 +12,7 @@ type UserContextType = {
 const UserCtx = createContext<UserContextType | null>(null);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
+    
     const [user, setUser] = useState<User | null>(User1);
 
     return(

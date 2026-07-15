@@ -5,7 +5,7 @@ import { Menu, Search, ShoppingCart, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import CartBtn from "@/components/cart-btn";
 import InputSearch from "@/components/input-search";
-import MenuMain from "@/components/menu-main";
+import MenuMain from "@/components/Menu/menu-main";
 
 
 export function HeaderMain() {
@@ -50,13 +50,13 @@ export function HeaderMain() {
                     </div>
 
                     {/* BOTÕES DE NAVEGAÇÃO */}
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center md:gap-2">
 
                         <Button
                             onClick={() => setIsSearching(!isSearching)}
                             className={`md:hidden ${isSearching ? "hidden" : "flex"}`}
                             variant="ghost"
-                            size="icon"
+                            size="icon-lg"
                         >
                             <Search />
                         </Button>
