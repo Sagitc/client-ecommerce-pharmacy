@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Menu, Search, ShoppingCart, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import CartBtn from "@/components/cart-btn";
 import InputSearch from "@/components/input-search";
-import MenuMain from "@/components/Menu/menu-main";
+import MenuMain from "@/components/Menu/Index";
+import CartMain from "./Cart/Index";
 
 
 export function HeaderMain() {
@@ -52,24 +52,34 @@ export function HeaderMain() {
                     {/* BOTÕES DE NAVEGAÇÃO */}
                     <div className="flex items-center md:gap-2">
 
-                        <Button
-                            onClick={() => setIsSearching(!isSearching)}
+                        {/* <Button
                             className={`md:hidden ${isSearching ? "hidden" : "flex"}`}
                             variant="ghost"
                             size="icon-lg"
                         >
                             <Search />
-                        </Button>
+                        </Button> */}
+
+                        <CartMain 
+                            onClick={() => setIsSearching(!isSearching)}
+                            className={`md:hidden ${isSearching ? "hidden" : "flex"}`}
+                            icon={<Search className="size-5" />} 
+                        />
 
                         <MenuMain 
                             classList="md:hidden" 
                             icon={<Menu className="size-5" />} 
                         />
 
-                        <CartBtn
+                        {/* <CartBtn
                             className="hidden md:flex"
                             variant="ghost"
                             size="icon-lg"
+                        /> */}
+
+                        <CartMain 
+                            className="hidden md:flex" 
+                            icon={<ShoppingCart className="size-5" />} 
                         />
 
                         <MenuMain 

@@ -1,7 +1,7 @@
 "use client"
 
-import { User1 } from "@/data/userData";
-import { User } from "@/types/User";
+import { User1 } from "@/data/User.data";
+import { User } from "@/types/User.type";
 import { createContext, ReactNode, useContext, useState } from "react";
 
 type UserContextType = {
