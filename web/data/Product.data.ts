@@ -7,6 +7,7 @@ export const products: Product[] = [
         description: "Descrição do produto 1",
         price: 100,
         category: "Categoria 1",
+        fabricator: "Fabricante 1",
         
     },
     {
@@ -15,6 +16,7 @@ export const products: Product[] = [
         description: "Descrição do produto 2",
         price: 120,
         category: "Categoria 2",
+        fabricator: "Fabricante 2",
         
     },
     {
@@ -23,6 +25,7 @@ export const products: Product[] = [
         description: "Descrição do produto 3",
         price: 150,
         category: "Categoria 1",
+        fabricator: "Fabricante 3",
         
     },
     {
@@ -31,6 +34,7 @@ export const products: Product[] = [
         description: "Descrição do produto 4",
         price: 80,
         category: "Categoria 3",
+        fabricator: "Fabricante 4",
         
     },
     {
@@ -39,6 +43,7 @@ export const products: Product[] = [
         description: "Descrição do produto 5",
         price: 200,
         category: "Categoria 2",
+        fabricator: "Fabricante 5",
         
     },
     {
@@ -47,6 +52,7 @@ export const products: Product[] = [
         description: "Descrição do produto 6",
         price: 95,
         category: "Categoria 4",
+        fabricator: "Fabricante 6",
         
     },
     {
@@ -55,6 +61,7 @@ export const products: Product[] = [
         description: "Descrição do produto 7",
         price: 175,
         category: "Categoria 1",
+        fabricator: "Fabricante 7",
         
     },
     {
@@ -63,6 +70,7 @@ export const products: Product[] = [
         description: "Descrição do produto 8",
         price: 60,
         category: "Categoria 3",
+        fabricator: "Fabricante 8",
         
     },
     {
@@ -71,6 +79,7 @@ export const products: Product[] = [
         description: "Descrição do produto 9",
         price: 140,
         category: "Categoria 4",
+        fabricator: "Fabricante 9",
         
     },
     {
@@ -79,6 +88,7 @@ export const products: Product[] = [
         description: "Descrição do produto 10",
         price: 220,
         category: "Categoria 2",
+        fabricator: "Fabricante 10",
         
     }
 ];

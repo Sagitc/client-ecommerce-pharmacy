@@ -8,7 +8,7 @@ type Props = {
 
 export default function CartItem({ items }: Props) {
     return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 no-scrollbar overflow-y-auto">
             {items.map((item) => (
                 <div key={item.id} className="flex flex-row gap-2 px-4 py-1 items-center ">
                     <img 
@@ -18,8 +18,11 @@ export default function CartItem({ items }: Props) {
                     />
 
                     <div className="flex-1 flex flex-col justify-between">
-                        <span className="text-sm font-bold">{item.label}</span>
-                        <span className="text-sm font-light">R$ {item.price.toFixed(2)}</span>
+                        <div>
+
+                        </div>
+                        <span className="text-sm font-bold">{item.label} <span className="font-extralight text-xs">- {item.quantity}x</span></span>
+                        <span className="text-sm font-light">R$ {(item.price * item.quantity).toFixed(2)}</span>
                     </div>
 
                     <div>

@@ -22,9 +22,9 @@ export default function MenuMain({ classList, icon }: Props) {
                 </Button>
             </SheetTrigger>
             <SheetContent>
-                <SheetHeader className="flex flex-row items-center gap-4">
+                <SheetHeader className="mt-8 flex flex-row items-center gap-4">
                     <Avatar className="h-12 w-12">
-                        <AvatarImage src="https://github.com/evilrabbit.png" alt="Avatar" />
+                        <AvatarImage src="https://github.com/maxleiter.png" alt="Avatar" />
                         <AvatarFallback>User</AvatarFallback>
                     </Avatar>
                     <div className="">

@@ -52,19 +52,20 @@ export function HeaderMain() {
                     {/* BOTÕES DE NAVEGAÇÃO */}
                     <div className="flex items-center md:gap-2">
 
-                        {/* <Button
+                        <Button
+                            onClick={() => setIsSearching(!isSearching)}
                             className={`md:hidden ${isSearching ? "hidden" : "flex"}`}
                             variant="ghost"
                             size="icon-lg"
                         >
-                            <Search />
-                        </Button> */}
+                            <Search className="size-5" />
+                        </Button>
 
-                        <CartMain 
+                        {/* <CartMain 
                             onClick={() => setIsSearching(!isSearching)}
                             className={`md:hidden ${isSearching ? "hidden" : "flex"}`}
                             icon={<Search className="size-5" />} 
-                        />
+                        /> */}
 
                         <MenuMain 
                             classList="md:hidden" 
