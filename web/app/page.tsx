@@ -1,3 +1,4 @@
+import BenefitsMain from "@/components/Benefits/Index"
 import CarouselMain from "@/components/Carousel/Index"
 import CartMain from "@/components/Cart/Index"
 import { HeaderMain } from "@/components/Header/Index"
@@ -15,6 +16,8 @@ export default function Page() {
       <HeaderMain />
 
       <CarouselMain />
+
+      <BenefitsMain />
 
 
     </div>

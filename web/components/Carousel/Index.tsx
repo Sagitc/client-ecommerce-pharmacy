@@ -1,4 +1,4 @@
-import CarouselArea from "./Carousel.content";
+import CarouselArea from "@/components/Carousel/Carousel.content";
 
 export default function CarouselMain() {
     return (

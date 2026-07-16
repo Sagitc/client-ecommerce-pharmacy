@@ -13,7 +13,7 @@ export default function CarouselArea() {
 
     return (
         <Carousel 
-            className="group relative w-full"
+            className="group relative w-full max-w-6xl mx-auto"
             plugins={[autoplayPlugin.current]}
             onMouseEnter={() => autoplayPlugin.current.stop()}
             onMouseLeave={() => autoplayPlugin.current.play()}
