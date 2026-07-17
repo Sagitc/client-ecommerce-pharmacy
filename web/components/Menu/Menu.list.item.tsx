@@ -14,7 +14,7 @@ export default function MenuListItem({ icon: Icon, innerText, onClick }: MenuLis
         >
             <Icon className="h-5 w-5" />
 
-            <span className="text-lg font-light">
+            <span className="text-md font-light">
                 {innerText}
             </span>
         </li>

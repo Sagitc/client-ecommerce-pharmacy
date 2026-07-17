@@ -1,6 +1,7 @@
 import { ProductCart } from "@/types/Product.type"
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { Trash } from "lucide-react"
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 
 type Props = {
     items: ProductCart[]
@@ -11,10 +12,10 @@ export default function CartItem({ items }: Props) {
         <div className="flex flex-col gap-2 no-scrollbar overflow-y-auto">
             {items.map((item) => (
                 <div key={item.id} className="flex flex-row gap-2 px-4 py-1 items-center ">
-                    <img 
-                        src={item.image ?? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf6OM_2iXA5DFquiB_0p0Vr5_0Kv2XoFloY0pvgU-KBA&s=10"} 
-                        alt={item.label} 
-                        className="w-16 h-16 rounded-md" 
+                    <img
+                        src={item.image ?? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf6OM_2iXA5DFquiB_0p0Vr5_0Kv2XoFloY0pvgU-KBA&s=10"}
+                        alt={item.label}
+                        className="w-16 h-16 rounded-md"
                     />
 
                     <div className="flex-1 flex flex-col justify-between">
@@ -26,9 +27,20 @@ export default function CartItem({ items }: Props) {
                     </div>
 
                     <div>
-                        <Button variant="ghost">
-                            <Trash />
-                        </Button>
+
+                        <Tooltip>
+
+                            <TooltipTrigger
+                                className={buttonVariants({ variant: "ghost", size: "icon" }) + " p-4"}
+                            >
+                                <Trash />
+                            </TooltipTrigger>
+
+                            <TooltipContent>
+                                <p>Excluir produto</p>
+                            </TooltipContent>
+
+                        </Tooltip>
                     </div>
                 </div>
             ))}

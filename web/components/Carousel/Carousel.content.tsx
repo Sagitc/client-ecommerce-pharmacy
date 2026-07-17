@@ -23,8 +23,16 @@ export default function CarouselArea() {
                     <CarouselItem key={index}>
                         <div className="p-1">
                             <Card>
-                                <CardContent className="flex aspect-video items-center justify-center p-6">
-                                    <span className="text-4xl font-semibold">{index + 1}</span>
+                                {/* Removido 'aspect-video' e adicionado controle de altura responsivo */}
+                                <CardContent className="flex h-50 sm:h-70 md:h-87.5 w-full items-center justify-center p-6">
+                                    <span className="text-2xl font-semibold text-center">
+                                        1920x500 - Tablets+<br/>
+                                        800x800 - Mobile<br/><br/>
+                                        ({index + 1})
+
+                                        {/* <span className="hidden sm:inline">1920x500 ({index + 1})</span>
+                                        <span className="sm:hidden">800x800 ({index + 1})</span> */}
+                                    </span>
                                 </CardContent>
                             </Card>
                         </div>
@@ -32,9 +40,9 @@ export default function CarouselArea() {
                 ))}
             </CarouselContent>
 
-            <CarouselPrevious className="hidden md:inline-flex absolute left-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+            <CarouselPrevious className="hidden md:inline-flex absolute left-4! opacity-0 transition-opacity duration-300 group-hover:opacity-100 disabled:hidden" />
             
-            <CarouselNext className="hidden md:inline-flex absolute right-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+            <CarouselNext className="hidden md:inline-flex absolute right-4! opacity-0 transition-opacity duration-300 group-hover:opacity-100 disabled:hidden" />
         </Carousel>
     )
 }

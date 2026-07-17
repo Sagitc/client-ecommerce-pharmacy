@@ -7,7 +7,6 @@ import InputSearch from "@/components/Header/Header.input";
 import MenuMain from "@/components/Menu/Index";
 import CartMain from "@/components/Cart/Index";
 
-
 export function HeaderMain() {
 
     const [isSearching, setIsSearching] = useState<boolean>(false);
@@ -32,8 +31,11 @@ export function HeaderMain() {
     }, [isSearching]);
 
     return (
-        <div className="flex flex-col w-full relative">
-            <header className="w-full px-4 py-2 bg-primary dark:bg-gray-800 text-white">
+        // 1. Removido o shadow-xl daqui
+        <div className="flex flex-col w-full sticky top-0 z-50">
+            
+            {/* 2. Adicionado shadow-xl, relative e z-20 no header */}
+            <header className="w-full px-4 py-2 bg-primary dark:bg-gray-800 text-white relative z-20 shadow-xl">
                 <div className="flex items-center justify-between w-full h-12 max-w-6xl mx-auto">
                     {/* LOGO */}
                     <div>
@@ -57,49 +59,38 @@ export function HeaderMain() {
                             className={`md:hidden ${isSearching ? "hidden" : "flex"}`}
                             variant="ghost"
                             size="icon-lg"
+                            data-search-toggle="true" // Adicionado para o seu click outside não bugar
                         >
                             <Search className="size-5" />
                         </Button>
-
-                        {/* <CartMain 
-                            onClick={() => setIsSearching(!isSearching)}
-                            className={`md:hidden ${isSearching ? "hidden" : "flex"}`}
-                            icon={<Search className="size-5" />} 
-                        /> */}
 
                         <MenuMain 
                             classList="md:hidden" 
                             icon={<Menu className="size-5" />} 
                         />
 
-                        {/* <CartBtn
-                            className="hidden md:flex"
-                            variant="ghost"
-                            size="icon-lg"
-                        /> */}
-
                         <CartMain 
-                            className="hidden md:flex" 
+                            className="hidden! md:flex!" 
                             icon={<ShoppingCart className="size-5" />} 
                         />
+                        
 
                         <MenuMain 
-                            classList="hidden md:flex" 
+                            classList="hidden! md:flex!"
                             icon={<User className="size-5" />} 
                         />
                     </div>
                 </div>
             </header>
 
-            {/* CAMPO DE PESQUISA MOBILE */}
             <div 
                 ref={searchContainerRef}
-                className="w-full px-6 sticky text-white md:hidden"
+                className={`absolute left-0 top-full w-full px-6 py-4 md:hidden -z-10 transition-all duration-300 bg-primary/95 dark:bg-gray-800/95 backdrop-blur-sm shadow-md rounded-b-xl ${isSearching ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-4 invisible"}`}
             >
                 <InputSearch
                     isSearching={isSearching}
                     setIsSearching={setIsSearching}
-                    className={`md:hidden mt-2 ${isSearching ? "flex" : "hidden"}`} 
+                    className="w-full" 
                 />
             </div>
         </div>

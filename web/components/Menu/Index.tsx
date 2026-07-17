@@ -1,9 +1,10 @@
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUser } from "@/contexts/userContext";
 import { Cog, Heart, LogOut, Package, Palette, Ticket, User } from "lucide-react";
 import MenuListItem from "@/components/Menu/Menu.list.item";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/Modal";
+import { toast } from "sonner";
 
 type Props = {
     classList?: string;
@@ -14,12 +15,21 @@ export default function MenuMain({ classList, icon }: Props) {
 
     const user = useUser();
 
+    const handleFavorite = () => {
+        toast.success("Adicionado aos favoritos!", {
+            description: "O produto foi salvo na sua lista.",
+            duration: 2500,
+            position: "bottom-left",
+            dismissible: true,
+        });
+    };
+
     return (
         <Sheet>
-            <SheetTrigger>
-                <Button className={classList} variant="ghost" size="icon-lg">
-                    {icon}
-                </Button>
+            <SheetTrigger
+                    className={`${buttonVariants({ variant: "ghost", size: "icon-lg" })} ${classList}`}
+            >
+                {icon}
             </SheetTrigger>
             <SheetContent>
                 <SheetHeader className="mt-8 flex flex-row items-center gap-4">
@@ -28,7 +38,7 @@ export default function MenuMain({ classList, icon }: Props) {
                         <AvatarFallback>User</AvatarFallback>
                     </Avatar>
                     <div className="">
-                        <SheetTitle className="text-sm font-extralight">É bom ter você aqui,<br /><span className="font-bold self-center text-xl">{user?.user?.name} {user?.user?.lastName}</span></SheetTitle>
+                        <SheetTitle className="text-sm font-light">É bom ter você aqui,<br /><span className="font-bold self-center text-xl">{user?.user?.name} {user?.user?.lastName}</span></SheetTitle>
                     </div>
                 </SheetHeader>
                 <div className="flex-1 flex flex-col gap-2 p-4">
