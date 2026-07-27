@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/carousel"
 import ProductContainer from "../ProductCard/Product.container"
 
-export function CarouselSize() {
+export function CardsCarousel() {
   return (
     <Carousel
       opts={{
@@ -22,7 +22,7 @@ export function CarouselSize() {
         {Array.from({ length: 10 }).map((_, index) => (
           <CarouselItem key={index} className="basis-[90%] sm:basis-[45%] md:basis-[30%] lg:basis-[22.5%]">
 
-            <ProductContainer />
+            <ProductContainer productId={index + 1} />
 
             {/* <div className="p-2">
               <Card>
