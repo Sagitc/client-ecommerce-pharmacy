@@ -21,7 +21,7 @@ export default function CarouselArea() {
             <CarouselContent>
                 {Array.from({ length: 5 }).map((_, index) => (
                     <CarouselItem key={index}>
-                        <div className="p-1">
+                        <div className="p-0.5">
                             <Card>
                                 {/* Removido 'aspect-video' e adicionado controle de altura responsivo */}
                                 <CardContent className="flex h-50 sm:h-70 md:h-87.5 w-full items-center justify-center p-6">

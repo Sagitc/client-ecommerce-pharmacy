@@ -1,7 +1,7 @@
 import ProductBuyIcon from "@/components/ProductCard/Product.buyIcon";
 import ProductFavIcon from "@/components/ProductCard/Product.favIcon";
 
-export default function ProductCard() {
+export default function ProductContainer() {
     return (
         // O card em si ocupa a largura toda da coluna onde for colocado (w-full)
         <div className="flex flex-col w-full rounded-lg hover:shadow-lg transition-shadow duration-300 ease-in-out bg-background p-3 dark:bg-gray-800">

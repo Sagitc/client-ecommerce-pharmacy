@@ -14,9 +14,10 @@ export default function ProductFavIcon({ productId }: Props) {
     
     // 2. Consome o estado global e a função de mutação do React Query
     const { favoriteIds, toggleFavorite } = useFavorites();
+    const favoriteProducts = favoriteIds.data || []; // Obtém a lista de IDs de produtos favoritos do estado global
     
     // 3. Checa se o ID deste produto está na lista de favoritos
-    const isFavorited = favoriteIds.includes(productId);
+    const isFavorited = favoriteProducts.includes(productId);
 
     const handleFavorite = () => {
         toggleFavorite(productId, {

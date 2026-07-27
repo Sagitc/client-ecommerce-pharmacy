@@ -1,8 +1,8 @@
 import CarouselArea from "@/components/Carousel/Carousel.content";
 
-export default function CarouselMain() {
+export default function SectionMainCarousel() {
     return (
-        <div className="flex flex-col items-center justify-center px-4 gap-4 mt-5">
+        <div className="flex flex-col items-center justify-center gap-4 w-full">
             <CarouselArea />
         </div>
     )

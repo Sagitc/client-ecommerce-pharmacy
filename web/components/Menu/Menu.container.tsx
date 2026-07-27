@@ -11,7 +11,7 @@ type Props = {
     icon: React.ReactNode;
 }
 
-export default function MenuMain({ classList, icon }: Props) {
+export default function MenuContainer({ classList, icon }: Props) {
 
     const user = useUser();
 

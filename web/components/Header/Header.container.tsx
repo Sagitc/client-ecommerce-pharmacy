@@ -4,10 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import { Menu, Search, ShoppingCart, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import InputSearch from "@/components/Header/Header.input";
-import MenuMain from "@/components/Menu/Index";
-import CartMain from "@/components/Cart/Index";
+import MenuContainer from "@/components/Menu/Menu.container";
+import CartContainer from "@/components/Cart/Cart.container";
 
-export function HeaderMain() {
+export function HeaderContainer() {
 
     const [isSearching, setIsSearching] = useState<boolean>(false);
     const searchContainerRef = useRef<HTMLDivElement>(null);
@@ -64,18 +64,18 @@ export function HeaderMain() {
                             <Search className="size-5" />
                         </Button>
 
-                        <MenuMain 
+                        <MenuContainer 
                             classList="md:hidden" 
                             icon={<Menu className="size-5" />} 
                         />
 
-                        <CartMain 
+                        <CartContainer 
                             className="hidden! md:flex!" 
                             icon={<ShoppingCart className="size-5" />} 
                         />
                         
 
-                        <MenuMain 
+                        <MenuContainer 
                             classList="hidden! md:flex!"
                             icon={<User className="size-5" />} 
                         />

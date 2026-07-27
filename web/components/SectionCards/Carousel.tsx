@@ -7,7 +7,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"
-import ProductCard from "../ProductCard/Index"
+import ProductContainer from "../ProductCard/Product.container"
 
 export function CarouselSize() {
   return (
@@ -22,7 +22,7 @@ export function CarouselSize() {
         {Array.from({ length: 10 }).map((_, index) => (
           <CarouselItem key={index} className="basis-[90%] sm:basis-[45%] md:basis-[30%] lg:basis-[22.5%]">
 
-            <ProductCard />
+            <ProductContainer />
 
             {/* <div className="p-2">
               <Card>

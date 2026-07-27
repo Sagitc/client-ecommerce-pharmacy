@@ -13,7 +13,7 @@ type Props = {
     icon: ReactNode;
 }
 
-export default function CartMain({ className, icon }: Props) {
+export default function CartContainer({ className, icon }: Props) {
 
     const user = useUser();
     const userCart = user?.user?.cart;
