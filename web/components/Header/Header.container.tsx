@@ -32,7 +32,7 @@ export function HeaderContainer() {
 
     return (
         // 1. Removido o shadow-xl daqui
-        <div className="flex flex-col w-full sticky top-0 z-50">
+        <div className="flex flex-col w-full sticky -top-px z-50">
             
             {/* 2. Adicionado shadow-xl, relative e z-20 no header */}
             <header className="w-full px-4 py-2 bg-primary dark:bg-gray-800 text-white relative z-20 shadow-xl">

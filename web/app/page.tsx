@@ -1,8 +1,10 @@
+import Ads1 from "@/components/Ads/Ads1"
 import SectionBenefits from "@/components/Benefits/SectionBenefits"
 import SectionMainCarousel from "@/components/Carousel/SectionMainCarousel"
 import CartContainer from "@/components/Cart/Cart.container"
 import { HeaderContainer } from "@/components/Header/Header.container"
 import SectionCards from "@/components/SectionCards/SectionCards"
+import SectionFilter from "@/components/SectionFilterProducts/SectionFilter"
 import { ShoppingBasket } from "lucide-react"
 
 export default function Page() {
@@ -16,13 +18,17 @@ export default function Page() {
 
       <HeaderContainer />
 
-      <div className="@container/content flex flex-col items-center justify-center gap-8 px-2 py-8 md:px-8 lg:px-16">
+      <div className="@container/content flex flex-col items-center justify-center gap-10 px-2 py-8 md:px-8 lg:px-16">
 
         <SectionMainCarousel />
 
         <SectionBenefits />
 
         <SectionCards sectionTitle="Mais Vendidos" />
+
+        <Ads1 />
+
+        <SectionFilter sectionTitle="Filtrar por categoria" />
 
       </div>
 
