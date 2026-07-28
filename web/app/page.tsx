@@ -1,4 +1,5 @@
 import Ads1 from "@/components/Ads/Ads1"
+import { Ads2 } from "@/components/Ads/Ads2"
 import SectionBenefits from "@/components/Benefits/SectionBenefits"
 import SectionMainCarousel from "@/components/Carousel/SectionMainCarousel"
 import CartContainer from "@/components/Cart/Cart.container"
@@ -29,6 +30,8 @@ export default function Page() {
         <Ads1 />
 
         <SectionFilter sectionTitle="Filtrar por categoria" />
+
+        <Ads2 />
 
       </div>
 

@@ -13,7 +13,7 @@ export function SectionFilterNav({ selectedCategory, setSelectedCategory }: Prop
     }
 
     return (
-        <nav className="hidden md:flex gap-4">
+        <nav className="hidden md:flex gap-4 overflow-scroll scrollbar-none">
             {categoriesObj.map((category) => (
                 <SectionFilterBtn
                     key={category.value}
