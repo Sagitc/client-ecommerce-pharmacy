@@ -1,83 +1,30 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs"
+import { SectionFilterBtn } from "@/components/SectionFilterProducts/SectionFilter.btn";
+import { CategoryType, categoriesObj } from "./SectionFilter";
 
-export function SectionFilterTabs() {
-  return (
-    <Tabs defaultValue="overview" className="w-100">
-      <TabsList>
-        <TabsTrigger value="suplement">Vitaminas e Suplementos</TabsTrigger>
-        <TabsTrigger value="contraceptive">Anticoncepcionais</TabsTrigger>
-        <TabsTrigger value="hygiene">Higiene pessoal</TabsTrigger>
-        <TabsTrigger value="infantile">Mundo infantil</TabsTrigger>
-        <TabsTrigger value="release">Lançamentos</TabsTrigger>
-      </TabsList>
-      <TabsContent value="overview">
-        <Card>
-          <CardHeader>
-            <CardTitle>Overview</CardTitle>
-            <CardDescription>
-              View your key metrics and recent project activity. Track progress
-              across all your active projects.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="text-sm text-muted-foreground">
-            You have 12 active projects and 3 pending tasks.
-          </CardContent>
-        </Card>
-      </TabsContent>
-      <TabsContent value="analytics">
-        <Card>
-          <CardHeader>
-            <CardTitle>Analytics</CardTitle>
-            <CardDescription>
-              Track performance and user engagement metrics. Monitor trends and
-              identify growth opportunities.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="text-sm text-muted-foreground">
-            Page views are up 25% compared to last month.
-          </CardContent>
-        </Card>
-      </TabsContent>
-      <TabsContent value="reports">
-        <Card>
-          <CardHeader>
-            <CardTitle>Reports</CardTitle>
-            <CardDescription>
-              Generate and download your detailed reports. Export data in
-              multiple formats for analysis.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="text-sm text-muted-foreground">
-            You have 5 reports ready and available to export.
-          </CardContent>
-        </Card>
-      </TabsContent>
-      <TabsContent value="settings">
-        <Card>
-          <CardHeader>
-            <CardTitle>Settings</CardTitle>
-            <CardDescription>
-              Manage your account preferences and options. Customize your
-              experience to fit your needs.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="text-sm text-muted-foreground">
-            Configure notifications, security, and themes.
-          </CardContent>
-        </Card>
-      </TabsContent>
-    </Tabs>
-  )
+type Props = {
+    selectedCategory: string,
+    setSelectedCategory: (category: CategoryType) => void
 }
+
+export function SectionFilterNav({ selectedCategory, setSelectedCategory }: Props) {
+
+    function handleClick(category: CategoryType) {
+        setSelectedCategory(category);
+    }
+
+    return (
+        <nav className="hidden md:flex gap-4">
+            {categoriesObj.map((category) => (
+                <SectionFilterBtn
+                    key={category.value}
+                    data-key={category.value}
+                    onClick={() => handleClick(category.value as CategoryType)}
+                    className={selectedCategory === category.value ? "bg-primary text-primary-foreground" : ""}
+                >
+                    {category.label}
+                </SectionFilterBtn>
+            ))}
+        </nav>
+    )
+}
+

@@ -9,7 +9,11 @@ import {
 } from "@/components/ui/carousel"
 import ProductContainer from "../ProductCard/Product.container"
 
-export function CardsCarousel() {
+type Props = {
+  productIds: number[]
+}
+
+export function CardsCarousel({ productIds }: Props) {
   return (
     <Carousel
       opts={{
@@ -20,15 +24,15 @@ export function CardsCarousel() {
       className="w-full group relative"
     >
       <CarouselContent>
-        {Array.from({ length: 10 }).map((_, index) => (
-          <CarouselItem key={index} className="basis-[90%] sm:basis-[45%] md:basis-[30%] lg:basis-[22.5%]">
+        {productIds.map((productId) => (
+          <CarouselItem key={productId} className="basis-[90%] min-[450px]:basis-[45%] md:basis-[30%] lg:basis-[22.5%]">
 
-            <ProductContainer productId={index + 1} />
+            <ProductContainer productId={productId} />
 
             {/* <div className="p-2">
               <Card>
                 <CardContent className="flex aspect-square items-center justify-center p-6">
-                  <span className="text-3xl font-semibold">{index + 1}</span>
+                  <span className="text-3xl font-semibold">{productId}</span>
                 </CardContent>
               </Card>
             </div> */}

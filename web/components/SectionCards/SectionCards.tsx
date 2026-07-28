@@ -10,7 +10,7 @@ export default function SectionCards({ sectionTitle }: Props) {
             <h2 className="text-2xl font-bold">{sectionTitle}</h2>
             
             <div className="w-full">
-                <CardsCarousel />
+                <CardsCarousel productIds={[1, 2, 3, 4, 5, 7, 8, 9, 10]} />
             </div>
         </section>
     )
