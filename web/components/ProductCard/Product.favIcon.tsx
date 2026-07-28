@@ -50,8 +50,8 @@ export default function ProductFavIcon({ productId }: Props) {
                     className={buttonVariants({ variant: "ghost", size: "icon" }) + " p-4"}
                 >
                     <Heart 
-                        className={`size-5 transition-colors duration-300 ${
-                            isFavorited ? "fill-red-500 text-red-500" : "text-foreground"
+                        className={`size-5 transition-colors duration-300 text-red-500 ${
+                            isFavorited ? "fill-red-500" : "text-foreground"
                         }`} 
                     />
                 </TooltipTrigger>

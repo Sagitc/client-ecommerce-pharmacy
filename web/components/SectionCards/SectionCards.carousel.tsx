@@ -10,10 +10,11 @@ import {
 import ProductContainer from "../ProductCard/Product.container"
 
 type Props = {
-  productIds: number[]
+  productIds: number[],
+  className?: string
 }
 
-export function CardsCarousel({ productIds }: Props) {
+export function CardsCarousel({ productIds, className }: Props) {
   return (
     <Carousel
       opts={{
@@ -25,7 +26,7 @@ export function CardsCarousel({ productIds }: Props) {
     >
       <CarouselContent>
         {productIds.map((productId) => (
-          <CarouselItem key={productId} className="basis-[90%] min-[450px]:basis-[45%] md:basis-[30%] lg:basis-[22.5%]">
+          <CarouselItem key={productId} className={"basis-[90%] min-[450px]:basis-[45%] md:basis-[30%] lg:basis-[22.5%] "+ className}>
 
             <ProductContainer productId={productId} />
 

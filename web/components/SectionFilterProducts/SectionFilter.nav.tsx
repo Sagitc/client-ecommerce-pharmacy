@@ -19,7 +19,7 @@ export function SectionFilterNav({ selectedCategory, setSelectedCategory }: Prop
                     key={category.value}
                     data-key={category.value}
                     onClick={() => handleClick(category.value as CategoryType)}
-                    className={selectedCategory === category.value ? "bg-primary text-primary-foreground" : ""}
+                    className={selectedCategory === category.value ? "bg-primary text-primary-foreground dark:bg-primary dark:text-primary-foreground" : ""}
                 >
                     {category.label}
                 </SectionFilterBtn>

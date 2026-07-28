@@ -10,7 +10,7 @@ export function SectionFilterBtn({ children, className, onClick }: Props) {
     return (
         <Button 
             variant="outline" 
-            className={`flex-1 py-4 hover:bg-primary hover:text-primary-foreground ${className || ''}`} 
+            className={`flex-1 py-4 hover:bg-primary hover:text-primary-foreground dark:hover:bg-primary dark:hover:text-primary-foreground ${className || ''}`} 
             onClick={onClick}
         >
             {children}
