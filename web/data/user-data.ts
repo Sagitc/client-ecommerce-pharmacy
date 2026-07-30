@@ -1,6 +1,6 @@
-import { User } from "@/types/User.type";
+import { UserType } from "@/types/user-type";
 
-export const User1: User = {
+export const User1: UserType = {
     id: 1,
     name: "John",
     lastName: "Doe",
@@ -79,6 +79,7 @@ export const User1: User = {
                 fabricator: "Fabricante 10",
                 quantity: 1
             }
-        ]
+        ],
+        updateAt: new Date(),
     }
 }

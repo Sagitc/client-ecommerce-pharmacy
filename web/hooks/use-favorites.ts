@@ -1,5 +1,12 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { fetchFavorites, toggleFavoriteRequest } from "@/services/favorites";
+import { 
+    useQuery, 
+    useMutation, 
+    useQueryClient 
+} from "@tanstack/react-query";
+import { 
+    fetchFavorites, 
+    toggleFavoriteRequest 
+} from "@/services/favorite-service";
 
 export function useFavorites() {
 

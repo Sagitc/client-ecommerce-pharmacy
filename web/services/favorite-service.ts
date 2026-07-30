@@ -1,4 +1,4 @@
-const LOCAL_STORAGE_KEY = "drogaria_camargo_favorites";
+const LOCAL_STORAGE_KEY = "user_favorites";
 
 const getStoredFavorites = (): number[] => {
     if (typeof window === "undefined") return [];
@@ -22,9 +22,9 @@ export async function toggleFavoriteRequest(productId: number): Promise<{ isFavo
             let isFavorited = false;
 
             if (index > -1) {
-                favorites.splice(index, 1); // Remove se já existir
+                favorites.splice(index, 1);
             } else {
-                favorites.push(productId); // Adiciona se não existir
+                favorites.push(productId);
                 isFavorited = true;
             }
 

@@ -1,8 +1,11 @@
-import { Geist, Geist_Mono, Inter } from "next/font/google"
-
+import { 
+  Geist, 
+  Geist_Mono, 
+  Inter 
+} from "next/font/google"
 import "@/app/globals.css"
 import { cn } from "@/lib/utils";
-import Providers from "@/utils/Providers";
+import Providers from "@/utils/providers";
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 

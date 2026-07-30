@@ -1,13 +1,5 @@
-import ProductContainer from "@/components/ProductCard/Product.container";
-
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious
-} from "../ui/carousel";
-
+import { ElementType, ReactNode } from "react";
+import { ProductFilters } from "@/types/product-type";
 import {
     Select,
     SelectContent,
@@ -16,27 +8,37 @@ import {
     SelectLabel,
     SelectTrigger,
     SelectValue
-} from "../ui/select";
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { ProductCard } from "@/components/product-card";
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious
+} from "@/components/ui/carousel";
 
-import { Button } from "../ui/button";
-import { ReactNode } from "react";
-import { ProductFilters } from "@/types/ProductFilters.type";
-
-type HeaderProps = {
+type SecHeaderProps = {
     sectionTitle: string;
     complement?: React.ReactNode;
 }
-type ProductsCarouselProps = {
+type SecAdvantageProps = {
+    Icon: ElementType,
+    title: string,
+    description: string
+}
+type SecCarouselProps = {
     filter: typeof ProductFilters[number]["value"];
     style?: string;
 }
-type NavFilterProps = {
+type SecFiltersProps = {
     items: readonly (typeof ProductFilters[number])[];
     selectedCategory: typeof ProductFilters[number]["value"];
     setSelectedCategory: (category: typeof ProductFilters[number]["value"]) => void;
 }
 
-export function Header({ sectionTitle, complement }: HeaderProps) {
+export function SecHeader({ sectionTitle, complement }: SecHeaderProps) {
     return (
         <div className="flex flex-col gap-3">
             <h2 className="text-2xl font-bold">
@@ -47,7 +49,28 @@ export function Header({ sectionTitle, complement }: HeaderProps) {
     )
 }
 
-export function ProductsCarousel({ filter, style }: ProductsCarouselProps) {
+export function SecAdvantageCard({ Icon, title, description }: SecAdvantageProps) {
+    return (
+        <div className="last:hidden sm:last:flex bg-background dark:bg-gray-800 flex items-center justify-start gap-4 rounded-lg border p-4 shadow-md hover:shadow-lg transition-shadow duration-300 w-full overflow-hidden">
+
+            <div className="bg-primary text-primary-foreground rounded-full shrink-0 w-12 h-12 flex items-center justify-center p-2">
+                <Icon className="w-6 h-6" />
+            </div>
+
+            <div className="flex flex-col gap-0.5 flex-1 text-left overflow-hidden">
+                <span className="font-bold text-sm sm:text-base truncate">
+                    {title}
+                </span>
+                <span className="text-xs sm:text-sm text-muted-foreground truncate">
+                    {description}
+                </span>
+            </div>
+            
+        </div>
+    )
+}
+
+export function SecProdsCarousel({ filter, style }: SecCarouselProps) {
 
     const productIds = [1, 2, 3, 4, 5, 7, 8, 9, 10]; // Simula o request dos produtos com o filtro ${filter}
 
@@ -66,7 +89,7 @@ export function ProductsCarousel({ filter, style }: ProductsCarouselProps) {
                 {productIds.map((productId) => (
                     <CarouselItem key={productId} className={"basis-[90%] min-[450px]:basis-[45%] md:basis-[30%] lg:basis-[22.5%] " + style}>
 
-                        <ProductContainer productId={productId} />
+                        <ProductCard productId={productId} />
 
                     </CarouselItem>
                 ))}
@@ -79,7 +102,7 @@ export function ProductsCarousel({ filter, style }: ProductsCarouselProps) {
     )
 }
 
-export function NavFilters({ items, selectedCategory, setSelectedCategory }: NavFilterProps) {
+export function SecFilter({ items, selectedCategory, setSelectedCategory }: SecFiltersProps) {
 
     type CategoryType = typeof ProductFilters[number]["value"];
 

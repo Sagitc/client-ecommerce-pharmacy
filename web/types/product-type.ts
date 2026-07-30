@@ -1,3 +1,14 @@
+export type ProductType = {
+    id: number,
+    label: string,
+    fabricator: string,
+    description?: string,
+    price: number,
+    promotionPrice?: number,
+    image?: string,
+    category: string,
+}
+
 export const ProductFilters = [
     { label: "Mais vendidos", value: "most-sell" },
     { label: "Para você", value: "for-you" },

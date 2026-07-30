@@ -1,9 +1,9 @@
-import { Product } from "@/types/Product.type";
+import { ProductType } from "@/types/product-type";
 
-export const products: Product[] = [
+export const ProductData: ProductType[] = [
     {
         id: 1,
-        label: "Produto 1",
+        label: "COGMAX 60CAPS",
         description: "Descrição do produto 1",
         price: 100,
         category: "Categoria 1",
@@ -12,7 +12,7 @@ export const products: Product[] = [
     },
     {
         id: 2,
-        label: "Produto 2",
+        label: "DIPIRONA 50MG/ML XPE 100ML GERMED",
         description: "Descrição do produto 2",
         price: 120,
         category: "Categoria 2",
@@ -21,7 +21,7 @@ export const products: Product[] = [
     },
     {
         id: 3,
-        label: "Produto 3",
+        label: "AMOXICILINA+CLAV 400MG/5ML+57MG/5ML SUSP 70ML EURO",
         description: "Descrição do produto 3",
         price: 150,
         category: "Categoria 1",
@@ -30,7 +30,7 @@ export const products: Product[] = [
     },
     {
         id: 4,
-        label: "Produto 4",
+        label: "S.LINE CR PENT 300ML SOS CACHOS MANTEIGA KARITE",
         description: "Descrição do produto 4",
         price: 80,
         category: "Categoria 3",
@@ -39,7 +39,7 @@ export const products: Product[] = [
     },
     {
         id: 5,
-        label: "Produto 5",
+        label: "ESPIRONOLACTONA 25MG 30CPR GERMED",
         description: "Descrição do produto 5",
         price: 200,
         category: "Categoria 2",
@@ -48,7 +48,7 @@ export const products: Product[] = [
     },
     {
         id: 6,
-        label: "Produto 6",
+        label: "ESTOMAZIL SACHE 5G ABACAXI",
         description: "Descrição do produto 6",
         price: 95,
         category: "Categoria 4",
@@ -57,7 +57,7 @@ export const products: Product[] = [
     },
     {
         id: 7,
-        label: "Produto 7",
+        label: "VALACICLOVIR 500MG 42CPR EUROFAMA",
         description: "Descrição do produto 7",
         price: 175,
         category: "Categoria 1",
@@ -66,7 +66,7 @@ export const products: Product[] = [
     },
     {
         id: 8,
-        label: "Produto 8",
+        label: "LACTULOSE 667MG/ML SOL 120ML MAMAO NUTRIEX",
         description: "Descrição do produto 8",
         price: 60,
         category: "Categoria 3",
@@ -75,7 +75,7 @@ export const products: Product[] = [
     },
     {
         id: 9,
-        label: "Produto 9",
+        label: "JOHNSONS KIDS SH 200ML BLACKINH PODERO",
         description: "Descrição do produto 9",
         price: 140,
         category: "Categoria 4",
@@ -84,7 +84,7 @@ export const products: Product[] = [
     },
     {
         id: 10,
-        label: "Produto 10",
+        label: "HAVAIANAS TUBE 37/38 LILAC BREEZE",
         description: "Descrição do produto 10",
         price: 220,
         category: "Categoria 2",
