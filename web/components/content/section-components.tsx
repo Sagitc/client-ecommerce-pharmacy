@@ -29,8 +29,10 @@ type SecAdvantageProps = {
     description: string
 }
 type SecCarouselProps = {
-    filter: typeof ProductFilters[number]["value"];
+    filter?: typeof ProductFilters[number]["value"];
     style?: string;
+    children?: ReactNode;
+    loop?: boolean;
 }
 type SecFiltersProps = {
     items: readonly (typeof ProductFilters[number])[];
@@ -70,7 +72,7 @@ export function SecAdvantageCard({ Icon, title, description }: SecAdvantageProps
     )
 }
 
-export function SecProdsCarousel({ filter, style }: SecCarouselProps) {
+export function SecCarousel({ filter, style, children, loop }: SecCarouselProps) {
 
     const productIds = [1, 2, 3, 4, 5, 7, 8, 9, 10]; // Simula o request dos produtos com o filtro ${filter}
 
@@ -78,21 +80,25 @@ export function SecProdsCarousel({ filter, style }: SecCarouselProps) {
         <Carousel
             opts={{
                 align: "start",
-                loop: true,
+                loop: loop ?? true,
                 dragFree: true,
             }}
             className="w-full group relative"
         >
             <CarouselContent>
 
-                {/* Simula o request dos produtos com o filtro ${filter} */}
-                {productIds.map((productId) => (
-                    <CarouselItem key={productId} className={"basis-[90%] min-[450px]:basis-[45%] md:basis-[30%] lg:basis-[22.5%] " + style}>
+                {
+                    filter ?
+                    productIds.map((productId) => (
+                        <CarouselItem key={productId} className={"basis-[90%] min-[450px]:basis-[45%] md:basis-[30%] lg:basis-[22.5%] " + style}>
 
-                        <ProductCard productId={productId} />
+                            <ProductCard productId={productId} />
 
-                    </CarouselItem>
-                ))}
+                        </CarouselItem>
+                    )) :
+                    children
+                }
+                
             </CarouselContent>
 
             <CarouselPrevious className="hidden md:inline-flex absolute left-4! opacity-0 transition-opacity duration-300 group-hover:opacity-100 disabled:hidden" />

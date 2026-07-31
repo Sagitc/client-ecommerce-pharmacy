@@ -5,17 +5,18 @@ import { ProductFilters } from "@/types/product-type";
 import {
     SecHeader,
     SecFilter,
-    SecProdsCarousel,
+    SecCarousel,
     SecAdvantageCard
 } from "@/components/content/section-components";
 import Autoplay from "embla-carousel-autoplay";
-import { 
-    Carousel, 
-    CarouselContent, 
-    CarouselItem, 
-    CarouselNext, 
-    CarouselPrevious 
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious
 } from "@/components/ui/carousel";
+import CategoryCard from "@/components/category-card";
 import { Card, CardContent } from "@/components/ui/card";
 import { Truck } from "lucide-react";
 
@@ -37,14 +38,14 @@ export function SecDefault({ title, filter, style, className }: SecDefaultProps 
             <SecHeader sectionTitle={title} />
 
             <div className={`w-full ${style ?? ""}`}>
-                <SecProdsCarousel filter={filter} />
+                <SecCarousel filter={filter} />
             </div>
 
         </section>
     )
 }
 
-export function SecCarousel() {
+export function SecHero() {
 
     const autoplayPlugin = useRef(
         Autoplay({ delay: 3000, stopOnInteraction: false })
@@ -103,7 +104,7 @@ export function SecMostSell({ title, className }: SectionProps) {
             <SecHeader sectionTitle={title ?? "Mais Vendidos"} />
 
             <div className="w-full">
-                <SecProdsCarousel filter="most-sell" />
+                <SecCarousel filter="most-sell" />
             </div>
 
         </section>
@@ -138,7 +139,7 @@ export function SecFilterProd({ title, className }: SectionProps) {
             />
 
             <div className="w-full">
-                <SecProdsCarousel filter={selectedCategory} />
+                <SecCarousel filter={selectedCategory} />
             </div>
 
         </section>
@@ -158,18 +159,80 @@ export function SecLaboratory({ title, className }: SectionProps) {
                 </div>
 
                 <div className="@container/content flex-2">
-                    <SecProdsCarousel filter="laboratory" style="md:basis-[40%] lg:basis-[40%]" />
+                    <SecCarousel filter="laboratory" style="md:basis-[40%] lg:basis-[40%]" />
                 </div>
             </div>
         </section>
     )
 }
 
-export function SecDermo({ title, className }: SectionProps) {
+export function SecCare({ title, className }: SectionProps) {
+
+    type careFilters = {
+        label: string;
+        value: typeof ProductFilters[number]["value"];
+        linkUrl: string;
+        imageUrl: string;
+    }
+
+    const filters: careFilters[] = [
+        {
+            label: "Cuidados com a pele",
+            value: "dermocosmetics",
+            linkUrl: "#",
+            imageUrl: ""
+        },
+        {
+            label: "Cuidados no inverno",
+            value: "winter-care",
+            linkUrl: "#",
+            imageUrl: ""
+        },
+        {
+            label: "Protetores solares",
+            value: "sunscreen",
+            linkUrl: "#",
+            imageUrl: ""
+        },
+        {
+            label: "Produtos para cabelos",
+            value: "hair-care",
+            linkUrl: "#",
+            imageUrl: ""
+        },
+        {
+            label: "Vitaminas",
+            value: "suplement",
+            linkUrl: "#",
+            imageUrl: ""
+        },
+        {
+            label: "Diabétes",
+            value: "diabetes",
+            linkUrl: "#",
+            imageUrl: ""
+        },
+    ]
+
     return (
         <section className={`${defaultStyles} ${className ?? ""}`}>
             <SecHeader sectionTitle={title ?? "Dermocosméticos"} />
 
+            <div className="flex gap-4 w-full">
+                <SecCarousel
+                    loop={false}
+                    children={filters.map((filter, index) => (
+                        <CarouselItem key={index} className={"basis-[90%] min-[500px]:basis-[45%] md:basis-[35%] lg:basis-[22.5%]"}>
+                            <CategoryCard
+                                linkUrl={filter.linkUrl}
+                                key={index}
+                                title={filter.label}
+                                imageUrl={filter.imageUrl}
+                            />
+                        </CarouselItem>
+                    ))}
+                />
+            </div>
         </section>
     )
 }

@@ -1,13 +1,13 @@
 import {
   SecDefault,
+  SecHero,
   SecAdvantages,
   SecMostSell,
   SecFilterProd,
   SecLaboratory,
-  SecDermo,
+  SecCare,
   SecForYou,
   SecNews,
-  SecCarousel
 } from "@/components/content/section-items"
 import {
   Ads1,
@@ -32,7 +32,7 @@ export default function Page() {
         />
 
         <div className="flex flex-col gap-5 w-full">
-          <SecCarousel />
+          <SecHero />
           <SecAdvantages title="Benefícios" />
         </div>
 
@@ -46,6 +46,9 @@ export default function Page() {
 
         <SecLaboratory title="Desconto de laboratório" />
 
+        <Ads3 />
+
+        <SecCare title="Cuidamos de você" />
 
       </div>
 

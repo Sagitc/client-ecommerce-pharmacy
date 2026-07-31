@@ -31,7 +31,7 @@ export function ProductCard({ productId }: Props) {
                 <ProductBuyIcon productId={productId} />
             </div>
 
-            <div className="flex flex-col flex-1 justify-between gap-2 mt-4">
+            <div className="flex flex-col flex-1 gap-2 mt-4">
                 
                 <span className="text-sm line-clamp-2">
                     {productsList[productId - 1]?.label}<br />
