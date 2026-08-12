@@ -31,7 +31,7 @@ export default function Page() {
           icon={<ShoppingBasket className="size-6" />}
         />
 
-        <div className="flex flex-col gap-5 w-full">
+        <div className="flex flex-col gap-10 w-full">
           <SecHero />
           <SecAdvantages title="Benefícios" />
         </div>

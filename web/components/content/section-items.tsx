@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ProductFilters } from "@/types/product-type";
 import {
     SecHeader,
@@ -13,6 +13,7 @@ import {
     Carousel,
     CarouselContent,
     CarouselItem,
+    type CarouselApi,
     CarouselNext,
     CarouselPrevious
 } from "@/components/ui/carousel";
@@ -50,11 +51,27 @@ export function SecHero() {
     const autoplayPlugin = useRef(
         Autoplay({ delay: 3000, stopOnInteraction: false })
     )
+    const [api, setApi] = useState<CarouselApi>()
+    const [selectedIndex, setSelectedIndex] = useState(0)
+
+    useEffect(() => {
+        if (!api) return
+
+        const onSelect = () => setSelectedIndex(api.selectedScrollSnap())
+
+        onSelect()
+        api.on("select", onSelect)
+
+        return () => {
+            api.off("select", onSelect)
+        }
+    }, [api])
 
     return (
         <Carousel
             className="group relative w-full max-w-6xl mx-auto"
             plugins={[autoplayPlugin.current]}
+            setApi={setApi}
             onMouseEnter={() => autoplayPlugin.current.stop()}
             onMouseLeave={() => autoplayPlugin.current.play()}
         >
@@ -78,7 +95,24 @@ export function SecHero() {
                         </div>
                     </CarouselItem>
                 ))}
+                
             </CarouselContent>
+
+            <div className="mt-4 flex items-center justify-center gap-2">
+                {Array.from({ length: 5 }).map((_, index) => (
+                    <button
+                        key={index}
+                        type="button"
+                        aria-label={`Ir para o slide ${index + 1}`}
+                        onClick={() => api?.scrollTo(index)}
+                        className={`h-2.5 rounded-full transition-all duration-300 ${
+                            selectedIndex === index
+                                ? "w-8 bg-primary"
+                                : "w-2.5 bg-muted-foreground/30"
+                        }`}
+                    />
+                ))}
+            </div>
 
             <CarouselPrevious className="hidden md:inline-flex absolute left-4! opacity-0 transition-opacity duration-300 group-hover:opacity-100 disabled:hidden" />
 
