@@ -74,7 +74,7 @@ export default function Header() {
     return (
         <div className="flex flex-col w-full sticky -top-px z-50">
 
-            <header className="w-full px-4 py-2 bg-primary dark:bg-gray-800 text-white relative z-20 shadow-xl">
+            <header className="w-full px-2 py-2 md:px-8 lg:px-0 bg-primary dark:bg-gray-800 text-white relative z-20 shadow-xl">
                 <div className="flex items-center justify-between w-full h-12 max-w-6xl mx-auto">
 
                     {/* LOGO */}

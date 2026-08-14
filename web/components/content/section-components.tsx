@@ -53,7 +53,7 @@ export function SecHeader({ sectionTitle, complement }: SecHeaderProps) {
 
 export function SecAdvantageCard({ Icon, title, description }: SecAdvantageProps) {
     return (
-        <div className="last:hidden sm:last:flex bg-background dark:bg-gray-800 flex items-center justify-start gap-4 rounded-lg border p-4 shadow-md hover:shadow-lg transition-shadow duration-300 w-full overflow-hidden">
+        <div className="last:hidden sm:last:flex bg-background dark:bg-gray-800 flex items-center justify-start gap-4 rounded-lg border border-transparent p-4 shadow-md transition-all duration-300 w-full overflow-hidden hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg">
 
             <div className="bg-primary text-primary-foreground rounded-full shrink-0 w-12 h-12 flex items-center justify-center p-2">
                 <Icon className="w-6 h-6" />
