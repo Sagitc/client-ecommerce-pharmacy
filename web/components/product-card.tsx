@@ -10,14 +10,15 @@ import { Heart, Plus, Check } from "lucide-react";
 
 type Props = {
     productId: number;
+    parentStyle?: string;
 };
 
-export function ProductCard({ productId }: Props) {
+export function ProductCard({ productId, parentStyle }: Props) {
 
     const productsList: ProductType[] = ProductData;
 
     return (
-        <div className="flex flex-col w-full rounded-lg hover:shadow-lg transition-shadow duration-300 ease-in-out bg-background p-3 dark:bg-gray-800">
+        <div className={"flex flex-col w-full rounded-lg hover:shadow-lg transition-shadow duration-300 ease-in-out bg-background p-3 dark:bg-gray-800" + " " + parentStyle}>
             
             <div className="relative flex items-center justify-center w-full h-45 sm:h-55 md:h-65 rounded-lg overflow-hidden bg-white shrink-0">
                 <ProductFavIcon productId={productId} />

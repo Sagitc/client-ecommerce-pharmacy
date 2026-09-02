@@ -6,7 +6,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode; 
     <div className="flex flex-col min-h-screen">
       <Header />
       
-      <main className="grow">
+      <main className="grow bg-accent">
         {children}
       </main>
       

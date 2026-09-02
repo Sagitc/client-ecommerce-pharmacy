@@ -34,6 +34,7 @@ import {
     User,
     X
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 
 type HeaderInputProps = {
@@ -78,9 +79,9 @@ export default function Header() {
                 <div className="flex items-center justify-between w-full h-12 max-w-6xl mx-auto">
 
                     {/* LOGO */}
-                    <div>
+                    <a href="/" className="flex items-center gap-2">
                         <img src="/logo_white.svg" alt="Logo" className="w-auto h-auto max-w-42" />
-                    </div>
+                    </a>
 
                     {/* CAMPO DE PESQUISA */}
                     <div className="flex items-center w-full max-w-sm">
@@ -113,7 +114,6 @@ export default function Header() {
                             className="hidden! md:flex!"
                             icon={<ShoppingCart className="size-5" />}
                         />
-
 
                         <MenuModal
                             classList="hidden! md:flex!"
@@ -179,6 +179,14 @@ function MenuModal({ classList, icon }: MenuProps) {
 
     const user = useUser();
 
+    const router = useRouter();
+    const [isOpen, setIsOpen] = useState(false);
+
+    function handleMenuClick(path: string) {
+        setIsOpen(false);
+        router.push(path);
+    }
+
     type MenuItemProps = {
         icon: ElementType;
         innerText: string;
@@ -201,7 +209,7 @@ function MenuModal({ classList, icon }: MenuProps) {
     }
 
     return (
-        <Sheet>
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger
                 className={`${buttonVariants({ variant: "ghost", size: "icon-lg" })} ${classList}`}
             >
@@ -231,14 +239,17 @@ function MenuModal({ classList, icon }: MenuProps) {
                             <MenuItem
                                 icon={User}
                                 innerText="Meus dados"
+                                onClick={ () => handleMenuClick("/profile")  }
                             />
                             <MenuItem
                                 icon={Package}
                                 innerText="Meus pedidos"
+                                onClick={ () => handleMenuClick("/profile/orders")  }
                             />
                             <MenuItem
                                 icon={Heart}
                                 innerText="Favoritos"
+                                onClick={ () => handleMenuClick("/profile/favorites")  }
                             />
                             <MenuItem
                                 icon={Ticket}
@@ -261,6 +272,7 @@ function MenuModal({ classList, icon }: MenuProps) {
                             <MenuItem
                                 icon={Cog}
                                 innerText="Configuração"
+                                onClick={ () => handleMenuClick("/profile/edit")  }
                             />
                             <MenuItem
                                 icon={LogOut}

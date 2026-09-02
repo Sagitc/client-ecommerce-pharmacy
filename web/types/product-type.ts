@@ -7,7 +7,11 @@ export type ProductType = {
     promotionPrice?: number,
     image?: string,
     category: string,
-}
+};
+
+export type ProductOrderType = Pick<ProductType, 'id' | 'label' | 'fabricator' | 'image' | 'price' | 'promotionPrice'> & {
+    quantity: number,
+};
 
 export const ProductFilters = [
     { label: "Mais vendidos", value: "most-sell" },
