@@ -23,7 +23,6 @@ export default function PerfilLayout({
             setOptionChosen(selectedOption.label);
         }
     }, [pathname]);
-
     
     const menuOptions = [
         { label: "Resumo da conta", path: "/profile", icon: User },

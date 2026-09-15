@@ -8,10 +8,12 @@ import {
     useState
 } from "react";
 import { useUser } from "@/contexts/user-context";
+import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import Cart from "@/components/cart";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
+import { Input } from "@/components/ui/input";
 import {
     Sheet,
     SheetClose,
@@ -34,7 +36,6 @@ import {
     User,
     X
 } from "lucide-react";
-import { useRouter } from "next/navigation";
 
 
 type HeaderInputProps = {
@@ -139,8 +140,24 @@ export default function Header() {
 
 function HeaderInput({ isSearching, setIsSearching, className }: HeaderInputProps) {
 
+    const searchParams = useSearchParams();
+    const pathname = usePathname();
+    const router = useRouter();
+
     const [searchQuery, setSearchQuery] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    const handleSearch = (term: string) => {
+        handleChangeInput({ target: { value: term } } as ChangeEvent<HTMLInputElement>);
+
+        const params = new URLSearchParams(searchParams);
+        if (term) {
+            params.set("q", term);
+        } else {
+            params.delete("q");
+        }
+        router.replace(`/search?${params.toString()}`);
+    };
 
     // FUNÇÃO PARA LIMPAR O CAMPO DE PESQUISA QUANDO ELE FICA INVISÍVEL
     //
@@ -160,15 +177,26 @@ function HeaderInput({ isSearching, setIsSearching, className }: HeaderInputProp
         <InputGroup className={`bg-white text-foreground font-normal w-full h-10 ${className || ""}`}>
             <InputGroupInput
                 className={""}
-                onChange={handleChangeInput}
+                onChange={ (e) => handleChangeInput(e) }
+                onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                        handleSearch(searchQuery || "");
+                        setIsLoading(false);
+                    }
+                }}
                 value={searchQuery || ""}
                 placeholder="O que está procurando?"
+                defaultValue={searchParams.get("q")?.toString()}
             />
             <InputGroupAddon align="inline-end">
 
-                {isLoading ? <Spinner /> : <Button variant="ghost" size="icon">
-                    <Search className="cursor-pointer" />
-                </Button>}
+                {isLoading ?
+                    <Spinner />
+                    :
+                    <Button variant="ghost" size="icon">
+                        <Search className="cursor-pointer" />
+                    </Button>
+                }
 
             </InputGroupAddon>
         </InputGroup>
@@ -239,17 +267,17 @@ function MenuModal({ classList, icon }: MenuProps) {
                             <MenuItem
                                 icon={User}
                                 innerText="Meus dados"
-                                onClick={ () => handleMenuClick("/profile")  }
+                                onClick={() => handleMenuClick("/profile")}
                             />
                             <MenuItem
                                 icon={Package}
                                 innerText="Meus pedidos"
-                                onClick={ () => handleMenuClick("/profile/orders")  }
+                                onClick={() => handleMenuClick("/profile/orders")}
                             />
                             <MenuItem
                                 icon={Heart}
                                 innerText="Favoritos"
-                                onClick={ () => handleMenuClick("/profile/favorites")  }
+                                onClick={() => handleMenuClick("/profile/favorites")}
                             />
                             <MenuItem
                                 icon={Ticket}
@@ -272,7 +300,7 @@ function MenuModal({ classList, icon }: MenuProps) {
                             <MenuItem
                                 icon={Cog}
                                 innerText="Configuração"
-                                onClick={ () => handleMenuClick("/profile/edit")  }
+                                onClick={() => handleMenuClick("/profile/edit")}
                             />
                             <MenuItem
                                 icon={LogOut}
