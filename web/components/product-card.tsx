@@ -18,7 +18,7 @@ export function ProductCard({ productId, parentStyle }: Props) {
     const productsList: ProductType[] = ProductData;
 
     return (
-        <div className={"flex flex-col w-full rounded-lg hover:shadow-lg transition-shadow duration-300 ease-in-out bg-background p-3 dark:bg-gray-800" + " " + parentStyle}>
+        <a href={`/product/${productId}`} target="_self" className={"flex flex-col w-full rounded-lg hover:shadow-lg transition-shadow duration-300 ease-in-out bg-background p-3 dark:bg-gray-800" + " " + parentStyle}>
             
             <div className="relative flex items-center justify-center w-full h-45 sm:h-55 md:h-65 rounded-lg overflow-hidden bg-white shrink-0">
                 <ProductFavIcon productId={productId} />
@@ -44,11 +44,11 @@ export function ProductCard({ productId, parentStyle }: Props) {
                 </span>
             </div>
             
-        </div>
+        </a>
     )
 }
 
-function ProductFavIcon({ productId }: Props) {
+export function ProductFavIcon({ productId, parentStyle }: Props) {
     
     const { favoriteIds, toggleFavorite } = useFavorites();
 
@@ -78,7 +78,7 @@ function ProductFavIcon({ productId }: Props) {
     };
 
     return (
-        <div className="absolute top-2 left-2 z-10">
+        <div className={parentStyle || "absolute top-2 left-2 z-10"}>
             <Tooltip>
                 
                 <TooltipTrigger
@@ -88,7 +88,7 @@ function ProductFavIcon({ productId }: Props) {
                     <Heart 
                         className={`size-5 transition-colors duration-300 text-red-500 ${
                             isFavorited ? "fill-red-500" : "text-foreground"
-                        }`} 
+                        }`}
                     />
                 </TooltipTrigger>
                 

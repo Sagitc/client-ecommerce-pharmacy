@@ -37,7 +37,7 @@ export default function Footer() {
 
     return (
         <footer className="w-full py-6 bg-accent text-black">
-            <div className="container rounded-lg w-full max-w-6xl mx-auto gap-6 px-2 md:px-8 lg:px-0 grid grid-cols-1 lg:grid-cols-4">
+            <div className="container rounded-lg w-full max-w-6xl mx-auto gap-6 px-2 md:px-8 lg:px-2 grid grid-cols-1 lg:grid-cols-4">
                 <div className={defaultStyles + " md:col-span-4 flex flex-col text-center gap-8 md:flex-row justify-between px-6! py-10!"}>
                     <FooterLinksElement
                         title="Serviços"
@@ -95,7 +95,7 @@ export default function Footer() {
                 </div>
                 <div className={defaultStyles + " md:col-span-2 py-8 gap-2"}>
                     <h3 className="font-bold text-lg">Formas de pagamento</h3>
-                    <div className="flex flex-row gap-4 items-center">
+                    <div className="grid grid-cols-3 justify-items-center md:flex md:justify-center flex-row gap-4 items-center">
                         <img src="/images/payments/pix.svg" alt="Pix" className="w-10 h-10 object-contain" />
                         <img src="/images/payments/amex.svg" alt="Amex" className="w-10 h-10 object-contain" />
                         <img src="/images/payments/elo.svg" alt="Elo" className="w-10 h-10 object-contain" />
@@ -108,7 +108,7 @@ export default function Footer() {
                     <div className="flex flex-col items-center gap-8 md:flex-row justify-between">
                         <img src="/images/logos/camargo-red.svg" alt="Logo" className="w-50 object-contain" />
                         <span className="text-sm text-muted-foreground text-center">
-                            &copy; {new Date().getFullYear()} Camargo.<br/>
+                            &copy; {new Date().getFullYear()} Drogarias Camargo<br/>
                             Todos os direitos reservados.
                         </span>
                         <span>logo da vigilancia sanit</span>
