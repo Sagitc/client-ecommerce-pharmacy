@@ -22,6 +22,8 @@ interface ProductGalleryProps {
 
 export function ProductView({ images = [] }: ProductGalleryProps) {
 
+    const [zipCode, setZipCode] = useState("");
+
     const placeholderImages = Array.from({ length: 5 }).map(
         (_, i) => `Imagem ${i + 1}`
     );
@@ -31,49 +33,137 @@ export function ProductView({ images = [] }: ProductGalleryProps) {
     const [selectedImage, setSelectedImage] = useState(galleryItems[0]);
 
     return (
-        <div className="rounded-xl hidden flex-1 items-center justify-center flex-col gap-4 md:flex">
+        <div className="rounded-xl hidden flex-1 justify-center gap-4 md:flex flex-row mt-4">
 
-            {/* MAIN IMAGE */}
-            <div className="w-full aspect-square bg-gray-200 rounded-lg flex items-center justify-center font-bold text-gray-700 transition-all">
-                {selectedImage}
+            {/* CAROUSEL */}
+            <div className="flex-1">
+
+                <div className="w-full aspect-square bg-gray-200 rounded-lg flex items-center justify-center font-bold text-gray-700 transition-all">
+                    {selectedImage}
+                </div>
+
+                <Carousel
+                    opts={{
+                        dragFree: true
+                    }}
+                    className="w-full max-w-48 sm:max-w-xs md:max-w-sm mt-4"
+                >
+                    <CarouselContent className="-ml-1">
+                        {galleryItems.map((img, index) => {
+                            const isSelected = selectedImage === img;
+
+                            return (
+                                <CarouselItem
+                                    key={index}
+                                    className="basis-1/2 pl-1 lg:basis-1/3 cursor-pointer"
+                                    onClick={() => setSelectedImage(img)}
+                                >
+                                    <div className="p-1">
+                                        <Card
+                                            className={`transition-all ${isSelected
+                                                ? "border-primary ring-2 ring-primary ring-offset-1"
+                                                : "hover:border-secondary"
+                                                }`}
+                                        >
+                                            <CardContent className="flex aspect-square items-center justify-center p-6">
+                                                <span className="text-sm font-semibold">{img}</span>
+                                            </CardContent>
+                                        </Card>
+                                    </div>
+                                </CarouselItem>
+                            );
+                        })}
+                    </CarouselContent>
+                    <CarouselPrevious />
+                    <CarouselNext />
+                </Carousel>
             </div>
 
-            {/* CAROUSEL OF THUMBNAILS */}
-            <Carousel
-                opts={{
-                    dragFree: true
-                }}
-                className="w-full max-w-48 sm:max-w-xs md:max-w-sm"
-            >
-                <CarouselContent className="-ml-1">
-                    {galleryItems.map((img, index) => {
-                        const isSelected = selectedImage === img;
+            {/* PRODUCT INFO */}
+            <div className="flex-1 flex flex-col gap-4">
+                <div className="flex flex-col gap-4 bg-background py-4 px-4 rounded-md">
+                    <div className="flex justify-between items-center">
+                        <h2 className="text-2xl font-semibold">TÍTULO DO PRODUTO</h2>
+                        <ProductFavIcon productId={1} parentStyle="flex" />
+                    </div>
+                    <div className="flex items-center gap-2 overflow-x-auto whitespace-nowrap scrollbar-none">
+                        <Badge>Medicamento</Badge>
+                        <Badge>Laboratório</Badge>
+                        <Badge>Comprimido</Badge>
+                        <Badge>100mg</Badge>
+                    </div>
+                    <div className="flex items-center">
+                        <Star className="inline-block w-4 h-4 text-yellow-400 mr-1" />
+                        <Star className="inline-block w-4 h-4 text-yellow-400 mr-1" />
+                        <Star className="inline-block w-4 h-4 text-yellow-400 mr-1" />
+                        <Star className="inline-block w-4 h-4 text-yellow-400 mr-1" />
+                        <Star className="inline-block w-4 h-4 text-yellow-400 mr-1" />
 
-                        return (
-                            <CarouselItem
-                                key={index}
-                                className="basis-1/2 pl-1 lg:basis-1/3 cursor-pointer"
-                                onClick={() => setSelectedImage(img)}
+                        <span className="text-xs text-muted-foreground ml-2" >4.5 (200 avaliações)</span>
+                    </div>
+                </div>
+
+                <div className="flex flex-col gap-4 bg-background py-4 px-4 rounded-md">
+                    <h3 className="text-lg font-semibold">Descrição</h3>
+                    <p className="text-sm text-muted-foreground">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nunc nisl aliquam nisl, eget ultricies nisl nunc eget nisl.
+                    </p>
+                </div>
+            </div>
+            <div className="flex-1 flex flex-col gap-4 ">
+                <div className="flex justify-between py-4 px-4 rounded-md bg-background border-2 border-primary items-center">
+                    <div className="flex flex-col">
+                        <span className="text-xs text-muted-foreground line-through">R$ 41,57</span>
+                        <span className="text-3xl font-bold text-teal-700">R$ 29,90</span>
+                        <span className="text-xs text-muted-foreground">à vista no Pix ou 1x no cartão</span>
+                    </div>
+                    <div>
+                        <div className="flex items-center border rounded-md bg-accent">
+                            <button
+                                type="button"
+                                className="px-3 py-1 text-lg font-light hover:bg-muted"
                             >
-                                <div className="p-1">
-                                    <Card
-                                        className={`transition-all ${isSelected
-                                            ? "border-primary ring-2 ring-primary ring-offset-1"
-                                            : "hover:border-secondary"
-                                            }`}
-                                    >
-                                        <CardContent className="flex aspect-square items-center justify-center p-6">
-                                            <span className="text-sm font-semibold">{img}</span>
-                                        </CardContent>
-                                    </Card>
-                                </div>
-                            </CarouselItem>
-                        );
-                    })}
-                </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-            </Carousel>
+                                -
+                            </button>
+                            <span className="px-3 py-1 text-sm font-semibold">1</span>
+                            <button
+                                type="button"
+                                className="px-3 py-1 text-lg font-light hover:bg-muted"
+                            >
+                                +
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex flex-col gap-4 bg-background py-4 px-4 rounded-md w-full">
+                    <h3 className="text-lg font-semibold">Calcule o frete</h3>
+                    <div className="flex gap-2">
+                        <Input
+                            className={"w-full bg-accent px-2 py-2 rounded-md text-sm font-medium text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"}
+                            placeholder="00000-000"
+                            value={zipCode}
+                            maxLength={9}
+                            inputMode="numeric"
+                            onChange={(e) => setZipCode(e.target.value)}
+                        />
+                        <Button variant={"default"}>
+                            Calcular
+                        </Button>
+                    </div>
+
+                    <p id="frete-result" className="text-sm font-semibold text-muted-foreground">
+                        Frete grátis
+                    </p>
+                </div>
+
+                <div className="flex flex-col gap-4 bg-background py-4 px-4 rounded-md w-full">
+                    <div className="flex items-center justify-between text-sm">
+                        <span className="text-muted-foreground">Receba em até 2h</span>
+                        <span className="font-bold" >R$ 9,99</span>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
@@ -144,7 +234,6 @@ export function ProductViewMobile({ images = [] }: ProductGalleryProps) {
 
             {/* CAROUSEL */}
             <div className="w-full flex flex-col items-center gap-4 mb-2">
-                {/* Carrossel ocupando 100% da largura útil */}
                 <Carousel setApi={setApi} className="w-full">
                     <CarouselContent>
                         {slides.map((_, index) => (
@@ -244,6 +333,7 @@ export function ProductViewMobile({ images = [] }: ProductGalleryProps) {
 
             </div>
 
+            {/* DESCRIPTION */}
             <div className="flex flex-col gap-4 bg-background py-4 px-4 rounded-md w-full">
                 <h3 className="text-lg font-semibold mb-2">Descrição</h3>
                 <p className="text-sm text-muted-foreground">

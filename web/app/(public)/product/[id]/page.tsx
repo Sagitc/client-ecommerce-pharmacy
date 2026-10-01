@@ -14,15 +14,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <div className="container max-w-6xl mx-auto py-2 px-4 md:px-2">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-4">
-
+      <div className="hidden lg:flex gap-8">
         <ProductView />
+
+        {/* <SecDefault title="Recomendados" filter="most-sell" /> */}
+        
+
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:hidden gap-8 mt-4">
+
         <ProductViewMobile />
 
         <SecDefault title="Recomendados" filter="most-sell" />
-
-
-
 
         <div className="fixed bottom-0 left-0 w-full rounded p-3 flex justify-between items-center bg-background border-t z-50 md:hidden">
           <div>
