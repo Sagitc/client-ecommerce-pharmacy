@@ -62,7 +62,7 @@ export function SignupForm({
                 </Field>
               </Field>
               <Field>
-                <Button type="submit">Criar conta</Button>
+                <Button type="submit" className={"mt-4"}>Criar conta</Button>
               </Field>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 Ou
@@ -97,7 +97,7 @@ export function SignupForm({
                 </Button>
               </Field>
               <FieldDescription className="text-center">
-                Possui uma conta? <a href="#">Entrar</a>
+                Possui uma conta? <a href="/login">Entrar</a>
               </FieldDescription>
             </FieldGroup>
           </form> 

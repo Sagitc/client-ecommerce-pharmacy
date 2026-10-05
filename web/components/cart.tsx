@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import { ProductData } from "@/data/product-data";
 import { useCart } from "@/hooks/use-cart";
 import { cn } from "@/lib/utils";
@@ -68,6 +69,7 @@ function CartItem({ item, onRemove }: CartItemProps) {
 
 export default function Cart({ className, icon }: CartProps) {
 
+    const router = useRouter();
     const { cart, removeFromCart } = useCart();
     const cartData = cart.data || [];
 
@@ -93,6 +95,10 @@ export default function Cart({ className, icon }: CartProps) {
     const totalQuantity = cartItems.reduce((acc, item) => acc + item.quantity, 0);
     const totalPrice = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const totalProducts = cartData.length;
+
+    const handleEndCheckout = () => {
+        router.push("/checkout");
+    }
 
     return (
         <Sheet>
@@ -140,7 +146,7 @@ export default function Cart({ className, icon }: CartProps) {
                     )}
 
                     <SheetFooter className="flex flex-col gap-2 px-0 sm:flex-col">
-                        <Button className="py-4 w-full" type="submit" disabled={cartItems.length === 0}>
+                        <Button className="py-4 w-full" type="button" disabled={cartItems.length === 0} onClick={handleEndCheckout}>
                             Finalizar compra
                         </Button>
                         <SheetClose className={buttonVariants({ variant: "outline", size: "default" }) + " w-full"}>
