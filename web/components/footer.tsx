@@ -14,7 +14,7 @@ export default function Footer() {
 
         return (
             <div className="flex flex-col gap-2">
-                <h3 className="text-black text-lg font-semibold">{title}</h3>
+                <h3 className="text-black dark:text-white text-lg font-semibold">{title}</h3>
                 <ul className={"flex " + ((imgs === true) ? "flex-row gap-4 justify-center md:justify-start" : "flex-col gap-1")} >
                     {links.map((link, index) => (
                         ((imgs === true) ?
@@ -25,7 +25,7 @@ export default function Footer() {
                             </li>
                             :
                             <li key={index}>
-                                <a href={link.url} className="text-sm text-gray-600 dark:text-gray-400 hover:underline hover:text-primary/90">{link.label}</a>
+                                <a href={link.url} className="text-sm text-muted-foreground hover:underline hover:text-primary/90">{link.label}</a>
                             </li>)
                     ))}
                 </ul>
@@ -37,8 +37,9 @@ export default function Footer() {
 
     return (
         <footer className="w-full py-6 bg-accent text-black">
-            <div className="container rounded-lg w-full max-w-6xl mx-auto gap-6 px-2 md:px-8 lg:px-2 grid grid-cols-1 lg:grid-cols-4">
-                <div className={defaultStyles + " md:col-span-4 flex flex-col text-center gap-8 md:flex-row justify-between px-6! py-10!"}>
+            <div className="rounded-lg w-full max-w-6xl mx-auto gap-6 px-2 md:px-8 lg:px-0 grid grid-cols-1 lg:grid-cols-4">
+
+                <div className="bg-background dark:bg-gray-800 rounded-lg w-full md:col-span-4 text-center flex flex-col md:flex-row gap-8 justify-between px-6 py-10">
                     <FooterLinksElement
                         title="Serviços"
                         links={[
@@ -78,11 +79,13 @@ export default function Footer() {
                         imgs={true}
                     />
                 </div>
-                <div className={defaultStyles + " md:col-span-2 py-8"}>
 
-                    <div className="flex flex-row gap-4 items-center">
+                <div className={"flex items-center shadow-sm flex-1 bg-background dark:bg-gray-800 dark:text-white rounded-lg p-4 md:col-span-2 lg:col-span-2"}>
+
+                    <div className="flex flex-row gap-4">
 
                         <Headset className="w-15 h-15" />
+
                         <div className="flex flex-col">
                             <span className="text-lg font-bold">Central de atendimento</span>
                             <span className="text-sm text-muted-foreground">Atendimento disponível de segunda-feira a sexta-feira,  
@@ -93,9 +96,10 @@ export default function Footer() {
                     </div>
 
                 </div>
-                <div className={defaultStyles + " md:col-span-2 py-8 gap-2"}>
-                    <h3 className="font-bold text-lg">Formas de pagamento</h3>
-                    <div className="grid grid-cols-3 justify-items-center md:flex md:justify-center flex-row gap-4 items-center">
+
+                <div className={"bg-background dark:bg-gray-800 rounded-lg p-4 shadow-sm flex flex-col gap-2 md:col-span-2"}>
+                    <h3 className="font-bold text-lg dark:text-white">Formas de pagamento</h3>
+                    <div className="grid grid-cols-3 md:flex md:justify-around flex-row gap-4 justify-items-center items-center">
                         <img src="/images/payments/pix.svg" alt="Pix" className="w-10 h-10 object-contain" />
                         <img src="/images/payments/amex.svg" alt="Amex" className="w-10 h-10 object-contain" />
                         <img src="/images/payments/elo.svg" alt="Elo" className="w-10 h-10 object-contain" />
@@ -104,7 +108,7 @@ export default function Footer() {
                         <img src="/images/payments/dinnersClub.svg" alt="Dinners Club" className="w-10 h-10 object-contain" />
                     </div>
                 </div>
-                <div className={defaultStyles + " md:col-span-4 py-6"}>
+                <div className={"bg-background dark:bg-gray-800 rounded-lg p-4 shadow-sm flex flex-col gap-2 md:col-span-4 py-6"}>
                     <div className="flex flex-col items-center gap-8 md:flex-row justify-between">
                         <img src="/images/logos/camargo-red.svg" alt="Logo" className="w-50 object-contain" />
                         <span className="text-sm text-muted-foreground text-center">
