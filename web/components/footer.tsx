@@ -1,4 +1,5 @@
 import { Headset } from "lucide-react";
+import { companyConfig } from "@/lib/company";
 
 export default function Footer() {
 
@@ -63,9 +64,10 @@ export default function Footer() {
                     <FooterLinksElement
                         title="Privacidade"
                         links={[
-                            { label: "Termos de uso", url: "#" },
-                            { label: "Política de privacidade", url: "#" },
-                            { label: "Utilização de cookies", url: "#" },
+                            { label: "Termos de uso", url: "/terms" },
+                            { label: "Política de Trocas e Devoluções", url: "/returns" },
+                            { label: "Política de Privacidade", url: "/privacity" },
+                            { label: "Política de Cookies", url: "/cookies" },
                         ]}
                     />
                     <FooterLinksElement
@@ -88,7 +90,7 @@ export default function Footer() {
 
                         <div className="flex flex-col">
                             <span className="text-lg font-bold">Central de atendimento</span>
-                            <span className="text-sm text-muted-foreground">Atendimento disponível de segunda-feira a sexta-feira,  
+                            <span className="text-sm text-muted-foreground">Atendimento disponível de segunda-feira a sexta-feira,
                                 de 08:00 às 18:00.
                             </span>
                         </div>
@@ -108,14 +110,35 @@ export default function Footer() {
                         <img src="/images/payments/dinnersClub.svg" alt="Dinners Club" className="w-10 h-10 object-contain" />
                     </div>
                 </div>
-                <div className={"bg-background dark:bg-gray-800 rounded-lg p-4 shadow-sm flex flex-col gap-2 md:col-span-4 py-6"}>
-                    <div className="flex flex-col items-center gap-8 md:flex-row justify-between">
-                        <img src="/images/logos/camargo-red.svg" alt="Logo" className="w-50 object-contain" />
+                {/* 4. RODAPÉ INFERIOR (Ocupa 4 colunas no Desktop) */}
+                <div className={`${defaultStyles} lg:col-span-4 py-8 mb-4`}>
+                    {/* Logos e Copyright */}
+                    <div className="flex flex-col items-center gap-6 md:flex-row justify-between w-full border-b border-gray-200 pb-6 mb-4">
+                        <img src="/images/logos/camargo-red.svg" alt={companyConfig.name} className="w-40 object-contain" />
+
                         <span className="text-sm text-muted-foreground text-center">
-                            &copy; {new Date().getFullYear()} Drogarias Camargo<br/>
-                            Todos os direitos reservados.
+                            &copy; {new Date().getFullYear()} {companyConfig.name} - Todos os direitos reservados.
                         </span>
-                        <span>logo da vigilancia sanit</span>
+
+                        {/* Espaço para o selo da Anvisa / Site Seguro */}
+                        <div className="flex gap-4 items-center justify-center md:justify-end">
+                            <div className="h-10 w-28 bg-gray-200 flex items-center justify-center text-xs text-gray-500 rounded">
+                                Selo Anvisa
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* TEXTO LEGAL OBRIGATÓRIO ANVISA */}
+                    <div className="text-[11px] leading-tight text-muted-foreground text-justify md:text-center w-full px-2">
+                        <p className="mb-1">
+                            <strong>{companyConfig.name}</strong> | CNPJ: {companyConfig.cnpj} | Inscrição Estadual: {companyConfig.stateRegistration} | Endereço: {companyConfig.address}
+                        </p>
+                        <p className="mb-1">
+                            <strong>Farmacêutico Responsável:</strong> {companyConfig.legal.farmaceutico} - CRF/UF: {companyConfig.legal.crf} | <strong>AFE:</strong> {companyConfig.legal.afe} | <strong>Alvará Sanitário:</strong> {companyConfig.legal.alvara}
+                        </p>
+                        <p className="italic mt-2">
+                            As informações contidas neste site não devem ser usadas para automedicação e não substituem, em hipótese alguma, as orientações dadas pelo profissional da área médica. Somente o médico está apto a diagnosticar qualquer problema de saúde e prescrever o tratamento adequado. Ao persistirem os sintomas, um médico deverá ser consultado.
+                        </p>
                     </div>
                 </div>
             </div>

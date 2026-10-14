@@ -6,6 +6,7 @@ import {
 import "@/app/globals.css"
 import { cn } from "@/lib/utils";
 import Providers from "@/utils/providers";
+import { CookieBanner } from "@/components/cookies-banner";
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 
@@ -27,6 +28,7 @@ export default function RootLayout({
     >
       <body>
         <Providers>
+          <CookieBanner />
           {children}
         </Providers>
       </body>
