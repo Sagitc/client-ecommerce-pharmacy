@@ -40,7 +40,7 @@ export default function Footer() {
         <footer className="w-full py-6 bg-accent text-black">
             <div className="rounded-lg w-full max-w-6xl mx-auto gap-6 px-2 md:px-8 lg:px-0 grid grid-cols-1 lg:grid-cols-4">
 
-                <div className="bg-background dark:bg-gray-800 rounded-lg w-full md:col-span-4 text-center flex flex-col md:flex-row gap-8 justify-between px-6 py-10">
+                <div className="bg-background dark:bg-gray-800 rounded-lg shadow-sm w-full md:col-span-4 text-center flex flex-col md:flex-row gap-8 justify-between px-6 py-10">
                     <FooterLinksElement
                         title="Serviços"
                         links={[
@@ -55,7 +55,7 @@ export default function Footer() {
                     <FooterLinksElement
                         title="Institucional"
                         links={[
-                            { label: "Nossa história", url: "#" },
+                            { label: "Nossa história", url: "/about" },
                             { label: "Nossas unidades", url: "#" },
                             { label: "Trabalhe conosco", url: "#" },
                             { label: "Parcerias", url: "#" },
@@ -110,9 +110,8 @@ export default function Footer() {
                         <img src="/images/payments/dinnersClub.svg" alt="Dinners Club" className="w-10 h-10 object-contain" />
                     </div>
                 </div>
-                {/* 4. RODAPÉ INFERIOR (Ocupa 4 colunas no Desktop) */}
-                <div className={`${defaultStyles} lg:col-span-4 py-8 mb-4`}>
-                    {/* Logos e Copyright */}
+
+                <div className={`bg-background dark:bg-gray-800 rounded-lg px-4 shadow-sm lg:col-span-4 py-8 mb-4`}>
                     <div className="flex flex-col items-center gap-6 md:flex-row justify-between w-full border-b border-gray-200 pb-6 mb-4">
                         <img src="/images/logos/camargo-red.svg" alt={companyConfig.name} className="w-40 object-contain" />
 
@@ -120,7 +119,7 @@ export default function Footer() {
                             &copy; {new Date().getFullYear()} {companyConfig.name} - Todos os direitos reservados.
                         </span>
 
-                        {/* Espaço para o selo da Anvisa / Site Seguro */}
+
                         <div className="flex gap-4 items-center justify-center md:justify-end">
                             <div className="h-10 w-28 bg-gray-200 flex items-center justify-center text-xs text-gray-500 rounded">
                                 Selo Anvisa
@@ -128,7 +127,6 @@ export default function Footer() {
                         </div>
                     </div>
 
-                    {/* TEXTO LEGAL OBRIGATÓRIO ANVISA */}
                     <div className="text-[11px] leading-tight text-muted-foreground text-justify md:text-center w-full px-2">
                         <p className="mb-1">
                             <strong>{companyConfig.name}</strong> | CNPJ: {companyConfig.cnpj} | Inscrição Estadual: {companyConfig.stateRegistration} | Endereço: {companyConfig.address}
