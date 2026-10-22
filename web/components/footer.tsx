@@ -44,21 +44,22 @@ export default function Footer() {
                     <FooterLinksElement
                         title="Serviços"
                         links={[
-                            { label: "Aferição de pressão", url: "#" },
-                            { label: "Farmácia popular", url: "#" },
-                            { label: "Programas de desconto", url: "#" },
-                            { label: "Aplicação de injetáveis", url: "#" },
-                            { label: "Teste de glicemia", url: "#" },
-                            { label: "Furo de lóbulo", url: "#" },
+                            { label: "Aferição de pressão", url: "/services/afericao-de-pressao" },
+                            { label: "Farmácia popular", url: "/services/farmacia-popular" },
+                            { label: "Programas de desconto", url: "/services/programas-de-desconto" },
+                            { label: "Aplicação de injetáveis", url: "/services/aplicacao-de-injetaveis" },
+                            { label: "Teste de glicemia", url: "/services/teste-de-glicemia" },
+                            { label: "Furo de lóbulo", url: "/services/furo-de-lobulo" },
                         ]}
                     />
                     <FooterLinksElement
                         title="Institucional"
                         links={[
                             { label: "Nossa história", url: "/about" },
-                            { label: "Nossas unidades", url: "#" },
-                            { label: "Trabalhe conosco", url: "#" },
-                            { label: "Parcerias", url: "#" },
+                            { label: "Nossas unidades", url: "/units" },
+                            { label: "Trabalhe conosco", url: "/work-with-us" },
+                            { label: "Parcerias", url: "/partners" },
+                            { label: "Fale conosco", url: "/contact" },
                         ]}
                     />
                     <FooterLinksElement
@@ -129,10 +130,14 @@ export default function Footer() {
 
                     <div className="text-[11px] leading-tight text-muted-foreground text-justify md:text-center w-full px-2">
                         <p className="mb-1">
-                            <strong>{companyConfig.name}</strong> | CNPJ: {companyConfig.cnpj} | Inscrição Estadual: {companyConfig.stateRegistration} | Endereço: {companyConfig.address}
+                            <strong>{companyConfig.razaoSocial} (Unidade Responsável pelo E-commerce)</strong> | CNPJ: {companyConfig.cnpj} | Inscrição Estadual: {companyConfig.stateRegistration} | Endereço: {companyConfig.address}
                         </p>
                         <p className="mb-1">
-                            <strong>Farmacêutico Responsável:</strong> {companyConfig.legal.farmaceutico} - CRF/UF: {companyConfig.legal.crf} | <strong>AFE:</strong> {companyConfig.legal.afe} | <strong>Alvará Sanitário:</strong> {companyConfig.legal.alvara}
+                            <strong>Farmacêutico Responsável:</strong> {companyConfig.legal.farmaceutico} - {companyConfig.legal.crf} | <strong>AFE:</strong> {companyConfig.legal.afe} | <strong>Alvará Sanitário:</strong> {companyConfig.legal.alvara}
+                        </p>
+                        <p className="mb-2">
+                            Para consultar os endereços, CNPJs e Farmacêuticos Responsáveis das nossas outras unidades físicas, acesse a página{" "}
+                            <a href="/unidades" className="underline hover:text-primary">Nossas Unidades</a>.
                         </p>
                         <p className="italic mt-2">
                             As informações contidas neste site não devem ser usadas para automedicação e não substituem, em hipótese alguma, as orientações dadas pelo profissional da área médica. Somente o médico está apto a diagnosticar qualquer problema de saúde e prescrever o tratamento adequado. Ao persistirem os sintomas, um médico deverá ser consultado.
