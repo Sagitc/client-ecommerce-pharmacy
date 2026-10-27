@@ -1,19 +1,16 @@
 // cart-service.ts
 
+import { ProductOrderType } from "@/types/product-type";
+
 const LOCAL_STORAGE_KEY = "user_cart";
 
-export type StorageCartItem = {
-    id: number;
-    quantity: number;
-};
-
-const getStoredCart = (): StorageCartItem[] => {
+const getStoredCart = (): ProductOrderType[] => {
     if (typeof window === "undefined") return [];
     const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
     return stored ? JSON.parse(stored) : [];
 };
 
-export async function fetchCart(): Promise<StorageCartItem[]> {
+export async function fetchCart(): Promise<ProductOrderType[]> {
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve(getStoredCart());
@@ -21,16 +18,16 @@ export async function fetchCart(): Promise<StorageCartItem[]> {
     });
 }
 
-export async function updateCartRequest(productId: number): Promise<StorageCartItem[]> {
+export async function updateCartRequest(product: Omit<ProductOrderType, 'quantity'>): Promise<ProductOrderType[]> {
     return new Promise((resolve) => {
         setTimeout(() => {
             const cart = getStoredCart();
-            const existingIndex = cart.findIndex((item) => item.id === productId);
+            const existingIndex = cart.findIndex((item) => item.id === product.id);
 
             if (existingIndex > -1) {
                 cart[existingIndex].quantity += 1;
             } else {
-                cart.push({ id: productId, quantity: 1 });
+                cart.push({ ...product, quantity: 1 });
             }
 
             localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cart));
@@ -39,8 +36,7 @@ export async function updateCartRequest(productId: number): Promise<StorageCartI
     });
 }
 
-
-export async function removeFromCartRequest(productId: number): Promise<StorageCartItem[]> {
+export async function removeFromCartRequest(productId: number): Promise<ProductOrderType[]> {
     return new Promise((resolve) => {
         setTimeout(() => {
             const cart = getStoredCart();

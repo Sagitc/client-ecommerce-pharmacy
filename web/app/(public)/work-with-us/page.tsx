@@ -18,10 +18,10 @@ export default function CareersPage() {
   };
 
   return (
-    <div className="container max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <div className="container max-w-6xl bg-background mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <div className="mb-10 border-b pb-8">
-        <Button variant="ghost" className="-ml-4 mb-4 text-muted-foreground hover:text-foreground">
-          <Link href="/">
+        <Button variant="ghost" className="mb-4 py-6 text-muted-foreground hover:text-foreground">
+          <Link href="/" className="flex items-center">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Voltar para a página inicial
           </Link>
@@ -41,7 +41,7 @@ export default function CareersPage() {
         {/* INFORMAÇÕES LATERAIS */}
         <div className="md:col-span-2 space-y-6">
           <div>
-            <h2 className="text-xl font-bold text-foreground mb-2">Porquê trabalhar connosco?</h2>
+            <h2 className="text-xl font-bold text-foreground mb-2">Por que trabalhar connosco?</h2>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Valorizamos profissionais dedicados, éticos e apaixonados pelo atendimento humanizado. Oferecemos um ambiente colaborativo e oportunidades de crescimento.
             </p>
@@ -65,8 +65,8 @@ export default function CareersPage() {
             <p className="font-semibold text-foreground">Envio direto por e-mail:</p>
             <p>
               Também pode enviar o seu currículo em PDF diretamente para:{" "}
-              <a href={`mailto:${companyConfig.contact.emailAtendimento}`} className="text-primary hover:underline">
-                {companyConfig.contact.emailAtendimento}
+              <a href={`mailto:${companyConfig.rhEmail}`} className="text-primary hover:underline">
+                {companyConfig.rhEmail}
               </a>
             </p>
           </div>

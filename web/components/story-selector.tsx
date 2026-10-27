@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { MapPin, Clock, CheckCircle2, Store, Search, Loader2, Navigation } from "lucide-react";
+import { MapPin, Clock, CheckCircle2, Store, Search, Loader2, Navigation, ChevronDown } from "lucide-react";
 import { companyConfig, PharmacyUnit } from "@/lib/company";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,7 +18,7 @@ interface UnitWithDistance extends PharmacyUnit {
 
 // Fórmula de Haversine para calcular distância em linha reta (km)
 function calculateDistanceKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
-  const R = 6371; // Raio da Terra em km
+  const R = 6371;
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
   const dLon = ((lon2 - lon1) * Math.PI) / 180;
   const a =
@@ -28,11 +28,9 @@ function calculateDistanceKm(lat1: number, lon1: number, lat2: number, lon2: num
       Math.sin(dLon / 2) *
       Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  // Multiplicador 1.25 aproxima a distância linear do trajeto real de rua
   return Number((R * c * 1.25).toFixed(1));
 }
 
-// Leitura e gravação nativa do cookie de CEP
 const getZipCookie = () => {
   if (typeof document === "undefined") return "";
   const value = `; ${document.cookie}`;
@@ -59,8 +57,10 @@ export function StorePickupSelector({
   const [sortedUnits, setSortedUnits] = useState<UnitWithDistance[]>(baseUnits);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  // NOVO: Estado para controlar a exibição de todas as lojas
+  const [showAllStores, setShowAllStores] = useState(false);
 
-  // Busca coordenadas a partir do CEP
   const handleCalculateProximity = async (cepToSearch: string) => {
     const cleanCep = cepToSearch.replace(/\D/g, "");
     if (cleanCep.length !== 8) {
@@ -70,13 +70,13 @@ export function StorePickupSelector({
 
     setLoading(true);
     setError(null);
+    setShowAllStores(false); // Reseta a visualização ao buscar um novo CEP
 
     try {
       let lat: number | null = null;
       let lng: number | null = null;
       let formattedAddress = "";
 
-      // 1ª Tentativa: AwesomeAPI (retorna lat e lng precisos por CEP)
       const resAwesome = await fetch(`https://cep.awesomeapi.com.br/json/${cleanCep}`);
       if (resAwesome.ok) {
         const data = await resAwesome.json();
@@ -87,7 +87,6 @@ export function StorePickupSelector({
         }
       }
 
-      // 2ª Tentativa (Fallback): BrasilAPI v2
       if (!lat || !lng) {
         const resBrasil = await fetch(`https://brasilapi.com.br/api/cep/v2/${cleanCep}`);
         if (!resBrasil.ok) throw new Error("CEP não encontrado.");
@@ -129,7 +128,6 @@ export function StorePickupSelector({
     }
   };
 
-  // Se já existir CEP no cookie ou prop inicial, calcula ao montar o componente
   useEffect(() => {
     const savedCep = initialCep || getZipCookie();
     if (savedCep && savedCep.replace(/\D/g, "").length === 8) {
@@ -146,14 +144,16 @@ export function StorePickupSelector({
     return numbers;
   };
 
+  // Lógica de exibição restrita
+  const visibleUnits = showAllStores ? sortedUnits : sortedUnits.slice(0, 3);
+
   return (
     <div className="space-y-5">
-      {/* BUSCADOR DE CEP */}
       <div className="bg-muted/30 border rounded-xl p-4 space-y-3">
         <div className="flex items-center gap-2">
           <Store className="w-5 h-5 text-primary" />
           <h3 className="font-semibold text-base text-foreground">
-            Encontrar unidade mais próxima para retirada
+            Unidade mais próxima
           </h3>
         </div>
 
@@ -177,8 +177,7 @@ export function StorePickupSelector({
               </>
             ) : (
               <>
-                <Search className="w-4 h-4 mr-2" />
-                Buscar Lojas Próximas
+                Buscar
               </>
             )}
           </Button>
@@ -190,17 +189,16 @@ export function StorePickupSelector({
           <p className="text-xs text-muted-foreground flex items-center gap-1.5">
             <Navigation className="w-3.5 h-3.5 text-primary shrink-0" />
             <span>
-              Unidades ordenadas por proximidade de: <strong className="text-foreground">{customerAddress}</strong>
+              <strong className="text-muted-foreground">{customerAddress}</strong>
             </span>
           </p>
         )}
       </div>
 
-      {/* LISTA DE UNIDADES ORDENADAS */}
       <div className="grid grid-cols-1 gap-3">
-        {sortedUnits.map((unit, index) => {
+        {visibleUnits.map((unit, index) => {
           const isSelected = selectedUnitId === unit.id;
-          const isClosest = unit.distanceKm !== undefined && index === 0;
+          const isClosest = unit.distanceKm !== undefined && index === 0 && !showAllStores; // Apenas a 1ª da lista é a mais próxima
 
           return (
             <div
@@ -226,12 +224,12 @@ export function StorePickupSelector({
 
                   {unit.distanceKm !== undefined && (
                     <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                      a ~{unit.distanceKm} km de você
+                      a ~{unit.distanceKm} km
                     </span>
                   )}
 
                   <span className="text-[11px] font-semibold bg-green-500/10 text-green-600 px-2 py-0.5 rounded-full">
-                    Retirada Grátis • {unit.pickupReadyTime}
+                    Grátis • {unit.pickupReadyTime}
                   </span>
                 </div>
 
@@ -261,6 +259,18 @@ export function StorePickupSelector({
           );
         })}
       </div>
+
+      {/* BOTÃO "VER MAIS LOJAS" */}
+      {sortedUnits.length > 3 && !showAllStores && (
+        <Button 
+          variant="outline" 
+          className="w-full" 
+          onClick={() => setShowAllStores(true)}
+        >
+          Ver mais lojas
+          <ChevronDown className="w-4 h-4 ml-2" />
+        </Button>
+      )}
     </div>
   );
 }

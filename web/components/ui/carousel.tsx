@@ -120,7 +120,7 @@ function Carousel({
     >
       <div
         onKeyDownCapture={handleKeyDown}
-        className={cn("relative", className)}
+        className={cn("relative group", className)}
         role="region"
         aria-roledescription="carousel"
         data-slot="carousel"
@@ -185,9 +185,10 @@ function CarouselPrevious({
       variant={variant}
       size={size}
       className={cn(
-        "absolute touch-manipulation rounded-full",
+        "absolute touch-manipulation rounded-full z-10 bg-background/80 hover:bg-background/90 shadow-sm", // z-10 e fundo semi-transparente
         orientation === "horizontal"
-          ? "inset-y-0 -inset-s-12 my-auto"
+          // Alterado de "-inset-s-12" para "left-2" (ou a distância interna que preferir)
+          ? "inset-y-0 left-2 my-auto" 
           : "-top-12 inset-s-1/2 -translate-x-1/2 rtl:translate-x-1/2 rotate-90",
         className
       )}
@@ -195,7 +196,7 @@ function CarouselPrevious({
       onClick={scrollPrev}
       {...props}
     >
-      <ChevronLeftIcon className="rtl:rotate-180" />
+      <ChevronLeftIcon className="rtl:rotate-180 w-4 h-4" />
       <span className="sr-only">Previous slide</span>
     </Button>
   )
@@ -215,17 +216,18 @@ function CarouselNext({
       variant={variant}
       size={size}
       className={cn(
-        "absolute touch-manipulation rounded-full",
+        "absolute touch-manipulation rounded-full z-10 bg-background/80 hover:bg-background/90 shadow-sm", // z-10 e fundo semi-transparente
         orientation === "horizontal"
-          ? "inset-y-0 -end-12 my-auto"
-          : "-bottom-12 start-1/2 -translate-x-1/2 rtl:translate-x-1/2 rotate-90",
+          // Alterado de "-end-12" para "right-2" 
+          ? "inset-y-0 right-2 my-auto"
+          : "-bottom-12 inset-s-1/2 -translate-x-1/2 rtl:translate-x-1/2 rotate-90",
         className
       )}
       disabled={!canScrollNext}
       onClick={scrollNext}
       {...props}
     >
-      <ChevronRightIcon className="rtl:rotate-180" />
+      <ChevronRightIcon className="rtl:rotate-180 w-4 h-4" />
       <span className="sr-only">Next slide</span>
     </Button>
   )

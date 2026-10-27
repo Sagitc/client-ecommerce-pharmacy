@@ -130,7 +130,7 @@ export default function Footer() {
 
                     <div className="text-[11px] leading-tight text-muted-foreground text-justify md:text-center w-full px-2">
                         <p className="mb-1">
-                            <strong>{companyConfig.razaoSocial} (Unidade Responsável pelo E-commerce)</strong> | CNPJ: {companyConfig.cnpj} | Inscrição Estadual: {companyConfig.stateRegistration} | Endereço: {companyConfig.address}
+                            <strong>{companyConfig.razaoSocial}</strong> | CNPJ: {companyConfig.cnpj} | Inscrição Estadual: {companyConfig.stateRegistration} | Endereço: {companyConfig.address}
                         </p>
                         <p className="mb-1">
                             <strong>Farmacêutico Responsável:</strong> {companyConfig.legal.farmaceutico} - {companyConfig.legal.crf} | <strong>AFE:</strong> {companyConfig.legal.afe} | <strong>Alvará Sanitário:</strong> {companyConfig.legal.alvara}

@@ -9,19 +9,19 @@ import { buttonVariants } from "@/components/ui/button";
 import { Heart, Plus, Check } from "lucide-react";
 
 type Props = {
-    productId: number;
+    product: ProductType;
     parentStyle?: string;
 };
 
-export function ProductCard({ productId, parentStyle }: Props) {
+export function ProductCard({ product, parentStyle }: Props) {
 
-    const productsList: ProductType[] = ProductData;
+    // const productsList: ProductType[] = ProductData;
 
     return (
-        <a href={`/product/${productId}`} target="_self" className={"flex flex-col w-full rounded-lg hover:shadow-lg transition-shadow duration-300 ease-in-out bg-background p-3 dark:bg-gray-800" + " " + parentStyle}>
+        <a href={`/product/${product.id}`} target="_self" className={"flex flex-col w-full rounded-lg hover:shadow-lg transition-shadow duration-300 ease-in-out bg-background p-3 dark:bg-gray-800" + " " + parentStyle}>
             
             <div className="relative flex items-center justify-center w-full h-45 sm:h-55 md:h-65 rounded-lg overflow-hidden bg-white shrink-0">
-                <ProductFavIcon productId={productId} />
+                <ProductFavIcon product={product} />
                 
                 <img 
                     src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf6OM_2iXA5DFquiB_0p0Vr5_0Kv2XoFloY0pvgU-KBA&s=10" 
@@ -29,18 +29,18 @@ export function ProductCard({ productId, parentStyle }: Props) {
                     className="w-full h-full object-contain p-4" 
                 />
                 
-                <ProductBuyIcon productId={productId} />
+                <ProductBuyIcon product={product} />
             </div>
 
             <div className="flex flex-col flex-1 gap-2 mt-4">
                 
                 <span className="text-sm line-clamp-2">
-                    {productsList[productId - 1]?.label}<br />
+                    {product.label}<br />
                     (800x800)
                 </span>
 
                 <span className="font-medium text-base pb-2 sm:text-md">
-                    R$ {productsList[productId - 1]?.price.toFixed(2).replace('.', ',')}
+                    R$ {product.price.toFixed(2).replace('.', ',')}
                 </span>
             </div>
             
@@ -48,14 +48,14 @@ export function ProductCard({ productId, parentStyle }: Props) {
     )
 }
 
-export function ProductFavIcon({ productId, parentStyle }: Props) {
+export function ProductFavIcon({ product, parentStyle }: Props) {
     
     const { favoriteIds, toggleFavorite } = useFavorites();
 
-    const isFavorited = favoriteIds.data?.includes(productId);
+    const isFavorited = favoriteIds.data?.includes(product.id);
 
     const handleFavorite = () => {
-        toggleFavorite(productId, {
+        toggleFavorite(product.id, {
             onSuccess: (data) => {
                 
                 if (data.isFavorited) {
@@ -101,14 +101,14 @@ export function ProductFavIcon({ productId, parentStyle }: Props) {
     )
 }
 
-function ProductBuyIcon({ productId }: Props) {
+function ProductBuyIcon({ product }: Props) {
 
     const { addToCart } = useCart();
     
     const [showSuccess, setShowSuccess] = useState(false);
 
     const handleBuy = () => {
-        addToCart(productId, {
+        addToCart(product, {
             onSuccess: () => {
                 setShowSuccess(true);
                 

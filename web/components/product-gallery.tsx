@@ -1,6 +1,8 @@
+// web/components/product-gallery.tsx
+
 "use client"
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import {
     Carousel,
@@ -12,46 +14,82 @@ import {
 } from "@/components/ui/carousel";
 import { Badge } from "@/components/ui/badge";
 import { ProductFavIcon } from "./product-card";
-import { Star } from "lucide-react";
+import { Star, ShoppingCart } from "lucide-react";
 import { Button } from "./ui/button";
-import { Input } from "@base-ui/react";
+
+import { ShippingMethodSelector } from "@/components/shipping-selector";
 
 interface ProductGalleryProps {
     images?: string[];
 }
 
+// 1. COMPONENTE DA BARRA FLUTUANTE (Usado tanto no Mobile quanto no Desktop)
+const FloatingActionBar = ({ isVisible }: { isVisible: boolean }) => (
+    <div
+        className={`fixed bottom-0 left-0 w-full bg-background border-t shadow-[0_-5px_15px_-3px_rgba(0,0,0,0.1)] z-60 transition-transform duration-300 ease-in-out ${isVisible ? "translate-y-0" : "translate-y-full"
+            }`}
+    >
+        <div className="container max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+            <div className="hidden md:flex flex-col">
+                <span className="font-semibold text-sm text-foreground">TÍTULO DO PRODUTO</span>
+                <span className="text-xs text-muted-foreground">Medicamento • 100mg</span>
+            </div>
+
+            <div className="flex items-center justify-between w-full md:w-auto gap-4 md:gap-8">
+                <div className="flex flex-col">
+                    <span className="text-xs text-muted-foreground line-through">R$ 41,57</span>
+                    <span className="text-xl font-bold text-teal-700">R$ 29,90</span>
+                </div>
+                <Button size="lg" className=" sm:w-auto px-8 shadow-sm">
+                    Comprar
+                </Button>
+            </div>
+        </div>
+    </div>
+);
+
+
 export function ProductView({ images = [] }: ProductGalleryProps) {
-
-    const [zipCode, setZipCode] = useState("");
-
     const placeholderImages = Array.from({ length: 5 }).map(
         (_, i) => `Imagem ${i + 1}`
     );
     const galleryItems = images.length > 0 ? images : placeholderImages;
-
-    // MAIN IMAGE STATE
+    const [prodQuantity, setProdQuantity] = useState(1);
     const [selectedImage, setSelectedImage] = useState(galleryItems[0]);
 
+    // 2. ESTADOS E OBSERVER DO DESKTOP
+    const buyCardRef = useRef<HTMLDivElement>(null);
+    const [showFloating, setShowFloating] = useState(false);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                // Só exibe a barra se o bloco de compra NÃO estiver na tela 
+                // E se ele já tiver ficado para trás (topo da div menor que 0)
+                const isPassed = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+                setShowFloating(isPassed);
+            },
+            {
+                threshold: 0,
+                rootMargin: "-80px 0px 0px 0px" // Opcional: compensa a altura de um possível header fixo
+            }
+        );
+
+        if (buyCardRef.current) observer.observe(buyCardRef.current);
+        return () => observer.disconnect();
+    }, []);
+
     return (
-        <div className="rounded-xl hidden flex-1 justify-center gap-4 md:flex flex-row mt-4">
-
+        <div className="rounded-xl hidden flex-1 justify-center gap-4 md:flex flex-row mt-4 items-start">
             {/* CAROUSEL */}
-            <div className="flex-1">
-
+            <div className="flex-1 sticky top-20">
                 <div className="w-full aspect-square bg-gray-200 rounded-lg flex items-center justify-center font-bold text-gray-700 transition-all">
                     {selectedImage}
                 </div>
-
-                <Carousel
-                    opts={{
-                        dragFree: true
-                    }}
-                    className="w-full max-w-48 sm:max-w-xs md:max-w-sm mt-4"
-                >
+                <Carousel opts={{ dragFree: true }} className="w-full max-w-48 sm:max-w-xs md:max-w-sm mt-4">
                     <CarouselContent className="-ml-1">
                         {galleryItems.map((img, index) => {
                             const isSelected = selectedImage === img;
-
                             return (
                                 <CarouselItem
                                     key={index}
@@ -59,12 +97,7 @@ export function ProductView({ images = [] }: ProductGalleryProps) {
                                     onClick={() => setSelectedImage(img)}
                                 >
                                     <div className="p-1">
-                                        <Card
-                                            className={`transition-all ${isSelected
-                                                ? "border-primary ring-2 ring-primary ring-offset-1"
-                                                : "hover:border-secondary"
-                                                }`}
-                                        >
+                                        <Card className={`transition-all ${isSelected ? "border-primary ring-2 ring-primary ring-offset-1" : "hover:border-secondary"}`}>
                                             <CardContent className="flex aspect-square items-center justify-center p-6">
                                                 <span className="text-sm font-semibold">{img}</span>
                                             </CardContent>
@@ -80,7 +113,7 @@ export function ProductView({ images = [] }: ProductGalleryProps) {
             </div>
 
             {/* PRODUCT INFO */}
-            <div className="flex-1 flex flex-col gap-4">
+            <div className="flex-1 flex flex-col gap-4 sticky top-20">
                 <div className="flex flex-col gap-4 bg-background py-4 px-4 rounded-md">
                     <div className="flex justify-between items-center">
                         <h2 className="text-2xl font-semibold">TÍTULO DO PRODUTO</h2>
@@ -93,13 +126,12 @@ export function ProductView({ images = [] }: ProductGalleryProps) {
                         <Badge>100mg</Badge>
                     </div>
                     <div className="flex items-center">
-                        <Star className="inline-block w-4 h-4 text-yellow-400 mr-1" />
-                        <Star className="inline-block w-4 h-4 text-yellow-400 mr-1" />
-                        <Star className="inline-block w-4 h-4 text-yellow-400 mr-1" />
-                        <Star className="inline-block w-4 h-4 text-yellow-400 mr-1" />
-                        <Star className="inline-block w-4 h-4 text-yellow-400 mr-1" />
-
-                        <span className="text-xs text-muted-foreground ml-2" >4.5 (200 avaliações)</span>
+                        <Star className="inline-block w-4 h-4 text-yellow-400 mr-1" fill="currentColor" />
+                        <Star className="inline-block w-4 h-4 text-yellow-400 mr-1" fill="currentColor" />
+                        <Star className="inline-block w-4 h-4 text-yellow-400 mr-1" fill="currentColor" />
+                        <Star className="inline-block w-4 h-4 text-yellow-400 mr-1" fill="currentColor" />
+                        <Star className="inline-block w-4 h-4 text-yellow-400 mr-1" fill="currentColor" />
+                        <span className="text-xs text-muted-foreground ml-2">4.5 (200 avaliações)</span>
                     </div>
                 </div>
 
@@ -110,85 +142,104 @@ export function ProductView({ images = [] }: ProductGalleryProps) {
                     </p>
                 </div>
             </div>
-            <div className="flex-1 flex flex-col gap-4 ">
-                <div className="flex justify-between py-4 px-4 rounded-md bg-background border-2 border-primary items-center">
-                    <div className="flex flex-col">
-                        <span className="text-xs text-muted-foreground line-through">R$ 41,57</span>
-                        <span className="text-3xl font-bold text-teal-700">R$ 29,90</span>
-                        <span className="text-xs text-muted-foreground">à vista no Pix ou 1x no cartão</span>
-                    </div>
-                    <div>
-                        <div className="flex items-center border rounded-md bg-accent">
-                            <button
-                                type="button"
-                                className="px-3 py-1 text-lg font-light hover:bg-muted"
-                            >
-                                -
-                            </button>
-                            <span className="px-3 py-1 text-sm font-semibold">1</span>
-                            <button
-                                type="button"
-                                className="px-3 py-1 text-lg font-light hover:bg-muted"
-                            >
-                                +
-                            </button>
+
+            {/* BUY COLUMN & SHIPPING (Rolagem Livre) */}
+            <div className="flex-1 flex flex-col gap-4">
+
+                {/* 3. REF ADICIONADA AO BLOCO DE COMPRA */}
+                <div ref={buyCardRef} className="flex flex-col gap-4 py-4 px-4 rounded-md bg-background shadow-sm">
+                    <div className="flex justify-between items-center">
+                        <div className="flex flex-col">
+                            <span className="text-xs text-muted-foreground line-through">R$ 41,57</span>
+                            <span className="text-3xl font-bold text-teal-700">R$ 29,90</span>
+                            <span className="text-xs text-muted-foreground">à vista no Pix ou 1x no cartão</span>
+                        </div>
+                        <div>
+                            <div className="flex items-center border rounded-md bg-accent">
+                                <button
+                                    type="button"
+                                    onClick={() => setProdQuantity((quantity) => Math.max(1, quantity - 1))}
+                                    className="px-3 py-1 text-lg font-light hover:bg-muted"
+                                >
+                                    -
+                                </button>
+                                <span className="px-3 py-1 text-sm font-semibold">{prodQuantity}</span>
+                                <button
+                                    type="button"
+                                    onClick={() => setProdQuantity((quantity) => quantity + 1)}
+                                    className="px-3 py-1 text-lg font-light hover:bg-muted"
+                                >
+                                    +
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div className="flex flex-col gap-4 bg-background py-4 px-4 rounded-md w-full">
-                    <h3 className="text-lg font-semibold">Calcule o frete</h3>
-                    <div className="flex gap-2">
-                        <Input
-                            className={"w-full bg-accent px-2 py-2 rounded-md text-sm font-medium text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"}
-                            placeholder="00000-000"
-                            value={zipCode}
-                            maxLength={9}
-                            inputMode="numeric"
-                            onChange={(e) => setZipCode(e.target.value)}
-                        />
-                        <Button variant={"default"}>
-                            Calcular
+                    {/* Botões de compra adicionados ao Desktop */}
+                    <div className="flex flex-col gap-2 pt-2 border-t border-border">
+                        <Button size="lg" className="w-full text-base">
+                            Comprar agora
+                        </Button>
+                        <Button variant="secondary" className="w-full">
+                            Adicionar ao carrinho
                         </Button>
                     </div>
-
-                    <p id="frete-result" className="text-sm font-semibold text-muted-foreground">
-                        Frete grátis
-                    </p>
                 </div>
 
                 <div className="flex flex-col gap-4 bg-background py-4 px-4 rounded-md w-full">
-                    <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">Receba em até 2h</span>
-                        <span className="font-bold" >R$ 9,99</span>
-                    </div>
+                    <ShippingMethodSelector
+                        onSelectDelivery={(quote, cep) => {
+                            console.log("Cotação:", quote);
+                        }}
+                        onSelectPickup={(unit) => {
+                            console.log("Retirada:", unit);
+                        }}
+                    />
                 </div>
             </div>
+
+            {/* A barra renderiza condicionalmente pelo estado do Observer */}
+            <FloatingActionBar isVisible={showFloating} />
         </div>
     );
 }
 
 export function ProductViewMobile({ images = [] }: ProductGalleryProps) {
-
     const [api, setApi] = useState<CarouselApi>();
     const [current, setCurrent] = useState(0);
     const [count, setCount] = useState(0);
     const [prodQuantity, setProdQuantity] = useState(1);
-    const [zipCode, setZipCode] = useState("");
 
-    // 5 MOCK IMAGES
+    // 4. ESTADOS E OBSERVER DO MOBILE
+    const buyCardRef = useRef<HTMLDivElement>(null);
+    const [showFloating, setShowFloating] = useState(false);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                // Só exibe a barra se o bloco de compra NÃO estiver na tela 
+                // E se ele já tiver ficado para trás (topo da div menor que 0)
+                const isPassed = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+                setShowFloating(isPassed);
+            },
+            { 
+                threshold: 0,
+                rootMargin: "-80px 0px 0px 0px" // Opcional: compensa a altura de um possível header fixo
+            } 
+        );
+
+        if (buyCardRef.current) observer.observe(buyCardRef.current);
+        return () => observer.disconnect();
+    }, []);
+
     const slides = images.length > 0 ? images : Array.from({ length: 5 });
 
     useEffect(() => {
         if (!api) return;
-
         setCount(api.scrollSnapList().length);
         setCurrent(api.selectedScrollSnap());
 
-        const onSelect = () => {
-            setCurrent(api.selectedScrollSnap());
-        };
-
+        const onSelect = () => setCurrent(api.selectedScrollSnap());
         api.on("select", onSelect);
         api.on("reInit", onSelect);
 
@@ -198,17 +249,8 @@ export function ProductViewMobile({ images = [] }: ProductGalleryProps) {
         };
     }, [api]);
 
-    const handleFreteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-
-        const value = e.target.value;
-        setZipCode(value);
-
-        // Here you can add logic to calculate shipping based on the zip code
-    }
-
     return (
         <div className="flex flex-col items-center justify-center gap-4 md:hidden">
-
             {/* PRODUCT INFO */}
             <div className="flex flex-col gap-4 bg-background py-4 px-4 rounded-md w-full">
                 <h2 className="text-2xl font-semibold">TÍTULO DO PRODUTO</h2>
@@ -220,13 +262,12 @@ export function ProductViewMobile({ images = [] }: ProductGalleryProps) {
                 </div>
                 <div className="flex items-center justify-between gap-2">
                     <div>
-                        <Star className="inline-block w-4 h-4 text-yellow-400 mr-1" />
-                        <Star className="inline-block w-4 h-4 text-yellow-400 mr-1" />
-                        <Star className="inline-block w-4 h-4 text-yellow-400 mr-1" />
-                        <Star className="inline-block w-4 h-4 text-yellow-400 mr-1" />
-                        <Star className="inline-block w-4 h-4 text-yellow-400 mr-1" />
-
-                        <span className="text-xs text-muted-foreground" >4.5 (200 avaliações)</span>
+                        <Star className="inline-block w-4 h-4 text-yellow-400 mr-1" fill="currentColor" />
+                        <Star className="inline-block w-4 h-4 text-yellow-400 mr-1" fill="currentColor" />
+                        <Star className="inline-block w-4 h-4 text-yellow-400 mr-1" fill="currentColor" />
+                        <Star className="inline-block w-4 h-4 text-yellow-400 mr-1" fill="currentColor" />
+                        <Star className="inline-block w-4 h-4 text-yellow-400 mr-1" fill="currentColor" />
+                        <span className="text-xs text-muted-foreground">4.5 (200 avaliações)</span>
                     </div>
                     <ProductFavIcon productId={1} parentStyle="flex" />
                 </div>
@@ -247,7 +288,6 @@ export function ProductViewMobile({ images = [] }: ProductGalleryProps) {
                         ))}
                     </CarouselContent>
                 </Carousel>
-
                 {/* DOTS */}
                 <div className="flex justify-center items-center gap-2">
                     {Array.from({ length: count }).map((_, index) => (
@@ -255,27 +295,21 @@ export function ProductViewMobile({ images = [] }: ProductGalleryProps) {
                             key={index}
                             aria-label={`Ir para a imagem ${index + 1}`}
                             onClick={() => api?.scrollTo(index)}
-                            className={`rounded-full transition-all duration-300 ${current === index
-                                ? "w-2.5 h-2.5 bg-gray-600"
-                                : "w-2 h-2 bg-gray-300 hover:bg-gray-400"
-                                }`}
+                            className={`rounded-full transition-all duration-300 ${current === index ? "w-2.5 h-2.5 bg-gray-600" : "w-2 h-2 bg-gray-300 hover:bg-gray-400"}`}
                         />
                     ))}
                 </div>
             </div>
 
-            {/* PRICE INFO */}
-            <div className="flex flex-col gap-4 bg-background py-4 px-4 rounded-md w-full">
-
+            {/* 5. REF ADICIONADA AO BLOCO DE COMPRA MOBILE */}
+            <div ref={buyCardRef} className="flex flex-col gap-4 bg-background py-4 px-4 rounded-md w-full border-2 border-primary/20">
                 <div className="flex flex-col gap-4 rounded-md">
-
                     <div className="flex justify-between items-center">
                         <div className="flex flex-col">
                             <span className="text-xs text-muted-foreground line-through">R$ 41,57</span>
                             <span className="text-3xl font-bold text-teal-700">R$ 29,90</span>
                             <span className="text-xs text-muted-foreground">à vista no Pix ou 1x no cartão</span>
                         </div>
-
                         <div>
                             <div className="flex items-center border rounded-md bg-accent">
                                 <button
@@ -296,54 +330,38 @@ export function ProductViewMobile({ images = [] }: ProductGalleryProps) {
                             </div>
                         </div>
                     </div>
-
                     <div className="flex flex-col gap-2">
-                        <Button>
+                        <Button size="lg" className="w-full text-base">
+                            <ShoppingCart className="w-5 h-5 mr-2" />
                             Comprar agora
                         </Button>
-                        <Button variant={"secondary"}>
+                        <Button variant="secondary">
                             Adicionar ao carrinho
                         </Button>
                     </div>
                 </div>
-
             </div>
 
-            {/* SHIPPING INFO */}
+            {/* SHIPPING INFO E DESCRIÇÃO */}
             <div className="flex flex-col gap-4 bg-background py-4 px-4 rounded-md w-full">
-                <h3 className="text-lg font-semibold">Calcule o frete</h3>
-                <div className="flex gap-2">
-                    <Input
-                        className={"w-full bg-accent px-2 py-2 rounded-md text-sm font-medium text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"}
-                        placeholder="00000-000"
-                        value={zipCode}
-                        maxLength={9}
-                        inputMode="numeric"
-                        onChange={(e) => setZipCode(e.target.value)}
-                    />
-                    <Button variant={"default"}>
-                        Calcular
-                    </Button>
-                </div>
-
-                <p id="frete-result" className="text-sm font-semibold text-muted-foreground">
-                    Frete grátis
-                </p>
-
-
+                <ShippingMethodSelector
+                    onSelectDelivery={(quote, cep) => {
+                        console.log("Cotação:", quote);
+                    }}
+                    onSelectPickup={(unit) => {
+                        console.log("Retirada:", unit);
+                    }}
+                />
             </div>
 
-            {/* DESCRIPTION */}
             <div className="flex flex-col gap-4 bg-background py-4 px-4 rounded-md w-full">
                 <h3 className="text-lg font-semibold mb-2">Descrição</h3>
                 <p className="text-sm text-muted-foreground">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                    efficitur, nisl nec ultricies lacinia, nunc nisl aliquam nunc, nec
-                    aliquam nisl nunc nec nisl. Sed efficitur, nisl nec ultricies
-                    lacinia, nunc nisl aliquam nunc, nec aliquam nisl nunc nec nisl.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed efficitur, nisl nec ultricies lacinia, nunc nisl aliquam nunc, nec aliquam nisl nunc nec nisl.
                 </p>
             </div>
 
+            <FloatingActionBar isVisible={showFloating} />
         </div>
     );
 }

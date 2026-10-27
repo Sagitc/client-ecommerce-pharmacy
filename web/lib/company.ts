@@ -70,11 +70,11 @@ const units: PharmacyUnit[] = [
     pickupReadyTime: "Pronto em até 1 hora",
     razaoSocial: "Drogaria Couto 2 Ltda",
     cnpj: "30.353.450/0001-29",
-    stateRegistration: "86.659.32-8",
+    stateRegistration: "11.140.41-6",
     address: "Av. Chrisóstomo Pimentel de Oliveira, 894, Anchieta, Rio de Janeiro - RJ, CEP: 21645-522",
     hours: "Segunda a Sábado: 07h às 22h | Domingos e Feriados: 08h às 20h",
-    phone: "2455-4000",
-    whatsapp: "+55 (21) 96479-2929",
+    phone: "3019-3000",
+    whatsapp: "+55 (21) 96702-8706",
     mapsUrl:
       "https://www.google.com/maps/place/Av.+Chris%C3%B3stomo+Pimentel+de+Oliveira,+894+-+Anchieta,+Rio+de+Janeiro+-+RJ,+21645-522/@-22.8184667,-43.3933284,17z/data=!3m1!4b1!4m6!3m5!1s0x9963f4461a864f:0xd887106600783f3e!8m2!3d-22.8184667!4d-43.3907535!16s%2Fg%2F11cnddp5zt?entry=ttu&g_ep=EgoyMDI2MTAxMi4wIKXMDSoASAFQAw%3D%3D",
     legal: {
@@ -94,11 +94,11 @@ const units: PharmacyUnit[] = [
     pickupReadyTime: "Pronto em até 1 hora",
     razaoSocial: "Drogaria Fabris Ltda",
     cnpj: "14.234.051/0001-92",
-    stateRegistration: "86.659.32-8",
+    stateRegistration: "79.483.90-7",
     address: "Rua Japoara, 174, Ricardo de Albuquerque, Rio de Janeiro - RJ, CEP: 21620-390",
     hours: "Segunda a Sábado: 07h às 22h | Domingos e Feriados: 08h às 20h",
-    phone: "2455-4000",
-    whatsapp: "+55 (21) 96479-2929",
+    phone: "2455-2000",
+    whatsapp: "+55 (21) 96429-6699",
     mapsUrl:
       "https://www.google.com/maps/place/R.+Japoara,+174+-+Ricardo+de+Albuquerque,+Rio+de+Janeiro+-+RJ,+21620-390/@-22.8394138,-43.4033796,17z/data=!4m6!3m5!1s0x9963da3e2f3ce1:0x24757852e7f7b80f!8m2!3d-22.8394138!4d-43.4008047!16s%2Fg%2F11c43tv7tq?entry=ttu&g_ep=EgoyMDI2MTAxMi4wIKXMDSoASAFQAw%3D%3D",
     legal: {
@@ -118,13 +118,13 @@ const units: PharmacyUnit[] = [
     pickupReadyTime: "Pronto em até 2 horas",
     razaoSocial: "Drogaria Jaime Almeida Ltda",
     cnpj: "38.714.558/0001-01",
-    stateRegistration: "86.659.32-8",
-    address: "Rua Capitao Jose de Paula, 366 - Centro (Suruí), CEP: 25922-440", // Atualizar com logradouro e número exatos
+    stateRegistration: "11.832.997",
+    address: "Rua Capitao Jose de Paula, 366 - Centro (Suruí), CEP: 25922-440",
     hours: "Segunda a Sábado: 07h às 22h | Domingos e Feriados: 08h às 20h",
-    phone: "2455-4000",
-    whatsapp: "+55 (21) 96479-2929",
+    phone: "2147-1000",
+    whatsapp: "+55 (21) 99966-2000",
     mapsUrl:
-      "https://www.google.com/maps/place/Farm%C3%A1cia+Suru%C3%AD,+Mag%C3%A9+-+Drogarias+Camargo/@-22.6621929,-43.1288784,6a,75y,165.58h,82.26t/data=!3m7!1e1!3m5!1sH8G8-xHwJdX2lPlUvhWTvg!2e0!6shttps:%2F%2Fstreetviewpixels-pa.clients6.google.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D7.744377741003376%26panoid%3DH8G8-xHwJdX2lPlUvhWTvg%26yaw%3D165.57852189501943!7i16384!8i8192!4m14!1m7!3m6!1s0x99a1c8d6a182e9:0xad3ed30b0b5e6f3f!2sFarm%C3%A1cia+Suru%C3%AD,+Mag%C3%A9+-+Drogarias+Camargo!8m2!3d-22.6622381!4d-43.1288145!16s%2Fg%2F11y3688m9w!3m5!1s0x99a1c8d6a182e9:0xad3ed30b0b5e6f3f!8m2!3d-22.6622381!4d-43.1288145!16s%2Fg%2F11y3688m9w?entry=ttu&g_ep=EgoyMDI2MTAxMi4wIKXMDSoASAFQAw%3D%3D",
+      "https://www.google.com/maps/place/R.+Cap.+Jos%C3%A9+de+Paula+-+Centro+(Suru%C3%AD),+Mag%C3%A9+-+RJ,+25922-440/@-22.6622079,-43.1371768,16z/data=!3m1!4b1!4m6!3m5!1s0x99a1ce29178e87:0x209af42124dfd1c6!8m2!3d-22.6622668!4d-43.1320158!16s%2Fg%2F11cspt84_v?entry=ttu&g_ep=EgoyMDI2MTAxOS4wIKXMDSoASAFQAw%3D%3D",
     legal: {
       farmaceutico: "Alexsandro da Silva Santos",
       crf: "CRF/RJ: 24112",
@@ -142,13 +142,13 @@ const units: PharmacyUnit[] = [
     pickupReadyTime: "Pronto em até 1 hora",
     razaoSocial: "Drogaria Elza Giagio Ltda",
     cnpj: "47.522.288/0001-28",
-    stateRegistration: "86.659.32-8",
+    stateRegistration: "12.574.452",
     address: "Avenida Izabel de Paula, 248, Loja 2, Quadra F, Lote 4, Magé - RJ, CEP: 25922-492",
     hours: "Segunda a Sábado: 07h às 22h | Domingos e Feriados: 08h às 20h",
-    phone: "2455-4000",
-    whatsapp: "+55 (21) 96479-2929",
+    phone: "+55 (21) 97260-3300",
+    whatsapp: "+55 (21) 98260-2200",
     mapsUrl:
-      "https://www.google.com/maps/place/R.+Japoara,+174+-+Ricardo+de+Albuquerque,+Rio+de+Janeiro+-+RJ,+21620-390/@-22.8394138,-43.4033796,17z/data=!4m6!3m5!1s0x9963da3e2f3ce1:0x24757852e7f7b80f!8m2!3d-22.8394138!4d-43.4008047!16s%2Fg%2F11c43tv7tq?entry=ttu&g_ep=EgoyMDI2MTAxMi4wIKXMDSoASAFQAw%3D%3D",
+      "https://www.google.com/maps/place/Av.+Isabel+de+Paula+-+Centro+(Suru%C3%AD),+Mag%C3%A9+-+RJ,+25922-492/@-22.659597,-43.1308463,17z/data=!4m6!3m5!1s0x99a1c8d1421edb:0xe6d1880ee89472cd!8m2!3d-22.6595909!4d-43.1283008!16s%2Fg%2F11h2hdbz4_?entry=ttu&g_ep=EgoyMDI2MTAxOS4wIKXMDSoASAFQAw%3D%3D",
     legal: {
       farmaceutico: "Elaine de Araujo Batista",
       crf: "CRF/RJ: 26573",
@@ -158,30 +158,30 @@ const units: PharmacyUnit[] = [
     services: defaultServices,
     coordinates: { lat: -22.8394138, lng: -43.4008047 },
   },
-  {
-    id: 6,
-    slug: "catumbi",
-    name: "Catumbi",
-    allowsPickup: true,
-    pickupReadyTime: "Pronto em até 1 hora",
-    razaoSocial: "Drogaria Catumbi Ltda",
-    cnpj: "18.908.721/0001-60",
-    stateRegistration: "86.659.32-8",
-    address: "Catumbi, Rio de Janeiro - RJ (Drogarias Camargo)", // Atualizar com rua e número
-    hours: "Segunda a Sábado: 07h às 22h | Domingos e Feriados: 08h às 20h",
-    phone: "2455-4000",
-    whatsapp: "+55 (21) 96479-2929",
-    mapsUrl:
-      "https://www.google.com/maps/place/Drogaria+Camargo+-+Catumbi/@-22.9180027,-43.2010781,17z/data=!3m1!4b1!4m6!3m5!1s0x997f05a247c1b7:0x420a7d32afc737de!8m2!3d-22.9180027!4d-43.1985032!16s%2Fg%2F11y30fsl2t?entry=ttu&g_ep=EgoyMDI2MTAxMi4wIKXMDSoASAFQAw%3D%3D",
-    legal: {
-      farmaceutico: "Regis Silva Gonçalves",
-      crf: "CRF/RJ: 16666",
-      afe: "7.37944-6",
-      alvara: "04/821.268/2024",
-    },
-    services: defaultServices,
-    coordinates: { lat: -22.9180027, lng: -43.1985032 },
-  },
+  // {
+  //   id: 6,
+  //   slug: "catumbi",
+  //   name: "Catumbi",
+  //   allowsPickup: true,
+  //   pickupReadyTime: "Pronto em até 1 hora",
+  //   razaoSocial: "Drogaria Catumbi Ltda",
+  //   cnpj: "18.908.721/0001-60",
+  //   stateRegistration: "86.659.32-8",
+  //   address: "Catumbi, Rio de Janeiro - RJ (Drogarias Camargo)", // Ataliuzar com rua e número
+  //   hours: "Segunda a Sábado: 07h às 22h | Domingos e Feriados: 08h às 20h",
+  //   phone: "2455-4000",
+  //   whatsapp: "+55 (21) 96479-2929",
+  //   mapsUrl:
+  //     "https://www.google.com/maps/place/Drogaria+Camargo+-+Catumbi/@-22.9180027,-43.2010781,17z/data=!3m1!4b1!4m6!3m5!1s0x997f05a247c1b7:0x420a7d32afc737de!8m2!3d-22.9180027!4d-43.1985032!16s%2Fg%2F11y30fsl2t?entry=ttu&g_ep=EgoyMDI2MTAxMi4wIKXMDSoASAFQAw%3D%3D",
+  //   legal: {
+  //     farmaceutico: "Regis Silva Gonçalves",
+  //     crf: "CRF/RJ: 16666",
+  //     afe: "7.37944-6",
+  //     alvara: "04/821.268/2024",
+  //   },
+  //   services: defaultServices,
+  //   coordinates: { lat: -22.9180027, lng: -43.1985032 },
+  // },
 ];
 
 const mainUnit = units.find((u) => u.isEcommerceHub) || units[0];
@@ -192,6 +192,8 @@ export const companyConfig = {
   cnpj: mainUnit.cnpj,
   stateRegistration: mainUnit.stateRegistration,
   address: mainUnit.address,
+  rhEmail: "fabriscurriculosrh@gmail.com",
+  comercialEmail: "comercial@drogariascamargo.com.br",
 
   contact: {
     emailAtendimento: "contato@drogariascamargo.com.br",

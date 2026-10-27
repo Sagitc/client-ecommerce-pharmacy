@@ -26,7 +26,7 @@ export default function CheckoutLayout({
         {children}
       </main>
       
-      <footer className="bg-white border-t py-6 mt-10">
+      <footer className="bg-white py-6">
         <div className="container max-w-5xl mx-auto px-4 text-center text-sm text-gray-500">
           <p>© {new Date().getFullYear()} Drogarias Camargo. Todos os direitos reservados.</p>
           <p className="mt-1">Ambiente 100% seguro protegido por criptografia de ponta a ponta.</p>

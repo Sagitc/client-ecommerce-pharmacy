@@ -5,10 +5,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MapPin, ShieldCheck, Ticket } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
+import { PrescriptionUpload } from "@/components/prescription-upload";
+import { useCart } from "@/hooks/use-cart";
 
 export default function CheckoutPage() {
+
+    const { cart, removeFromCart } = useCart();
+    const cartItems = cart.data || [];
+
     const [hasCoupon, setHasCoupon] = useState(false);
-    
+    const hasRestrictedItems = cartItems.some((item) => item.requiresPrescription);
+    const [prescriptionFiles, setPrescriptionFiles] = useState<File[]>([]);
+    const [isPrescriptionValid, setIsPrescriptionValid] = useState(!hasRestrictedItems);
+
     // Estados e Ref para o controle da barra flutuante
     const [isMainButtonVisible, setIsMainButtonVisible] = useState(false);
     const mainButtonRef = useRef<HTMLButtonElement>(null);
@@ -39,6 +48,15 @@ export default function CheckoutPage() {
     return (
         // Adicionado pb-24 no mobile para o conteúdo não ficar escondido atrás da barra fixa
         <div className="container max-w-6xl mx-auto py-10 px-4 pb-24 md:pb-10 relative">
+
+            <PrescriptionUpload
+                cartItems={cartItems}
+                onFilesChange={(files, isValid) => {
+                    setPrescriptionFiles(files);
+                    setIsPrescriptionValid(isValid);
+                }}
+            />
+
             <div className="flex items-center justify-between mb-8 border-b pb-4">
                 <h1 className="text-2xl font-bold">Finalizar Compra</h1>
                 <div className="flex items-center gap-2 text-green-700">
@@ -132,7 +150,7 @@ export default function CheckoutPage() {
                         </div>
 
                         {/* O botão principal agora recebe a ref */}
-                        <Button ref={mainButtonRef} className="w-full bg-primary text-lg h-12">
+                        <Button disabled={hasRestrictedItems && !isPrescriptionValid} ref={mainButtonRef} className="w-full bg-primary text-lg h-12">
                             Ir para Pagamento
                         </Button>
 
@@ -150,7 +168,7 @@ export default function CheckoutPage() {
                         <span className="text-xs text-muted-foreground">Total da compra</span>
                         <span className="text-xl font-bold text-primary">R$ 39,90</span>
                     </div>
-                    <Button className="bg-primary text-base h-11 px-6">
+                    <Button disabled={hasRestrictedItems && !isPrescriptionValid} className="bg-primary text-base h-11 px-6">
                         Ir para Pagamento
                     </Button>
                 </div>

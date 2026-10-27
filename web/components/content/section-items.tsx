@@ -1,3 +1,5 @@
+// web/components/content/section-items.tsx
+
 "use client";
 
 import { useEffect, useRef, useState } from "react";

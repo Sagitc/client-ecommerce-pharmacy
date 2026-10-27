@@ -7,9 +7,10 @@ export type ProductType = {
     promotionPrice?: number,
     image?: string,
     category: string,
+    requiresPrescription: boolean,
 };
 
-export type ProductOrderType = Pick<ProductType, 'id' | 'label' | 'fabricator' | 'image' | 'price' | 'promotionPrice'> & {
+export type ProductOrderType = Pick<ProductType, 'id' | 'label' | 'fabricator' | 'image' | 'price' | 'promotionPrice' | 'requiresPrescription'> & {
     quantity: number,
 };
 

@@ -1,3 +1,5 @@
+// web/app/[public]/page.tsx
+
 import {
   SecDefault,
   SecHero,
@@ -15,13 +17,11 @@ import {
   Ads3
 } from "@/components/advertisement-items"
 import Cart from "@/components/cart"
-import Header from "@/components/header"
 import { ShoppingBasket } from "lucide-react"
 
 export default function Page() {
   return (
     <div className="bg-accent flex min-h-screen flex-col ">
-
 
       <div className="@container/content flex flex-col items-center justify-center gap-20 px-2 py-8 md:px-8 lg:px-0 relative">
 

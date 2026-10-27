@@ -5,10 +5,10 @@ import { companyConfig } from "@/lib/company";
 
 export default function PartnershipsPage() {
   return (
-    <div className="container max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <div className="container max-w-6xl bg-background mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <div className="mb-12 border-b pb-8">
-        <Button variant="ghost" className="-ml-4 mb-4 text-muted-foreground hover:text-foreground">
-          <Link href="/">
+        <Button variant="ghost" className="mb-4 py-6 text-muted-foreground hover:text-foreground">
+          <Link href="/" className="flex items-center">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Voltar para a página inicial
           </Link>
@@ -68,18 +68,9 @@ export default function PartnershipsPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
             <Button size="lg">
-              <a href={`mailto:${companyConfig.contact.emailAtendimento}?subject=Proposta de Parceria - ${companyConfig.name}`}>
+              <a href={`mailto:${companyConfig.comercialEmail}?subject=Proposta de Parceria - ${companyConfig.name}`} className="flex items-center">
                 <Mail className="w-4 h-4 mr-2" />
                 Enviar Proposta por E-mail
-              </a>
-            </Button>
-            <Button variant="outline" size="lg">
-              <a
-                href={`https://wa.me/${companyConfig.contact.whatsapp.replace(/\D/g, "")}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                Falar com o Setor Comercial
               </a>
             </Button>
           </div>

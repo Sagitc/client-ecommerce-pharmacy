@@ -101,6 +101,7 @@ export function ShippingMethodSelector({
 
   return (
     <div className="space-y-6">
+
       {/* SELETOR DE ABAS (ENTREGA VS RETIRADA) */}
       <div className="grid grid-cols-2 gap-3 p-1 bg-muted rounded-xl">
         <button
@@ -112,7 +113,7 @@ export function ShippingMethodSelector({
               : "text-muted-foreground hover:text-foreground"
           }`}
         >
-          <Truck className="w-4 h-4" />
+          <Truck className="w-8 h-8" />
           Receber em Casa
         </button>
 
@@ -125,7 +126,7 @@ export function ShippingMethodSelector({
               : "text-muted-foreground hover:text-foreground"
           }`}
         >
-          <Store className="w-4 h-4" />
+          <Store className="w-8 h-8" />
           Retirar na Loja (Grátis)
         </button>
       </div>
@@ -135,8 +136,7 @@ export function ShippingMethodSelector({
         <div className="space-y-4">
           <div className="bg-muted/30 border rounded-xl p-4 space-y-3">
             <h3 className="font-semibold text-base text-foreground flex items-center gap-2">
-              <Truck className="w-5 h-5 text-primary" />
-              Calcular taxa e prazo de entrega
+              Informe o seu CEP
             </h3>
 
             <div className="flex flex-col sm:flex-row gap-2">
@@ -159,7 +159,6 @@ export function ShippingMethodSelector({
                   </>
                 ) : (
                   <>
-                    <Search className="w-4 h-4 mr-2" />
                     Calcular Frete
                   </>
                 )}

@@ -1,3 +1,5 @@
+// web/components/content/section-components.tsx
+
 import { ElementType, ReactNode } from "react";
 import { ProductFilters } from "@/types/product-type";
 import {
@@ -18,6 +20,7 @@ import {
     CarouselNext,
     CarouselPrevious
 } from "@/components/ui/carousel";
+import { useProducts } from "@/hooks/use-product";
 
 type SecHeaderProps = {
     sectionTitle: string;
@@ -73,8 +76,8 @@ export function SecAdvantageCard({ Icon, title, description }: SecAdvantageProps
 }
 
 export function SecCarousel({ filter, style, children, loop }: SecCarouselProps) {
-
-    const productIds = [1, 2, 3, 4, 5, 7, 8, 9, 10]; // Simula o request dos produtos com o filtro ${filter}
+    
+    const { data: productsList = [] } = useProducts(filter);
 
     return (
         <Carousel
@@ -89,10 +92,10 @@ export function SecCarousel({ filter, style, children, loop }: SecCarouselProps)
 
                 {
                     filter ?
-                    productIds.map((productId) => (
-                        <CarouselItem key={productId} className={"basis-[90%] min-[450px]:basis-[45%] md:basis-[30%] lg:basis-[22.5%] " + style}>
+                    productsList.map((product) => (
+                        <CarouselItem key={product.id} className={"basis-[90%] min-[450px]:basis-[45%] md:basis-[30%] lg:basis-[22.5%] " + style}>
 
-                            <ProductCard productId={productId} />
+                            <ProductCard product={product} />
 
                         </CarouselItem>
                     )) :

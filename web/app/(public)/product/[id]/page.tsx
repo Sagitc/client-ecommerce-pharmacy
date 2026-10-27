@@ -1,3 +1,5 @@
+// web/app/(public)/product/[id]/page.tsx
+
 import { SecDefault } from "@/components/content/section-items";
 import { ProductView, ProductViewMobile } from "@/components/product-gallery";
 import { Badge } from "@/components/ui/badge";
@@ -26,16 +28,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <ProductViewMobile />
 
         <SecDefault title="Recomendados" filter="most-sell" />
-
-        <div className="fixed bottom-0 left-0 w-full rounded p-3 flex justify-between items-center bg-background border-t z-50 md:hidden">
-          <div>
-            <span className="font-medium text-muted-foreground">Subtotal: </span>
-            <span className="font-semibold text-sm">R$ 29,90</span>
-          </div>
-          <Button>
-            Comprar
-          </Button>
-        </div>
 
       </div>
     </div>
