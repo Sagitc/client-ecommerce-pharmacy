@@ -1,10 +1,8 @@
-version: '3.8'
-
 services:
   # --- BANCO DE DADOS (MySQL) ---
   db:
     image: mysql:8.0
-    container_name: meu_projeto_db
+    container_name: ecommerce_camargo_db
     restart: always
     ports:
       - "3306:3306"
@@ -30,6 +28,7 @@ services:
     volumes:
       - ./api:/var/www
     environment:
+      - DB_CONNECTION=mysql
       - DB_HOST=db
       - DB_PORT=3306
       - DB_DATABASE=ecommerce_camargo

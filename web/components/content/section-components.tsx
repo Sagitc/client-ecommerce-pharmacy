@@ -21,6 +21,7 @@ import {
     CarouselPrevious
 } from "@/components/ui/carousel";
 import { useProducts } from "@/hooks/use-product";
+import { Loader2 } from "lucide-react";
 
 type SecHeaderProps = {
     sectionTitle: string;
@@ -70,14 +71,13 @@ export function SecAdvantageCard({ Icon, title, description }: SecAdvantageProps
                     {description}
                 </span>
             </div>
-            
+
         </div>
     )
 }
 
 export function SecCarousel({ filter, style, children, loop }: SecCarouselProps) {
-    
-    const { data: productsList = [] } = useProducts(filter);
+    const { data: productsList, isLoading, isError } = useProducts(filter);
 
     return (
         <Carousel
@@ -89,26 +89,36 @@ export function SecCarousel({ filter, style, children, loop }: SecCarouselProps)
             className="w-full group relative"
         >
             <CarouselContent>
-
-                {
-                    filter ?
-                    productsList.map((product) => (
-                        <CarouselItem key={product.id} className={"basis-[90%] min-[450px]:basis-[45%] md:basis-[30%] lg:basis-[22.5%] " + style}>
-
-                            <ProductCard product={product} />
-
-                        </CarouselItem>
-                    )) :
+                {children ? (
                     children
-                }
-                
+                ) :
+                    isLoading ? (
+                        <div className="w-full flex justify-center items-center min-h-75">
+                            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                        </div>
+                    ) :
+                        /* 3. ESTADO DE ERRO */
+                        isError || !productsList || productsList.length === 0 ? (
+                            <div className="w-full flex justify-center items-center min-h-75 text-muted-foreground">
+                                Nenhum produto encontrado nesta categoria.
+                            </div>
+                        ) :
+                            (
+                                productsList.map((product) => (
+                                    <CarouselItem
+                                        key={product.id}
+                                        className={`basis-[90%] min-[450px]:basis-[45%] md:basis-[30%] lg:basis-[22.5%] ${style ?? ""}`}
+                                    >
+                                        <ProductCard product={product} />
+                                    </CarouselItem>
+                                ))
+                            )}
             </CarouselContent>
 
             <CarouselPrevious className="hidden md:inline-flex absolute left-4! opacity-0 transition-opacity duration-300 group-hover:opacity-100 disabled:hidden" />
-
             <CarouselNext className="hidden md:inline-flex absolute right-4! opacity-0 transition-opacity duration-300 group-hover:opacity-100 disabled:hidden" />
         </Carousel>
-    )
+    );
 }
 
 export function SecFilter({ items, selectedCategory, setSelectedCategory }: SecFiltersProps) {
@@ -127,8 +137,8 @@ export function SecFilter({ items, selectedCategory, setSelectedCategory }: SecF
         )
     }
 
-    function handleClick(category: CategoryType) { 
-        setSelectedCategory(category); 
+    function handleClick(category: CategoryType) {
+        setSelectedCategory(category);
     }
 
     return (
@@ -150,7 +160,7 @@ export function SecFilter({ items, selectedCategory, setSelectedCategory }: SecF
             </Select>
 
             <nav className="hidden md:flex gap-4 overflow-scroll scrollbar-none">
-                {items.map( category => (
+                {items.map(category => (
                     <SectionFilterBtn
                         key={category.value}
                         data-key={category.value}
