@@ -12,4 +12,18 @@ class Prescription extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    protected $casts = [
+        'reviewed_at' => 'datetime',
+    ];
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
+
+    public function reviewer()
+    {
+        return $this->belongsTo(User::class, 'reviewed_by');
+    }
 }
