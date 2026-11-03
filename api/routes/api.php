@@ -8,10 +8,13 @@ use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\PharmacyUnitController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ShippingController;
+use App\Http\Controllers\Api\PrescriptionReviewController;
 
 // --- ROTAS PÚBLICAS ---
 Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login', [AuthController::class, 'login']);
+Route::post('/auth/forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('/auth/reset-password', [AuthController::class, 'resetPassword']);
 
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{id}', [ProductController::class, 'show']);
@@ -19,7 +22,7 @@ Route::get('/products/{id}', [ProductController::class, 'show']);
 Route::get('/pharmacy-units', [PharmacyUnitController::class, 'index']);
 Route::post('/shipping/calculate', [ShippingController::class, 'calculate']);
 
-// --- ROTAS AUTENTICADAS (Exigem Header Authorization: Bearer {token}) ---
+// --- ROTAS AUTENTICADAS ---
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/auth/me', [AuthController::class, 'me']);
     Route::put('/auth/profile', [AuthController::class, 'updateProfile']);
@@ -32,4 +35,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/orders', [OrderController::class, 'index']);
     Route::get('/orders/{id}', [OrderController::class, 'show']);
     Route::post('/orders', [OrderController::class, 'store']);
+
+    // Painel Farmacêutico / Admin (ANVISA RDC 44)
+    Route::get('/admin/prescriptions', [PrescriptionReviewController::class, 'index']);
+    Route::patch('/admin/prescriptions/{id}/review', [PrescriptionReviewController::class, 'review']);
+    Route::get('/admin/prescriptions/{id}/file', [PrescriptionReviewController::class, 'download']);
 });
