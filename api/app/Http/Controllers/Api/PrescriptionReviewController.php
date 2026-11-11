@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Prescription;
+use App\Services\SecuritySanitizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -47,7 +48,7 @@ class PrescriptionReviewController extends Controller
 
         $prescription->update([
             'status' => $validated['status'],
-            'rejection_reason' => $validated['status'] === 'rejected' ? $validated['rejection_reason'] : null,
+            'rejection_reason' => $validated['status'] === 'rejected' ? SecuritySanitizer::clean($validated['rejection_reason']) : null,
             'reviewed_by' => $request->user()->id,
             'reviewed_at' => now(),
         ]);
@@ -76,6 +77,11 @@ class PrescriptionReviewController extends Controller
         $this->authorizePharmacist($request);
 
         $prescription = Prescription::findOrFail($id);
+
+        // Prevenção contra Directory Traversal
+        if (str_contains($prescription->file_path, '..') || ! str_starts_with($prescription->file_path, 'prescriptions/')) {
+            abort(403, 'Acesso a caminho de arquivo não autorizado.');
+        }
 
         if (! Storage::disk('local')->exists($prescription->file_path)) {
             abort(404, 'Arquivo de receita não encontrado no servidor.');

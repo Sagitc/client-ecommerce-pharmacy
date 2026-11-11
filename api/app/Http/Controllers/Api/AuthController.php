@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\SecuritySanitizer;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -21,14 +22,14 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'cpf' => 'nullable|string|max:14|unique:users',
             'phone' => 'nullable|string|max:20',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:6|max:100|confirmed',
         ]);
 
         $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'cpf' => $validated['cpf'] ?? null,
-            'phone' => $validated['phone'] ?? null,
+            'name' => SecuritySanitizer::clean($validated['name']),
+            'email' => strtolower(trim($validated['email'])),
+            'cpf' => !empty($validated['cpf']) ? SecuritySanitizer::clean($validated['cpf']) : null,
+            'phone' => !empty($validated['phone']) ? SecuritySanitizer::clean($validated['phone']) : null,
             'password' => Hash::make($validated['password']),
             'role' => 'customer',
         ]);
@@ -87,7 +88,7 @@ class AuthController extends Controller
         $request->validate([
             'token' => 'required',
             'email' => 'required|email',
-            'password' => 'required|min:6|confirmed',
+            'password' => 'required|min:6|max:100|confirmed',
         ]);
 
         $status = Password::reset(
@@ -131,7 +132,18 @@ class AuthController extends Controller
             'cpf' => 'nullable|string|max:14|unique:users,cpf,' . $user->id,
         ]);
 
-        $user->update($validated);
+        $cleanData = [];
+        if (isset($validated['name'])) {
+            $cleanData['name'] = SecuritySanitizer::clean($validated['name']);
+        }
+        if (array_key_exists('phone', $validated)) {
+            $cleanData['phone'] = !empty($validated['phone']) ? SecuritySanitizer::clean($validated['phone']) : null;
+        }
+        if (array_key_exists('cpf', $validated)) {
+            $cleanData['cpf'] = !empty($validated['cpf']) ? SecuritySanitizer::clean($validated['cpf']) : null;
+        }
+
+        $user->update($cleanData);
 
         return response()->json($user);
     }

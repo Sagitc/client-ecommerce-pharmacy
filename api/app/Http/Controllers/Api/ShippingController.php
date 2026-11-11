@@ -29,7 +29,7 @@ class ShippingController extends Controller
     public function calculate(Request $request)
     {
         $request->validate([
-            'cep' => 'required|string',
+            'cep' => 'required|string|max:10',
         ]);
 
         $cleanCep = preg_replace('/\D/', '', $request->cep);

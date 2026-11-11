@@ -89,3 +89,30 @@ export async function logoutRequest() {
     }
     clearAuthToken();
 }
+
+export async function forgotPasswordRequest(email: string) {
+    const res = await fetch(`${API_URL}/auth/forgot-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({ email }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Não foi possível enviar o link.");
+    return data;
+}
+
+export async function resetPasswordRequest(payload: {
+    token: string;
+    email: string;
+    password: string;
+    password_confirmation: string;
+}) {
+    const res = await fetch(`${API_URL}/auth/reset-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Erro ao redefinir a senha.");
+    return data;
+}

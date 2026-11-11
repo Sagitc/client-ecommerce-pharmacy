@@ -6,9 +6,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Product;
+use App\Services\SecuritySanitizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class OrderController extends Controller
@@ -38,15 +40,23 @@ class OrderController extends Controller
     {
         $validated = $request->validate([
             'shipping_method' => 'required|in:delivery,pickup',
-            'address_id' => 'required_if:shipping_method,delivery|nullable|exists:addresses,id',
-            'pharmacy_unit_id' => 'required_if:shipping_method,pickup|nullable|exists:pharmacy_units,id',
-            'shipping_cost' => 'required|numeric|min:0',
+            'address_id' => [
+                'required_if:shipping_method,delivery',
+                'nullable',
+                Rule::exists('addresses', 'id')->where('user_id', $request->user()->id),
+            ],
+            'pharmacy_unit_id' => [
+                'required_if:shipping_method,pickup',
+                'nullable',
+                Rule::exists('pharmacy_units', 'id')->where('is_active', true),
+            ],
+            'shipping_cost' => 'required|numeric|min:0|max:500',
             'payment_method' => 'required|in:pix,credit_card,debit_card,cash_on_delivery',
             'notes' => 'nullable|string|max:500',
-            'items' => 'required|array|min:1',
-            'items.*.id' => 'required|exists:products,id',
-            'items.*.quantity' => 'required|integer|min:1',
-            'prescriptions' => 'nullable|array',
+            'items' => 'required|array|min:1|max:50',
+            'items.*.id' => 'required|integer|distinct|exists:products,id',
+            'items.*.quantity' => 'required|integer|min:1|max:100',
+            'prescriptions' => 'nullable|array|max:10',
             'prescriptions.*' => 'file|mimes:jpg,jpeg,png,webp,pdf|max:5120', // Máx 5MB
         ]);
 
@@ -55,9 +65,16 @@ class OrderController extends Controller
             $requiresPrescription = false;
             $orderItemsData = [];
 
-            // 1. Calcula o preço real pelo banco e verifica exigência de receita
+            // 1. Calcula o preço real pelo banco, valida estoque e verifica exigência de receita
             foreach ($validated['items'] as $item) {
                 $product = Product::lockForUpdate()->findOrFail($item['id']);
+
+                // Proteção contra compra de produtos sem estoque suficiente
+                if (! $product->in_stock || $product->stock_quantity < $item['quantity']) {
+                    throw ValidationException::withMessages([
+                        'items' => ["O produto '{$product->label}' não possui estoque suficiente disponível."],
+                    ]);
+                }
 
                 if ($product->requires_prescription) {
                     $requiresPrescription = true;
@@ -72,11 +89,9 @@ class OrderController extends Controller
                     'unit_price' => $unitPrice,
                 ];
 
-                // Incrementa vendas e abate estoque
+                // Incrementa vendas e abate estoque garantido
                 $product->increment('sales_count', $item['quantity']);
-                if ($product->stock_quantity >= $item['quantity']) {
-                    $product->decrement('stock_quantity', $item['quantity']);
-                }
+                $product->decrement('stock_quantity', $item['quantity']);
             }
 
             // 2. Trava de segurança ANVISA no Backend
@@ -89,7 +104,7 @@ class OrderController extends Controller
             $shippingCost = $validated['shipping_method'] === 'pickup' ? 0 : $validated['shipping_cost'];
             $total = $subtotal + $shippingCost;
 
-            // 3. Cria o Pedido
+            // 3. Cria o Pedido com sanitização de campos de texto
             $order = Order::create([
                 'order_number' => 'CAM-' . date('Y') . '-' . strtoupper(Str::random(6)),
                 'user_id' => $request->user()->id,
@@ -103,7 +118,7 @@ class OrderController extends Controller
                 'payment_method' => $validated['payment_method'],
                 'payment_status' => 'pending',
                 'status' => $requiresPrescription ? 'awaiting_prescription_review' : 'pending',
-                'notes' => $validated['notes'] ?? null,
+                'notes' => !empty($validated['notes']) ? SecuritySanitizer::clean($validated['notes']) : null,
             ]);
 
             // 4. Salva os Itens do Pedido

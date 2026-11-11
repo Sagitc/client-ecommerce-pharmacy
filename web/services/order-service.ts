@@ -90,3 +90,50 @@ export async function fetchOrderByIdRequest(id: string | number) {
     if (!res.ok) throw new Error("Pedido não encontrado.");
     return res.json();
 }
+
+export async function fetchAdminPrescriptionsRequest(status?: string) {
+    const token = getAuthToken();
+    const query = status && status !== "all" ? `?status=${status}` : "";
+    const res = await fetch(`${API_URL}/admin/prescriptions${query}`, {
+        headers: {
+            "Accept": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+    });
+    if (!res.ok) throw new Error("Acesso negado ou falha ao buscar receitas.");
+    return res.json();
+}
+
+export async function reviewPrescriptionRequest(payload: {
+    id: number;
+    status: "approved" | "rejected";
+    rejection_reason?: string;
+}) {
+    const token = getAuthToken();
+    const res = await fetch(`${API_URL}/admin/prescriptions/${payload.id}/review`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            status: payload.status,
+            rejection_reason: payload.rejection_reason,
+        }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Erro ao avaliar receita.");
+    return data;
+}
+
+export async function openPrescriptionFile(id: number) {
+    const token = getAuthToken();
+    const res = await fetch(`${API_URL}/admin/prescriptions/${id}/file`, {
+        headers: { "Authorization": `Bearer ${token}` },
+    });
+    if (!res.ok) throw new Error("Arquivo não encontrado.");
+    const blob = await res.blob();
+    const url = window.URL.createObjectURL(blob);
+    window.open(url, "_blank");
+}

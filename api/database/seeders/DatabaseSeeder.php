@@ -25,6 +25,17 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        User::updateOrCreate(
+            ['email' => 'farmaceutico@camargo.com.br'],
+            [
+                'name' => 'Dr. Regis Silva Gonçalves (CRF 16666)',
+                'cpf' => '999.888.777-66',
+                'phone' => '(21) 2455-4000',
+                'password' => Hash::make('123456'),
+                'role' => 'pharmacist',
+            ]
+        );
+
         // 2. UNIDADES DROGARIAS CAMARGO (Espelhadas de web/lib/company.ts)
         $defaultServices = [
             "Aferição de pressão",

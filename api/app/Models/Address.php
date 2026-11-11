@@ -2,14 +2,29 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Address extends Model
 {
-    protected $guarded = [];
+    use HasFactory;
 
-    public function product()
+    protected $fillable = [
+        'user_id',
+        'label',
+        'cep',
+        'street',
+        'number',
+        'complement',
+        'neighborhood',
+        'city',
+        'state',
+        'is_default',
+    ];
+
+    public function user()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(User::class);
     }
 }
+

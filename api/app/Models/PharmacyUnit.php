@@ -10,7 +10,28 @@ class PharmacyUnit extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'slug',
+        'name',
+        'is_ecommerce_hub',
+        'allows_pickup',
+        'pickup_ready_time',
+        'razao_social',
+        'cnpj',
+        'state_registration',
+        'cep',
+        'address',
+        'neighborhood',
+        'hours',
+        'phone',
+        'whatsapp',
+        'maps_url',
+        'lat',
+        'lng',
+        'legal',
+        'services',
+        'is_active',
+    ];
 
     protected $casts = [
         'is_ecommerce_hub' => 'boolean',

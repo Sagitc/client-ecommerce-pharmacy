@@ -2,16 +2,23 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Prescription extends Model
 {
-    protected $guarded = [];
+    use HasFactory;
 
-    public function product()
-    {
-        return $this->belongsTo(Product::class);
-    }
+    protected $fillable = [
+        'order_id',
+        'file_path',
+        'original_name',
+        'mime_type',
+        'status',
+        'reviewed_by',
+        'rejection_reason',
+        'reviewed_at',
+    ];
 
     protected $casts = [
         'reviewed_at' => 'datetime',
@@ -27,3 +34,4 @@ class Prescription extends Model
         return $this->belongsTo(User::class, 'reviewed_by');
     }
 }
+

@@ -11,16 +11,21 @@ use App\Http\Controllers\Api\ShippingController;
 use App\Http\Controllers\Api\PrescriptionReviewController;
 
 // --- ROTAS PÚBLICAS ---
-Route::post('/auth/register', [AuthController::class, 'register']);
-Route::post('/auth/login', [AuthController::class, 'login']);
-Route::post('/auth/forgot-password', [AuthController::class, 'forgotPassword']);
-Route::post('/auth/reset-password', [AuthController::class, 'resetPassword']);
+Route::middleware('throttle:auth')->group(function () {
+    Route::post('/auth/register', [AuthController::class, 'register']);
+    Route::post('/auth/login', [AuthController::class, 'login']);
+});
+
+Route::middleware('throttle:password-reset')->group(function () {
+    Route::post('/auth/forgot-password', [AuthController::class, 'forgotPassword']);
+    Route::post('/auth/reset-password', [AuthController::class, 'resetPassword']);
+});
 
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{id}', [ProductController::class, 'show']);
 
 Route::get('/pharmacy-units', [PharmacyUnitController::class, 'index']);
-Route::post('/shipping/calculate', [ShippingController::class, 'calculate']);
+Route::post('/shipping/calculate', [ShippingController::class, 'calculate'])->middleware('throttle:shipping');
 
 // --- ROTAS AUTENTICADAS ---
 Route::middleware('auth:sanctum')->group(function () {
@@ -34,7 +39,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/orders', [OrderController::class, 'index']);
     Route::get('/orders/{id}', [OrderController::class, 'show']);
-    Route::post('/orders', [OrderController::class, 'store']);
+    Route::post('/orders', [OrderController::class, 'store'])->middleware('throttle:orders');
 
     // Painel Farmacêutico / Admin (ANVISA RDC 44)
     Route::get('/admin/prescriptions', [PrescriptionReviewController::class, 'index']);

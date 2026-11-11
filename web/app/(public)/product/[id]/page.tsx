@@ -2,8 +2,6 @@
 
 import { SecDefault } from "@/components/content/section-items";
 import { ProductView, ProductViewMobile } from "@/components/product-gallery";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
