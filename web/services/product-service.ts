@@ -14,19 +14,27 @@ const getApiUrl = () => {
 function mapProductFromApi(raw: any): ProductType {
     return {
         id: raw.id,
+        sku: raw.sku ?? undefined,
+        ean: raw.ean ?? undefined,
         label: raw.label,
         fabricator: raw.fabricator,
+        dosage: raw.dosage ?? undefined,
+        activeIngredient: raw.active_ingredient ?? undefined,
         description: raw.description ?? undefined,
         price: Number(raw.price),
         promotionPrice: raw.promotion_price ? Number(raw.promotion_price) : undefined,
         image: raw.image ?? undefined,
         category: raw.category,
+        stripeType: raw.stripe_type ?? "free",
         requiresPrescription: Boolean(raw.requires_prescription),
+        inStock: Boolean(raw.in_stock ?? true),
+        stockQuantity: Number(raw.stock_quantity ?? 0),
+        salesCount: Number(raw.sales_count ?? 0),
+        images: Array.isArray(raw.images) ? raw.images : [],
     };
 }
 
 export async function fetchProducts(filter?: FilterType): Promise<ProductType[]> {
-
     const baseUrl = getApiUrl();
 
     const url = filter 

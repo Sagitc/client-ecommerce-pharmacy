@@ -49,33 +49,35 @@ export function SecDefault({ title, filter, style, className }: SecDefaultProps 
 }
 
 export function SecHero() {
+    const autoplayPlugin = useRef<any>(null);
+    if (!autoplayPlugin.current) {
+        autoplayPlugin.current = Autoplay({ delay: 3000, stopOnInteraction: false });
+    }
+    const plugins = useRef([autoplayPlugin.current]);
 
-    const autoplayPlugin = useRef(
-        Autoplay({ delay: 3000, stopOnInteraction: false })
-    )
-    const [api, setApi] = useState<CarouselApi>()
-    const [selectedIndex, setSelectedIndex] = useState(0)
+    const [api, setApi] = useState<CarouselApi>();
+    const [selectedIndex, setSelectedIndex] = useState(0);
 
     useEffect(() => {
-        if (!api) return
+        if (!api) return;
 
-        const onSelect = () => setSelectedIndex(api.selectedScrollSnap())
+        const onSelect = () => setSelectedIndex(api.selectedScrollSnap());
 
-        onSelect()
-        api.on("select", onSelect)
+        onSelect();
+        api.on("select", onSelect);
 
         return () => {
-            api.off("select", onSelect)
-        }
-    }, [api])
+            api.off("select", onSelect);
+        };
+    }, [api]);
 
     return (
         <Carousel
             className="group relative w-full max-w-6xl mx-auto"
-            plugins={[autoplayPlugin.current]}
+            plugins={plugins.current}
             setApi={setApi}
-            onMouseEnter={() => autoplayPlugin.current.stop()}
-            onMouseLeave={() => autoplayPlugin.current.play()}
+            onMouseEnter={() => autoplayPlugin.current?.stop()}
+            onMouseLeave={() => autoplayPlugin.current?.play()}
         >
             <CarouselContent>
                 {Array.from({ length: 5 }).map((_, index) => (
@@ -147,19 +149,18 @@ export function SecMostSell({ title, className }: SectionProps) {
     )
 }
 
+const SELECTED_CATEGORY_LABELS: typeof ProductFilters[number]["label"][] = [
+    "Vitaminas e suplementos",
+    "Anticoncepcionais",
+    "Higiene pessoal",
+    "Infantil",
+    "Lançamentos"
+];
+
+const FILTER_ITEMS = ProductFilters.filter(filter => SELECTED_CATEGORY_LABELS.includes(filter.label));
+
 export function SecFilterProd({ title, className }: SectionProps) {
-
-    const selectedCategoriesLabel: typeof ProductFilters[number]["label"][] = [
-        "Vitaminas e suplementos",
-        "Anticoncepcionais",
-        "Higiene pessoal",
-        "Infantil",
-        "Lançamentos"
-    ];
-
-    const filtersSelected = ProductFilters.filter(filter => selectedCategoriesLabel.includes(filter.label));
-
-    const [selectedCategory, setSelectedCategory] = useState<typeof ProductFilters[number]["value"]>(filtersSelected[0].value);
+    const [selectedCategory, setSelectedCategory] = useState<typeof ProductFilters[number]["value"]>(FILTER_ITEMS[0].value);
 
     return (
         <section className={`${defaultStyles} ${className ?? ""}`}>
@@ -167,7 +168,7 @@ export function SecFilterProd({ title, className }: SectionProps) {
                 sectionTitle={title ?? "Filtrar por categoria"}
                 complement={
                     <SecFilter
-                        items={filtersSelected}
+                        items={FILTER_ITEMS}
                         selectedCategory={selectedCategory}
                         setSelectedCategory={setSelectedCategory}
                     />
@@ -179,7 +180,7 @@ export function SecFilterProd({ title, className }: SectionProps) {
             </div>
 
         </section>
-    )
+    );
 }
 
 export function SecLaboratory({ title, className }: SectionProps) {

@@ -15,6 +15,7 @@ export function useFavorites() {
     const favoriteIds = useQuery({
         queryKey: ["favorites"],
         queryFn: fetchFavorites,
+        staleTime: Infinity,
     });
 
     const toggleFavoriteMutation = useMutation({

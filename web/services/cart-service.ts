@@ -11,23 +11,29 @@ const getStoredCart = (): ProductOrderType[] => {
 };
 
 export async function fetchCart(): Promise<ProductOrderType[]> {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(getStoredCart());
-        }, 300);
-    });
+    return getStoredCart();
 }
 
-export async function updateCartRequest(product: Omit<ProductOrderType, 'quantity'>): Promise<ProductOrderType[]> {
+export async function updateCartRequest(product: Omit<ProductOrderType, 'quantity'> & { quantity?: number }): Promise<ProductOrderType[]> {
     return new Promise((resolve) => {
         setTimeout(() => {
             const cart = getStoredCart();
             const existingIndex = cart.findIndex((item) => item.id === product.id);
+            const qtyToAdd = product.quantity && product.quantity > 0 ? product.quantity : 1;
 
             if (existingIndex > -1) {
-                cart[existingIndex].quantity += 1;
+                cart[existingIndex].quantity += qtyToAdd;
             } else {
-                cart.push({ ...product, quantity: 1 });
+                cart.push({
+                    id: product.id,
+                    label: product.label,
+                    fabricator: product.fabricator,
+                    image: product.image,
+                    price: product.price,
+                    promotionPrice: product.promotionPrice,
+                    requiresPrescription: product.requiresPrescription,
+                    quantity: qtyToAdd,
+                });
             }
 
             localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cart));

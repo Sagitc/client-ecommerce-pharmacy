@@ -3,10 +3,11 @@
 "use client"
 
 import { useEffect, useState, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import {
     Carousel,
-    CarouselApi,
+    type CarouselApi,
     CarouselContent,
     CarouselItem,
     CarouselNext,
@@ -16,46 +17,118 @@ import { Badge } from "@/components/ui/badge";
 import { ProductFavIcon } from "./product-card";
 import { Star, ShoppingCart } from "lucide-react";
 import { Button } from "./ui/button";
-
 import { ShippingMethodSelector } from "@/components/shipping-selector";
+import { useCart } from "@/hooks/use-cart";
+import { ProductType } from "@/types/product-type";
+import { toast } from "sonner";
 
 interface ProductGalleryProps {
+    product?: ProductType;
     images?: string[];
 }
 
 // 1. COMPONENTE DA BARRA FLUTUANTE (Usado tanto no Mobile quanto no Desktop)
-const FloatingActionBar = ({ isVisible }: { isVisible: boolean }) => (
-    <div
-        className={`fixed bottom-0 left-0 w-full bg-background border-t shadow-[0_-5px_15px_-3px_rgba(0,0,0,0.1)] z-60 transition-transform duration-300 ease-in-out ${isVisible ? "translate-y-0" : "translate-y-full"
-            }`}
-    >
-        <div className="container max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
-            <div className="hidden md:flex flex-col">
-                <span className="font-semibold text-sm text-foreground">TÍTULO DO PRODUTO</span>
-                <span className="text-xs text-muted-foreground">Medicamento • 100mg</span>
-            </div>
+const FloatingActionBar = ({
+    isVisible,
+    product,
+    onBuy,
+}: {
+    isVisible: boolean;
+    product?: ProductType;
+    onBuy?: () => void;
+}) => {
+    const effectivePrice = product ? (product.promotionPrice ?? product.price) : 29.90;
+    const originalPrice = product ? product.price : 41.57;
 
-            <div className="flex items-center justify-between w-full md:w-auto gap-4 md:gap-8">
-                <div className="flex flex-col">
-                    <span className="text-xs text-muted-foreground line-through">R$ 41,57</span>
-                    <span className="text-xl font-bold text-teal-700">R$ 29,90</span>
+    return (
+        <div
+            className={`fixed bottom-0 left-0 w-full bg-background border-t shadow-[0_-5px_15px_-3px_rgba(0,0,0,0.1)] z-60 transition-transform duration-300 ease-in-out ${isVisible ? "translate-y-0" : "translate-y-full"
+                }`}
+        >
+            <div className="container max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+                <div className="hidden md:flex flex-col">
+                    <span className="font-semibold text-sm text-foreground">
+                        {product ? product.label : "TÍTULO DO PRODUTO"}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                        {product ? `${product.category}${product.dosage ? ` • ${product.dosage}` : ""}` : "Medicamento • 100mg"}
+                    </span>
                 </div>
-                <Button size="lg" className=" sm:w-auto px-8 shadow-sm">
-                    Comprar
-                </Button>
+
+                <div className="flex items-center justify-between w-full md:w-auto gap-4 md:gap-8">
+                    <div className="flex flex-col">
+                        {(!product || product.promotionPrice) && (
+                            <span className="text-xs text-muted-foreground line-through">
+                                R$ {originalPrice.toFixed(2).replace(".", ",")}
+                            </span>
+                        )}
+                        <span className="text-xl font-bold text-teal-700">
+                            R$ {effectivePrice.toFixed(2).replace(".", ",")}
+                        </span>
+                    </div>
+                    <Button size="lg" className=" sm:w-auto px-8 shadow-sm" onClick={onBuy}>
+                        Comprar
+                    </Button>
+                </div>
             </div>
         </div>
-    </div>
-);
+    );
+};
 
 
-export function ProductView({ images = [] }: ProductGalleryProps) {
+export function ProductView({ product, images = [] }: ProductGalleryProps) {
+    const router = useRouter();
+    const { addToCart } = useCart();
+
     const placeholderImages = Array.from({ length: 5 }).map(
         (_, i) => `Imagem ${i + 1}`
     );
     const galleryItems = images.length > 0 ? images : placeholderImages;
     const [prodQuantity, setProdQuantity] = useState(1);
     const [selectedImage, setSelectedImage] = useState(galleryItems[0]);
+
+    const handleAddToCart = () => {
+        if (!product) return;
+
+        addToCart({
+            id: product.id,
+            label: product.label,
+            fabricator: product.fabricator,
+            image: product.image,
+            price: product.price,
+            promotionPrice: product.promotionPrice,
+            requiresPrescription: product.requiresPrescription,
+            quantity: prodQuantity,
+        }, {
+            onSuccess: () => {
+                toast.success("Adicionado ao carrinho!", {
+                    description: "O produto foi adicionado à sua cesta.",
+                    duration: 1500,
+                    position: "bottom-left",
+                    dismissible: true,
+                });
+            }
+        });
+    };
+
+    const handleBuyNow = () => {
+        if (!product) return;
+
+        addToCart({
+            id: product.id,
+            label: product.label,
+            fabricator: product.fabricator,
+            image: product.image,
+            price: product.price,
+            promotionPrice: product.promotionPrice,
+            requiresPrescription: product.requiresPrescription,
+            quantity: prodQuantity,
+        }, {
+            onSuccess: () => {
+                router.push("/checkout");
+            }
+        });
+    };
 
     // 2. ESTADOS E OBSERVER DO DESKTOP
     const buyCardRef = useRef<HTMLDivElement>(null);
@@ -116,14 +189,18 @@ export function ProductView({ images = [] }: ProductGalleryProps) {
             <div className="flex-1 flex flex-col gap-4 sticky top-20">
                 <div className="flex flex-col gap-4 bg-background py-4 px-4 rounded-md">
                     <div className="flex justify-between items-center">
-                        <h2 className="text-2xl font-semibold">TÍTULO DO PRODUTO</h2>
-                        <ProductFavIcon productId={1} parentStyle="flex" />
+                        <h2 className="text-2xl font-semibold">{product ? product.label : "TÍTULO DO PRODUTO"}</h2>
+                        <ProductFavIcon product={product} productId={product?.id ?? 1} parentStyle="flex" />
                     </div>
                     <div className="flex items-center gap-2 overflow-x-auto whitespace-nowrap scrollbar-none">
-                        <Badge>Medicamento</Badge>
-                        <Badge>Laboratório</Badge>
-                        <Badge>Comprimido</Badge>
-                        <Badge>100mg</Badge>
+                        <Badge>{product?.category ?? "Medicamento"}</Badge>
+                        <Badge>{product?.fabricator ?? "Laboratório"}</Badge>
+                        {product?.dosage ? <Badge>{product.dosage}</Badge> : (
+                            <>
+                                <Badge>Comprimido</Badge>
+                                <Badge>100mg</Badge>
+                            </>
+                        )}
                     </div>
                     <div className="flex items-center">
                         <Star className="inline-block w-4 h-4 text-yellow-400 mr-1" fill="currentColor" />
@@ -138,7 +215,7 @@ export function ProductView({ images = [] }: ProductGalleryProps) {
                 <div className="flex flex-col gap-4 bg-background py-4 px-4 rounded-md">
                     <h3 className="text-lg font-semibold">Descrição</h3>
                     <p className="text-sm text-muted-foreground">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nunc nisl aliquam nisl, eget ultricies nisl nunc eget nisl.
+                        {product?.description || "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nunc nisl aliquam nisl, eget ultricies nisl nunc eget nisl."}
                     </p>
                 </div>
             </div>
@@ -150,8 +227,14 @@ export function ProductView({ images = [] }: ProductGalleryProps) {
                 <div ref={buyCardRef} className="flex flex-col gap-4 py-4 px-4 rounded-md bg-background shadow-sm">
                     <div className="flex justify-between items-center">
                         <div className="flex flex-col">
-                            <span className="text-xs text-muted-foreground line-through">R$ 41,57</span>
-                            <span className="text-3xl font-bold text-teal-700">R$ 29,90</span>
+                            {(!product || product.promotionPrice) && (
+                                <span className="text-xs text-muted-foreground line-through">
+                                    R$ {(product ? product.price : 41.57).toFixed(2).replace(".", ",")}
+                                </span>
+                            )}
+                            <span className="text-3xl font-bold text-teal-700">
+                                R$ {(product ? (product.promotionPrice ?? product.price) : 29.90).toFixed(2).replace(".", ",")}
+                            </span>
                             <span className="text-xs text-muted-foreground">à vista no Pix ou 1x no cartão</span>
                         </div>
                         <div>
@@ -177,10 +260,10 @@ export function ProductView({ images = [] }: ProductGalleryProps) {
 
                     {/* Botões de compra adicionados ao Desktop */}
                     <div className="flex flex-col gap-2 pt-2 border-t border-border">
-                        <Button size="lg" className="w-full text-base">
+                        <Button size="lg" className="w-full text-base" onClick={handleBuyNow}>
                             Comprar agora
                         </Button>
-                        <Button variant="secondary" className="w-full">
+                        <Button variant="secondary" className="w-full" onClick={handleAddToCart}>
                             Adicionar ao carrinho
                         </Button>
                     </div>
@@ -199,16 +282,62 @@ export function ProductView({ images = [] }: ProductGalleryProps) {
             </div>
 
             {/* A barra renderiza condicionalmente pelo estado do Observer */}
-            <FloatingActionBar isVisible={showFloating} />
+            <FloatingActionBar isVisible={showFloating} product={product} onBuy={handleBuyNow} />
         </div>
     );
 }
 
-export function ProductViewMobile({ images = [] }: ProductGalleryProps) {
+export function ProductViewMobile({ product, images = [] }: ProductGalleryProps) {
+    const router = useRouter();
+    const { addToCart } = useCart();
+
     const [api, setApi] = useState<CarouselApi>();
     const [current, setCurrent] = useState(0);
     const [count, setCount] = useState(0);
     const [prodQuantity, setProdQuantity] = useState(1);
+
+    const handleAddToCart = () => {
+        if (!product) return;
+
+        addToCart({
+            id: product.id,
+            label: product.label,
+            fabricator: product.fabricator,
+            image: product.image,
+            price: product.price,
+            promotionPrice: product.promotionPrice,
+            requiresPrescription: product.requiresPrescription,
+            quantity: prodQuantity,
+        }, {
+            onSuccess: () => {
+                toast.success("Adicionado ao carrinho!", {
+                    description: "O produto foi adicionado à sua cesta.",
+                    duration: 1500,
+                    position: "bottom-left",
+                    dismissible: true,
+                });
+            }
+        });
+    };
+
+    const handleBuyNow = () => {
+        if (!product) return;
+
+        addToCart({
+            id: product.id,
+            label: product.label,
+            fabricator: product.fabricator,
+            image: product.image,
+            price: product.price,
+            promotionPrice: product.promotionPrice,
+            requiresPrescription: product.requiresPrescription,
+            quantity: prodQuantity,
+        }, {
+            onSuccess: () => {
+                router.push("/checkout");
+            }
+        });
+    };
 
     // 4. ESTADOS E OBSERVER DO MOBILE
     const buyCardRef = useRef<HTMLDivElement>(null);
@@ -253,12 +382,16 @@ export function ProductViewMobile({ images = [] }: ProductGalleryProps) {
         <div className="flex flex-col items-center justify-center gap-4 md:hidden">
             {/* PRODUCT INFO */}
             <div className="flex flex-col gap-4 bg-background py-4 px-4 rounded-md w-full">
-                <h2 className="text-2xl font-semibold">TÍTULO DO PRODUTO</h2>
+                <h2 className="text-2xl font-semibold">{product ? product.label : "TÍTULO DO PRODUTO"}</h2>
                 <div className="flex items-center gap-2 overflow-x-auto whitespace-nowrap scrollbar-none">
-                    <Badge>Medicamento</Badge>
-                    <Badge>Laboratório</Badge>
-                    <Badge>Comprimido</Badge>
-                    <Badge>100mg</Badge>
+                    <Badge>{product?.category ?? "Medicamento"}</Badge>
+                    <Badge>{product?.fabricator ?? "Laboratório"}</Badge>
+                    {product?.dosage ? <Badge>{product.dosage}</Badge> : (
+                        <>
+                            <Badge>Comprimido</Badge>
+                            <Badge>100mg</Badge>
+                        </>
+                    )}
                 </div>
                 <div className="flex items-center justify-between gap-2">
                     <div>
@@ -269,7 +402,7 @@ export function ProductViewMobile({ images = [] }: ProductGalleryProps) {
                         <Star className="inline-block w-4 h-4 text-yellow-400 mr-1" fill="currentColor" />
                         <span className="text-xs text-muted-foreground">4.5 (200 avaliações)</span>
                     </div>
-                    <ProductFavIcon productId={1} parentStyle="flex" />
+                    <ProductFavIcon product={product} productId={product?.id ?? 1} parentStyle="flex" />
                 </div>
             </div>
 
@@ -306,8 +439,14 @@ export function ProductViewMobile({ images = [] }: ProductGalleryProps) {
                 <div className="flex flex-col gap-4 rounded-md">
                     <div className="flex justify-between items-center">
                         <div className="flex flex-col">
-                            <span className="text-xs text-muted-foreground line-through">R$ 41,57</span>
-                            <span className="text-3xl font-bold text-teal-700">R$ 29,90</span>
+                            {(!product || product.promotionPrice) && (
+                                <span className="text-xs text-muted-foreground line-through">
+                                    R$ {(product ? product.price : 41.57).toFixed(2).replace(".", ",")}
+                                </span>
+                            )}
+                            <span className="text-3xl font-bold text-teal-700">
+                                R$ {(product ? (product.promotionPrice ?? product.price) : 29.90).toFixed(2).replace(".", ",")}
+                            </span>
                             <span className="text-xs text-muted-foreground">à vista no Pix ou 1x no cartão</span>
                         </div>
                         <div>
@@ -331,11 +470,11 @@ export function ProductViewMobile({ images = [] }: ProductGalleryProps) {
                         </div>
                     </div>
                     <div className="flex flex-col gap-2">
-                        <Button size="lg" className="w-full text-base">
+                        <Button size="lg" className="w-full text-base" onClick={handleBuyNow}>
                             <ShoppingCart className="w-5 h-5 mr-2" />
                             Comprar agora
                         </Button>
-                        <Button variant="secondary">
+                        <Button variant="secondary" onClick={handleAddToCart}>
                             Adicionar ao carrinho
                         </Button>
                     </div>
@@ -357,11 +496,11 @@ export function ProductViewMobile({ images = [] }: ProductGalleryProps) {
             <div className="flex flex-col gap-4 bg-background py-4 px-4 rounded-md w-full">
                 <h3 className="text-lg font-semibold mb-2">Descrição</h3>
                 <p className="text-sm text-muted-foreground">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed efficitur, nisl nec ultricies lacinia, nunc nisl aliquam nunc, nec aliquam nisl nunc nec nisl.
+                    {product?.description || "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed efficitur, nisl nec ultricies lacinia, nunc nisl aliquam nunc, nec aliquam nisl nunc nec nisl."}
                 </p>
             </div>
 
-            <FloatingActionBar isVisible={showFloating} />
+            <FloatingActionBar isVisible={showFloating} product={product} onBuy={handleBuyNow} />
         </div>
     );
 }

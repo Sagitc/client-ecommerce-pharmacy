@@ -9,6 +9,7 @@ export function useCart() {
     const cart = useQuery({
         queryKey: ["cart"],
         queryFn: fetchCart,
+        staleTime: 1000 * 60 * 5,
     });
 
     const addToCartMutation = useMutation({

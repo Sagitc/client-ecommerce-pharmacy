@@ -64,7 +64,8 @@ export function ShippingMethodSelector({
     setError(null);
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+      const apiUrl = rawApiUrl.replace(/\/api\/?$/, "");
       const response = await fetch(`${apiUrl}/api/shipping/calculate`, {
         method: "POST",
         headers: {

@@ -7,11 +7,7 @@ const getStoredFavorites = (): number[] => {
 };
 
 export async function fetchFavorites(): Promise<number[]> {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(getStoredFavorites());
-        }, 300); // delay de 300ms para simular a rede
-    });
+    return getStoredFavorites();
 }
 
 export async function toggleFavoriteRequest(productId: number): Promise<{ isFavorited: boolean }> {

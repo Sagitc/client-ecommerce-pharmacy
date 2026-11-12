@@ -77,7 +77,8 @@ export function SecAdvantageCard({ Icon, title, description }: SecAdvantageProps
 }
 
 export function SecCarousel({ filter, style, children, loop }: SecCarouselProps) {
-    const { data: productsList, isLoading, isError } = useProducts(filter);
+    const shouldFetch = !children && Boolean(filter);
+    const { data: productsList, isLoading, isError } = useProducts(filter, shouldFetch);
 
     return (
         <Carousel
@@ -143,7 +144,13 @@ export function SecFilter({ items, selectedCategory, setSelectedCategory }: SecF
 
     return (
         <>
-            <Select items={items} defaultValue={items[0].value}>
+            <Select
+                items={items}
+                value={selectedCategory}
+                onValueChange={(val) => {
+                    if (val) setSelectedCategory(val as CategoryType);
+                }}
+            >
                 <SelectTrigger className="w-full bg-background md:hidden">
                     <SelectValue />
                 </SelectTrigger>

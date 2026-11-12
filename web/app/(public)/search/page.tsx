@@ -3,15 +3,14 @@
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowDown, ArrowUp, ChevronsUpDown } from "lucide-react";
-import { ReactElement, ReactNode, useState } from "react";
+import { ReactElement, ReactNode, useState, Suspense } from "react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ProductCard } from "@/components/product-card";
 import { Pagination, PaginationItem, PaginationContent, PaginationNext, PaginationEllipsis, PaginationLink, PaginationPrevious } from "@/components/ui/pagination";
-// import ProductCard from "@/components/ui/product-card";
 
-export default function PaginaDeBusca() {
+function SearchContent() {
   const searchParams = useSearchParams();
   const query = searchParams.get("q") || "";
 
@@ -19,7 +18,6 @@ export default function PaginaDeBusca() {
     queryKey: ["produtos", query],
     queryFn: async () => {
       if (!query) return [];
-      // Substitua pelo seu axios.get() quando o Laravel estiver pronto
       return [];
     },
     enabled: !!query,
@@ -40,17 +38,12 @@ export default function PaginaDeBusca() {
             <SearchFilters />
           </div>
 
-          {/* produtos.map((p) => <ProductCard key={p.id} {...p} />) */}
-          {/* <p className="text-gray-500">Nenhum produto renderizado ainda.</p> */}
-
           <div className="flex-1 flex flex-col gap-6">
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-
               <ProductCard productId={1} />
               <ProductCard productId={2} />
               <ProductCard productId={3} />
-
             </div>
 
             <Pagination>
@@ -84,11 +77,17 @@ export default function PaginaDeBusca() {
   );
 }
 
+export default function PaginaDeBusca() {
+  return (
+    <Suspense fallback={<div className="container max-w-6xl mx-auto p-4">Carregando busca...</div>}>
+      <SearchContent />
+    </Suspense>
+  );
+}
+
 function SearchFilters() {
-
   const searchParams = useSearchParams();
-
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <Card>
@@ -96,22 +95,26 @@ function SearchFilters() {
         <Collapsible
           open={isOpen}
           onOpenChange={setIsOpen}
-          className="flex flex-1 flex-col gap-2"
+          className="flex flex-col gap-2"
         >
-          <div className="flex items-center bg-background justify-between border rounded-lg">
-            <h4 className="ml-4 text-sm font-semibold">Filtros</h4>
-            <CollapsibleTrigger render={<Button variant="ghost" size="icon" className="size-8"><ChevronsUpDown /><span className="sr-only">Toggle details</span></Button>} />
+          <div className="flex items-center justify-between">
+            <h4 className="text-sm font-semibold">
+              Filtros
+            </h4>
+            <CollapsibleTrigger>
+              <Button variant="ghost" size="icon" className="size-8" type="button">
+                <ChevronsUpDown />
+                <span className="sr-only">Alternar</span>
+              </Button>
+            </CollapsibleTrigger>
           </div>
-          <CollapsibleContent className="flex flex-col gap-2">
 
+          <CollapsibleContent className="space-y-4">
+
+            {/* ORDENAR POR */}
             <FilterSquare filterTitle="Ordenar por">
-              <div>
-                <select
-                  name="sort"
-                  id="sort"
-                  className="border rounded-md px-2 py-1 w-full mt-2"
-                  defaultValue={searchParams.get("sort") || ""}
-                >
+              <div className="mt-2">
+                <select name="order" id="order" className="w-full border rounded p-2 text-sm">
                   <option value="">Selecione</option>
                   <option value="price_asc">Menor para Maior</option>
                   <option value="price_desc">Maior para Menor</option>
@@ -120,7 +123,6 @@ function SearchFilters() {
             </FilterSquare>
 
             {/* FILTROS DINAMICOS */}
-
             <FilterSquare filterTitle="Preço">
               <div className="flex gap-4 mt-4 flex-1 justify-evenly">
                 <div className="flex flex-col">
@@ -138,7 +140,7 @@ function SearchFilters() {
         </Collapsible>
       </CardContent>
     </Card>
-  )
+  );
 }
 
 function FilterSquare({ filterTitle, children, filterStyles }: { filterTitle: string, children: ReactNode, filterStyles?: string }) {
@@ -147,5 +149,5 @@ function FilterSquare({ filterTitle, children, filterStyles }: { filterTitle: st
       <h3 className="font-medium">{filterTitle}</h3>
       {children}
     </div>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, MouseEvent } from "react";
 import { ProductData } from "@/data/product-data";
 import { ProductType } from "@/types/product-type";
 import { useFavorites } from "@/hooks/use-favorites";
@@ -9,13 +9,17 @@ import { buttonVariants } from "@/components/ui/button";
 import { Heart, Plus, Check } from "lucide-react";
 
 type Props = {
-    product: ProductType;
+    product?: ProductType;
+    productId?: number;
     parentStyle?: string;
 };
 
-export function ProductCard({ product, parentStyle }: Props) {
+export function ProductCard({ product: propProduct, productId, parentStyle }: Props) {
+    const product = propProduct || (productId ? ProductData.find((p) => p.id === productId) : undefined);
 
-    // const productsList: ProductType[] = ProductData;
+    if (!product) {
+        return null;
+    }
 
     return (
         <a href={`/product/${product.id}`} target="_self" className={"flex flex-col w-full rounded-lg hover:shadow-lg transition-shadow duration-300 ease-in-out bg-background p-3 dark:bg-gray-800" + " " + parentStyle}>
@@ -48,14 +52,20 @@ export function ProductCard({ product, parentStyle }: Props) {
     )
 }
 
-export function ProductFavIcon({ product, parentStyle }: Props) {
+export function ProductFavIcon({ product: propProduct, productId, parentStyle }: Props) {
     
     const { favoriteIds, toggleFavorite } = useFavorites();
+    const id = propProduct?.id ?? productId;
 
-    const isFavorited = favoriteIds.data?.includes(product.id);
+    if (!id) return null;
 
-    const handleFavorite = () => {
-        toggleFavorite(product.id, {
+    const isFavorited = favoriteIds.data?.includes(id);
+
+    const handleFavorite = (e: MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        toggleFavorite(id, {
             onSuccess: (data) => {
                 
                 if (data.isFavorited) {
@@ -78,7 +88,13 @@ export function ProductFavIcon({ product, parentStyle }: Props) {
     };
 
     return (
-        <div className={parentStyle || "absolute top-2 left-2 z-10"}>
+        <div
+            className={parentStyle || "absolute top-2 left-2 z-10"}
+            onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            }}
+        >
             <Tooltip>
                 
                 <TooltipTrigger
@@ -101,13 +117,16 @@ export function ProductFavIcon({ product, parentStyle }: Props) {
     )
 }
 
-function ProductBuyIcon({ product }: Props) {
+function ProductBuyIcon({ product }: { product: ProductType }) {
 
     const { addToCart } = useCart();
     
     const [showSuccess, setShowSuccess] = useState(false);
 
-    const handleBuy = () => {
+    const handleBuy = (e: MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+
         addToCart(product, {
             onSuccess: () => {
                 setShowSuccess(true);
@@ -127,7 +146,13 @@ function ProductBuyIcon({ product }: Props) {
     };
 
     return (
-        <div className="absolute bottom-2 right-2 z-10">
+        <div
+            className="absolute bottom-2 right-2 z-10"
+            onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            }}
+        >
             <Tooltip>
                 
                 <TooltipTrigger 

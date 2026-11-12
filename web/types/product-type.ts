@@ -1,17 +1,33 @@
+export type ProductImageType = {
+    id: number;
+    product_id?: number;
+    url: string;
+    sort_order?: number;
+};
+
 export type ProductType = {
-    id: number,
-    label: string,
-    fabricator: string,
-    description?: string,
-    price: number,
-    promotionPrice?: number,
-    image?: string,
-    category: string,
-    requiresPrescription: boolean,
+    id: number;
+    sku?: string;
+    ean?: string;
+    label: string;
+    fabricator: string;
+    dosage?: string;
+    activeIngredient?: string;
+    description?: string;
+    price: number;
+    promotionPrice?: number;
+    image?: string;
+    category: string;
+    stripeType?: "free" | "red" | "red_retained";
+    requiresPrescription?: boolean;
+    inStock?: boolean;
+    stockQuantity?: number;
+    salesCount?: number;
+    images?: ProductImageType[];
 };
 
 export type ProductOrderType = Pick<ProductType, 'id' | 'label' | 'fabricator' | 'image' | 'price' | 'promotionPrice' | 'requiresPrescription'> & {
-    quantity: number,
+    quantity: number;
 };
 
 export const ProductFilters = [

@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ProductData } from "@/data/product-data";
 import { useCart } from "@/hooks/use-cart";
@@ -35,7 +35,7 @@ function CartItem({ item, onRemove }: CartItemProps) {
     return (
         <div key={item.id} className="flex flex-row gap-3 items-center">
             <img
-                src={item.image ?? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf6OM_2iXA5DFquiB_0p0Vr5_0Kv2XoFloY0pvgU-KBA&s=10"}
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf6OM_2iXA5DFquiB_0p0Vr5_0Kv2XoFloY0pvgU-KBA&s=10"
                 alt={item.label}
                 className="w-16 h-16 rounded-md object-cover shrink-0"
             />
@@ -70,31 +70,45 @@ function CartItem({ item, onRemove }: CartItemProps) {
 export default function Cart({ className, icon }: CartProps) {
 
     const router = useRouter();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
     const { cart, removeFromCart } = useCart();
     const cartData = cart.data || [];
 
-    const cartItems: CartItemType[] = (cartData as Array<{ id: number; quantity: number }>)
-        .flatMap((cartItem) => {
-
-            const product = ProductData.find((p) => p.id === cartItem.id);
-
-            if (!product) return [];
-
+    const cartItems: CartItemType[] = cartData.flatMap((cartItem) => {
+        if (cartItem.label && typeof cartItem.price === "number") {
             return [{
-                id: product.id,
-                label: product.label,
-                fabricator: product.fabricator,
-                price: product.price,
-                // Trocamos null por undefined, que é melhor aceito em propriedades opcionais do TS
-                image: (product as any).image ?? undefined,
-                promotionPrice: (product as any).promotionPrice ?? undefined,
+                id: cartItem.id,
+                label: cartItem.label,
+                fabricator: cartItem.fabricator,
+                price: cartItem.price,
+                image: cartItem.image ?? undefined,
+                promotionPrice: cartItem.promotionPrice ?? undefined,
                 quantity: cartItem.quantity,
             }];
-        });
+        }
+
+        const product = ProductData.find((p) => p.id === cartItem.id);
+        if (!product) return [];
+
+        return [{
+            id: product.id,
+            label: product.label,
+            fabricator: product.fabricator,
+            price: product.price,
+            image: (product as any).image ?? undefined,
+            promotionPrice: (product as any).promotionPrice ?? undefined,
+            quantity: cartItem.quantity,
+        }];
+    });
     
     const totalQuantity = cartItems.reduce((acc, item) => acc + item.quantity, 0);
     const totalPrice = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    const totalProducts = cartData.length;
+    const totalProducts = cartItems.length;
 
     const handleEndCheckout = () => {
         router.push("/checkout");
@@ -107,7 +121,7 @@ export default function Cart({ className, icon }: CartProps) {
             >
                 {icon}
 
-                {totalProducts > 0 && (
+                {mounted && totalProducts > 0 && (
                     <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] text-white font-bold">
                         {totalProducts}
                     </span>
@@ -131,7 +145,7 @@ export default function Cart({ className, icon }: CartProps) {
                     ) : (
                         cartItems.map((item) => (
                             <div key={item.id} className="no-scrollbar overflow-y-auto max-h-[60vh]">
-                                <CartItem  item={item} onRemove={removeFromCart} />
+                                <CartItem item={item} onRemove={removeFromCart} />
                             </div>
                         ))
                     )}

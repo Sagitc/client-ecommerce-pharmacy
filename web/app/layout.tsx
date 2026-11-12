@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import { 
   Geist, 
   Geist_Mono, 
@@ -7,6 +8,12 @@ import "@/app/globals.css"
 import { cn } from "@/lib/utils";
 import Providers from "@/utils/providers";
 import { CookieBanner } from "@/components/cookies-banner";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
+  title: "Farmácia Camargo",
+  description: "Medicamentos e produtos de saúde com rapidez e confiança.",
+};
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 

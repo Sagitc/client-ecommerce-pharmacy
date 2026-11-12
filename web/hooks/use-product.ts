@@ -6,11 +6,12 @@ import { ProductFilters } from "@/types/product-type";
 
 type FilterType = typeof ProductFilters[number]["value"] | undefined;
 
-export function useProducts(filter?: FilterType) {
+export function useProducts(filter?: FilterType, enabled = true) {
     return useQuery({
         queryKey: ["products", filter],
         queryFn: () => fetchProducts(filter),
         staleTime: 1000 * 60 * 5,
+        enabled,
     });
 }
 
