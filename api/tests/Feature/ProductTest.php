@@ -159,4 +159,91 @@ class ProductTest extends TestCase
 
         $response->assertStatus(404);
     }
+
+    public function test_search_returns_only_matching_products_with_category_subgroup_and_metadata(): void
+    {
+        Product::factory()->create([
+            'label' => 'Dipirona Monoidratada 500mg Medley - 10 Comprimidos',
+            'active_ingredient' => 'Dipirona Monoidratada',
+            'fabricator' => 'Medley',
+            'category' => 'laboratory',
+            'subgroup' => 'Analgésicos e Antitérmicos',
+            'metadata' => [
+                'Forma Farmacêutica' => 'Comprimido',
+                'Dosagem' => '500mg',
+            ],
+            'price' => 8.90,
+        ]);
+
+        Product::factory()->create([
+            'label' => 'Dipirona Sódica Xarope Infantil 50mg/ml',
+            'active_ingredient' => 'Dipirona Sódica',
+            'fabricator' => 'Germed',
+            'category' => 'infantile',
+            'subgroup' => 'Analgésicos e Antitérmicos',
+            'metadata' => [
+                'Forma Farmacêutica' => 'Xarope',
+                'Dosagem' => '50mg/ml',
+            ],
+            'price' => 18.90,
+        ]);
+
+        // Produto não relacionado que NÃO deve aparecer ao pesquisar "dipirona"
+        Product::factory()->create([
+            'label' => 'Protetor Solar Facial FPS 70',
+            'active_ingredient' => 'XL-Protect',
+            'fabricator' => 'La Roche-Posay',
+            'category' => 'sunscreen',
+            'subgroup' => 'Proteção Facial',
+            'metadata' => [
+                'FPS' => 'FPS 70',
+            ],
+            'price' => 89.90,
+        ]);
+
+        $response = $this->getJson('/api/products?q=dipirona');
+
+        $response->assertOk()
+                 ->assertJsonCount(2);
+
+        $returnedLabels = collect($response->json())->pluck('label')->all();
+        $this->assertContains('Dipirona Monoidratada 500mg Medley - 10 Comprimidos', $returnedLabels);
+        $this->assertContains('Dipirona Sódica Xarope Infantil 50mg/ml', $returnedLabels);
+        $this->assertNotContains('Protetor Solar Facial FPS 70', $returnedLabels);
+
+        // Verifica filtro combinado de busca + categoria + subgrupo + ordenação de preço
+        $filtered = $this->getJson('/api/products?q=dipirona&category=laboratory&subgroup=' . urlencode('Analgésicos e Antitérmicos') . '&order=price_asc');
+        $filtered->assertOk()
+                 ->assertJsonCount(1)
+                 ->assertJsonPath('0.category', 'laboratory')
+                 ->assertJsonPath('0.subgroup', 'Analgésicos e Antitérmicos')
+                 ->assertJsonPath('0.metadata.Forma Farmacêutica', 'Comprimido');
+
+        // Renomear o Subgrupo diretamente no Model Subgroup atualiza o retorno da API para todos os produtos vinculados
+        $subgroup = \App\Models\Subgroup::where('name', 'Analgésicos e Antitérmicos')->first();
+        $this->assertNotNull($subgroup);
+        $subgroup->update(['name' => 'Alívio de Dor e Febre']);
+
+        $afterRename = $this->getJson('/api/products?q=dipirona&subgroup=' . urlencode('Alívio de Dor e Febre'));
+        $afterRename->assertOk()
+                    ->assertJsonPath('0.subgroup', 'Alívio de Dor e Febre');
+
+        // Endpoint de árvore de categorias -> subgrupos -> metadados
+        $categoriesTree = $this->getJson('/api/categories');
+        $categoriesTree->assertOk()
+                       ->assertJsonStructure([
+                           '*' => [
+                               'id',
+                               'slug',
+                               'name',
+                               'subgroups' => [
+                                   '*' => [
+                                       'id',
+                                       'name',
+                                       'metadata_options',
+                                   ],
+                               ],
+                           ],
+                       ]);
+    }
 }

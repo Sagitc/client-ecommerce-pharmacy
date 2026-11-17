@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
     {
         ResetPassword::createUrlUsing(function (User $user, string $token) {
             $frontendUrl = env('FRONTEND_URL', 'http://localhost:3000');
-            return "{$frontendUrl}/forgot-password?token={$token}&email=" . urlencode($user->email);
+            return "{$frontendUrl}/reset-password?token={$token}&email=" . urlencode($user->email);
         });
 
         // Rate Limiter para autenticação (proteção contra força bruta)
@@ -55,6 +55,20 @@ class AppServiceProvider extends ServiceProvider
             return app()->environment('testing')
                 ? Limit::none()
                 : Limit::perMinute(15)->by($request->user()?->id ?: $request->ip());
+        });
+
+        // Rate Limiter para validação de cupons (proteção contra enumeração)
+        RateLimiter::for('coupons', function (Request $request) {
+            return app()->environment('testing')
+                ? Limit::none()
+                : Limit::perMinute(30)->by($request->user()?->id ?: $request->ip());
+        });
+
+        // Rate Limiter para upload de avatar (proteção contra abuso de armazenamento/DoS)
+        RateLimiter::for('avatar-upload', function (Request $request) {
+            return app()->environment('testing')
+                ? Limit::none()
+                : Limit::perMinute(10)->by($request->user()?->id ?: $request->ip());
         });
     }
 }

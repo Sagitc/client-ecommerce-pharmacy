@@ -18,15 +18,21 @@ export interface AddressPayload {
 
 export async function fetchAddressesRequest() {
     const token = getAuthToken();
-    const res = await fetch(`${API_URL}/addresses`, {
-        headers: {
-            "Accept": "application/json",
-            "Authorization": `Bearer ${token}`,
-        },
-    });
+    if (!token) return [];
 
-    if (!res.ok) throw new Error("Erro ao buscar endereços.");
-    return res.json();
+    try {
+        const res = await fetch(`${API_URL}/addresses`, {
+            headers: {
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+        });
+
+        if (!res.ok) return [];
+        return await res.json();
+    } catch {
+        return [];
+    }
 }
 
 export async function createAddressRequest(payload: AddressPayload) {
@@ -43,6 +49,38 @@ export async function createAddressRequest(payload: AddressPayload) {
 
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Erro ao salvar endereço.");
+    return data;
+}
+
+export async function updateAddressRequest(id: number, payload: Partial<AddressPayload>) {
+    const token = getAuthToken();
+    const res = await fetch(`${API_URL}/addresses/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Erro ao atualizar endereço.");
+    return data;
+}
+
+export async function setDefaultAddressRequest(id: number) {
+    const token = getAuthToken();
+    const res = await fetch(`${API_URL}/addresses/${id}/default`, {
+        method: "PATCH",
+        headers: {
+            "Accept": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Erro ao definir endereço padrão.");
     return data;
 }
 

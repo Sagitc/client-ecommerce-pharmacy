@@ -37,6 +37,10 @@ class AddressController extends Controller
             'is_default' => 'boolean',
         ]);
 
+        $hasExistingAddresses = $user->addresses()->exists();
+        $hasDefaultAddress = $user->addresses()->where('is_default', true)->exists();
+        $shouldBeDefault = !empty($validated['is_default']) || !$hasExistingAddresses || !$hasDefaultAddress;
+
         // Sanitização contra XSS em todos os campos de texto
         $cleanData = [
             'label' => !empty($validated['label']) ? SecuritySanitizer::clean($validated['label']) : 'Casa',
@@ -47,7 +51,7 @@ class AddressController extends Controller
             'neighborhood' => SecuritySanitizer::clean($validated['neighborhood']),
             'city' => SecuritySanitizer::clean($validated['city']),
             'state' => strtoupper(trim($validated['state'] ?? 'RJ')),
-            'is_default' => !empty($validated['is_default']),
+            'is_default' => $shouldBeDefault,
         ];
 
         if ($cleanData['is_default']) {
@@ -59,10 +63,85 @@ class AddressController extends Controller
         return response()->json($address, 201);
     }
 
+    public function update(Request $request, string $id)
+    {
+        $user = $request->user();
+        $address = $user->addresses()->findOrFail($id);
+
+        $validated = $request->validate([
+            'label' => 'nullable|string|max:50',
+            'cep' => ['sometimes', 'string', 'max:9', 'regex:/^\d{5}-?\d{3}$/'],
+            'street' => 'sometimes|string|max:255',
+            'number' => 'sometimes|string|max:20',
+            'complement' => 'nullable|string|max:255',
+            'neighborhood' => 'sometimes|string|max:100',
+            'city' => 'sometimes|string|max:100',
+            'state' => ['nullable', 'string', 'size:2', 'regex:/^[A-Za-z]{2}$/'],
+            'is_default' => 'boolean',
+        ]);
+
+        $cleanData = [];
+        if (isset($validated['label'])) {
+            $cleanData['label'] = SecuritySanitizer::clean($validated['label']);
+        }
+        if (isset($validated['cep'])) {
+            $cleanData['cep'] = trim($validated['cep']);
+        }
+        if (isset($validated['street'])) {
+            $cleanData['street'] = SecuritySanitizer::clean($validated['street']);
+        }
+        if (isset($validated['number'])) {
+            $cleanData['number'] = SecuritySanitizer::clean($validated['number']);
+        }
+        if (array_key_exists('complement', $validated)) {
+            $cleanData['complement'] = !empty($validated['complement']) ? SecuritySanitizer::clean($validated['complement']) : null;
+        }
+        if (isset($validated['neighborhood'])) {
+            $cleanData['neighborhood'] = SecuritySanitizer::clean($validated['neighborhood']);
+        }
+        if (isset($validated['city'])) {
+            $cleanData['city'] = SecuritySanitizer::clean($validated['city']);
+        }
+        if (isset($validated['state'])) {
+            $cleanData['state'] = strtoupper(trim($validated['state']));
+        }
+        if (array_key_exists('is_default', $validated)) {
+            $cleanData['is_default'] = (bool) $validated['is_default'];
+            if ($cleanData['is_default']) {
+                $user->addresses()->where('id', '!=', $address->id)->update(['is_default' => false]);
+            }
+        }
+
+        $address->update($cleanData);
+
+        return response()->json($address->fresh());
+    }
+
+    public function setDefault(Request $request, string $id)
+    {
+        $user = $request->user();
+        $address = $user->addresses()->findOrFail($id);
+
+        $user->addresses()->update(['is_default' => false]);
+        $address->update(['is_default' => true]);
+
+        return response()->json($address->fresh());
+    }
+
     public function destroy(Request $request, string $id)
     {
-        $address = $request->user()->addresses()->findOrFail($id);
+        $user = $request->user();
+        $address = $user->addresses()->findOrFail($id);
+        $wasDefault = (bool) $address->is_default;
+
         $address->delete();
+
+        if ($wasDefault || ! $user->addresses()->where('is_default', true)->exists()) {
+            $nextAddress = $user->addresses()->first();
+            if ($nextAddress) {
+                $nextAddress->update(['is_default' => true]);
+            }
+        }
 
         return response()->json(['message' => 'Endereço removido.']);
     }

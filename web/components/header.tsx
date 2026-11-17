@@ -26,16 +26,21 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
     Cog,
     Heart,
+    LogIn,
     LogOut,
+    MapPin,
     Menu,
     Package,
     Palette,
     Search,
+    ShieldCheck,
     ShoppingCart,
     Ticket,
     User,
+    UserPlus,
     X
 } from "lucide-react";
+import { toast } from "sonner";
 
 
 type HeaderInputProps = {
@@ -65,10 +70,19 @@ export default function Header() {
                 }
             }
         }
-        if (isSearching) document.addEventListener("mousedown", handleClickOutside);
+        function handleKeyDown(event: KeyboardEvent) {
+            if (event.key === "Escape") {
+                setIsSearching(false);
+            }
+        }
+        if (isSearching) {
+            document.addEventListener("mousedown", handleClickOutside);
+            window.addEventListener("keydown", handleKeyDown);
+        }
 
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
+            window.removeEventListener("keydown", handleKeyDown);
         };
 
     }, [isSearching]);
@@ -144,32 +158,30 @@ function HeaderInput({ isSearching, setIsSearching, className }: HeaderInputProp
     const pathname = usePathname();
     const router = useRouter();
 
-    const [searchQuery, setSearchQuery] = useState<string | null>(null);
+    const [searchQuery, setSearchQuery] = useState<string>(searchParams.get("q") || "");
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const handleSearch = (term: string) => {
-        handleChangeInput({ target: { value: term } } as ChangeEvent<HTMLInputElement>);
+    useEffect(() => {
+        setSearchQuery(searchParams.get("q") || "");
+    }, [searchParams]);
 
-        const params = new URLSearchParams(searchParams);
-        if (term) {
-            params.set("q", term);
+    const handleSearch = (term: string) => {
+        const cleanTerm = term.trim();
+        setSearchQuery(cleanTerm);
+        setIsLoading(false);
+        setIsSearching(false);
+
+        const params = new URLSearchParams(pathname === "/search" ? searchParams.toString() : "");
+        if (cleanTerm) {
+            params.set("q", cleanTerm);
         } else {
             params.delete("q");
         }
-        router.replace(`/search?${params.toString()}`);
+        const qs = params.toString();
+        router.push(qs ? `/search?${qs}` : "/search");
     };
 
-    // FUNÇÃO PARA LIMPAR O CAMPO DE PESQUISA QUANDO ELE FICA INVISÍVEL
-    //
-    // useEffect(() => {
-    //     if (!isSearching) {
-    //         setSearchQuery(null);
-    //         setIsLoading(false);
-    //     }
-    // }, [isSearching]);
-
     function handleChangeInput(event: ChangeEvent<HTMLInputElement>) {
-        (event.target.value.length > 0) ? setIsLoading(true) : (setIsLoading(false), setSearchQuery(null));
         setSearchQuery(event.target.value);
     }
 
@@ -177,23 +189,28 @@ function HeaderInput({ isSearching, setIsSearching, className }: HeaderInputProp
         <InputGroup className={`bg-white text-foreground font-normal w-full h-10 ${className || ""}`}>
             <InputGroupInput
                 className={""}
-                onChange={ (e) => handleChangeInput(e) }
+                onChange={(e) => handleChangeInput(e)}
                 onKeyDown={(e) => {
                     if (e.key === "Enter") {
+                        e.preventDefault();
                         handleSearch(searchQuery || "");
-                        setIsLoading(false);
                     }
                 }}
-                value={searchQuery || ""}
+                value={searchQuery}
                 placeholder="O que está procurando?"
-                defaultValue={searchParams.get("q")?.toString()}
             />
             <InputGroupAddon align="inline-end">
 
                 {isLoading ?
                     <Spinner />
                     :
-                    <Button variant="ghost" size="icon">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        type="button"
+                        aria-label="Pesquisar"
+                        onClick={() => handleSearch(searchQuery || "")}
+                    >
                         <Search className="cursor-pointer" />
                     </Button>
                 }
@@ -205,7 +222,9 @@ function HeaderInput({ isSearching, setIsSearching, className }: HeaderInputProp
 
 function MenuModal({ classList, icon }: MenuProps) {
 
-    const user = useUser();
+    const userCtx = useUser();
+    const currentUser = userCtx?.user;
+    const isAuthenticated = Boolean(userCtx?.isAuthenticated && currentUser);
 
     const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
@@ -213,6 +232,15 @@ function MenuModal({ classList, icon }: MenuProps) {
     function handleMenuClick(path: string) {
         setIsOpen(false);
         router.push(path);
+    }
+
+    async function handleLogout() {
+        setIsOpen(false);
+        if (userCtx?.logout) {
+            await userCtx.logout();
+        }
+        toast.info("Sessão encerrada com sucesso.");
+        router.push("/login");
     }
 
     type MenuItemProps = {
@@ -236,6 +264,10 @@ function MenuModal({ classList, icon }: MenuProps) {
         )
     }
 
+    const initials = currentUser
+        ? `${currentUser.name?.[0] || ""}${currentUser.lastName?.[0] || ""}`.toUpperCase() || "U"
+        : "FC";
+
     return (
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger
@@ -247,14 +279,29 @@ function MenuModal({ classList, icon }: MenuProps) {
                 <SheetHeader className="flex flex-row items-center justify-between p-0">
                     <div className="flex items-center justify-between gap-3">
                         <Avatar className="h-12 w-12">
-                            <AvatarImage src="https://github.com/maxleiter.png" alt="Avatar" />
-                            <AvatarFallback>User</AvatarFallback>
+                            {currentUser?.avatar && (
+                                <AvatarImage src={currentUser.avatar} alt={currentUser.fullName || "Avatar"} />
+                            )}
+                            <AvatarFallback className="bg-primary/15 text-primary font-semibold">
+                                {initials}
+                            </AvatarFallback>
                         </Avatar>
                         <SheetTitle className="text-sm font-light">
-                            Bem-vindo,<br />
-                            <span className="font-bold self-center text-base">
-                                {user?.user?.name} {user?.user?.lastName}
-                            </span>
+                            {isAuthenticated ? (
+                                <>
+                                    Bem-vindo(a),<br />
+                                    <span className="font-bold self-center text-base">
+                                        {currentUser?.name} {currentUser?.lastName}
+                                    </span>
+                                </>
+                            ) : (
+                                <>
+                                    Olá, visitante!<br />
+                                    <span className="font-bold self-center text-base">
+                                        Acesse sua conta
+                                    </span>
+                                </>
+                            )}
                         </SheetTitle>
                     </div>
                     <SheetClose className={buttonVariants({ variant: "ghost", size: "icon" })}>
@@ -264,28 +311,70 @@ function MenuModal({ classList, icon }: MenuProps) {
                 <div className="flex flex-col gap-2">
                     <nav>
                         <ul className="flex flex-col gap-2 text-sm font-light">
-                            <MenuItem
-                                icon={User}
-                                innerText="Meus dados"
-                                onClick={() => handleMenuClick("/profile")}
-                            />
-                            <MenuItem
-                                icon={Package}
-                                innerText="Meus pedidos"
-                                onClick={() => handleMenuClick("/profile/orders")}
-                            />
-                            <MenuItem
-                                icon={Heart}
-                                innerText="Favoritos"
-                                onClick={() => handleMenuClick("/profile/favorites")}
-                            />
-                            <MenuItem
-                                icon={Ticket}
-                                innerText="Cupons"
-                            />
+                            {isAuthenticated ? (
+                                <>
+                                    <MenuItem
+                                        icon={User}
+                                        innerText="Meus dados"
+                                        onClick={() => handleMenuClick("/profile")}
+                                    />
+                                    <MenuItem
+                                        icon={Package}
+                                        innerText="Meus pedidos"
+                                        onClick={() => handleMenuClick("/profile/orders")}
+                                    />
+                                    <MenuItem
+                                        icon={Ticket}
+                                        innerText="Meus cupons"
+                                        onClick={() => handleMenuClick("/profile/coupons")}
+                                    />
+                                    <MenuItem
+                                        icon={MapPin}
+                                        innerText="Meus endereços"
+                                        onClick={() => handleMenuClick("/profile/addresses")}
+                                    />
+                                    <MenuItem
+                                        icon={Heart}
+                                        innerText="Favoritos"
+                                        onClick={() => handleMenuClick("/profile/favorites")}
+                                    />
+
+                                    {(currentUser?.role === "pharmacist" || currentUser?.role === "admin") && (
+                                        <MenuItem
+                                            icon={ShieldCheck}
+                                            innerText="Painel Farmacêutico"
+                                            onClick={() => handleMenuClick("/admin/prescriptions")}
+                                        />
+                                    )}
+
+                                    <MenuItem
+                                        icon={Cog}
+                                        innerText="Configurações"
+                                        onClick={() => handleMenuClick("/profile/edit")}
+                                    />
+                                </>
+                            ) : (
+                                <>
+                                    <MenuItem
+                                        icon={LogIn}
+                                        innerText="Entrar na conta"
+                                        onClick={() => handleMenuClick("/login")}
+                                    />
+                                    <MenuItem
+                                        icon={UserPlus}
+                                        innerText="Criar nova conta"
+                                        onClick={() => handleMenuClick("/signup")}
+                                    />
+                                    <MenuItem
+                                        icon={Heart}
+                                        innerText="Meus favoritos"
+                                        onClick={() => handleMenuClick("/profile/favorites")}
+                                    />
+                                </>
+                            )}
                             <MenuItem
                                 icon={Palette}
-                                innerText="Tema"
+                                innerText="Alternar tema"
                                 onClick={() => {
                                     const currentTheme = localStorage.getItem("theme");
                                     if (currentTheme === "dark") {
@@ -297,25 +386,16 @@ function MenuModal({ classList, icon }: MenuProps) {
                                     }
                                 }}
                             />
-                            <MenuItem
-                                icon={Cog}
-                                innerText="Configuração"
-                                onClick={() => handleMenuClick("/profile/edit")}
-                            />
-                            <MenuItem
-                                icon={LogOut}
-                                innerText="Desconectar"
-                                onClick={() => {
-                                    localStorage.removeItem("user");
-                                    window.location.reload();
-                                }}
-                            />
+                            {isAuthenticated && (
+                                <MenuItem
+                                    icon={LogOut}
+                                    innerText="Desconectar"
+                                    onClick={handleLogout}
+                                />
+                            )}
                         </ul>
                     </nav>
                 </div>
-                <a href="#" target="_blank" rel="noopener noreferrer" className="w-full bg-muted h-full rounded-lg flex items-center justify-center">
-                    Selecionados para você
-                </a>
             </SheetContent>
         </Sheet>
     )

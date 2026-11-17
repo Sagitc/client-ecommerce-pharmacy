@@ -23,6 +23,20 @@ export function CookieBanner() {
     }
   }, []);
 
+  useEffect(() => {
+    if (!showPreferences) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setShowPreferences(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [showPreferences]);
+
   const handleAcceptAll = () => {
     Cookies.set("cookie_consent", "all", { expires: 365 });
     Cookies.set("consent_analytics", "true", { expires: 365 });

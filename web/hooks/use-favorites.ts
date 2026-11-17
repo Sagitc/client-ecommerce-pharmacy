@@ -9,19 +9,23 @@ import {
 } from "@/services/favorite-service";
 
 export function useFavorites() {
-
     const queryClient = useQueryClient();
 
     const favoriteIds = useQuery({
         queryKey: ["favorites"],
         queryFn: fetchFavorites,
-        staleTime: Infinity,
+        staleTime: 1000 * 60 * 5,
+        refetchOnMount: true,
     });
 
     const toggleFavoriteMutation = useMutation({
         mutationFn: toggleFavoriteRequest,
-        onSuccess: () => {
+        onSuccess: (data) => {
+            if (Array.isArray(data?.ids)) {
+                queryClient.setQueryData(["favorites"], data.ids);
+            }
             queryClient.invalidateQueries({ queryKey: ["favorites"] });
+            queryClient.invalidateQueries({ queryKey: ["auth-user"] });
         },
     });
 

@@ -3,6 +3,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Coupon;
 use App\Models\PharmacyUnit;
 use App\Models\Product;
 use App\Models\User;
@@ -182,148 +183,14 @@ class DatabaseSeeder extends Seeder
             PharmacyUnit::updateOrCreate(['slug' => $unit['slug']], $unit);
         }
 
-        // 3. CATÁLOGO DE PRODUTOS (Cobrindo os filtros da Home e casos ANVISA)
-        $products = [
-            [
-                'sku' => 'CAM-0001',
-                'ean' => '7896523206127',
-                'label' => 'Vitamina C Cimed Redoxitos 1g - 10 Comprimidos Efervescentes',
-                'fabricator' => 'Cimed',
-                'active_ingredient' => 'Ácido Ascórbico',
-                'dosage' => '1g',
-                'description' => 'Suplemento vitamínico antioxidante auxiliar do sistema imunológico.',
-                'price' => 16.90,
-                'promotion_price' => 11.90,
-                'image' => '/images/products/vitamina-c.png',
-                'category' => 'suplement',
-                'stripe_type' => 'free',
-                'requires_prescription' => false,
-                'stock_quantity' => 120,
-                'sales_count' => 340,
-            ],
-            [
-                'sku' => 'CAM-0002',
-                'ean' => '3337875709330',
-                'label' => 'Protetor Solar Facial La Roche-Posay Anthelios Airlicium FPS 70 40g',
-                'fabricator' => 'La Roche-Posay',
-                'active_ingredient' => 'XL-Protect + Airlicium',
-                'dosage' => '40g',
-                'description' => 'Alta proteção solar com controle inteligente da oleosidade e umidade por 12h.',
-                'price' => 99.90,
-                'promotion_price' => 79.90,
-                'image' => '/images/products/anthelios.png',
-                'category' => 'sunscreen',
-                'stripe_type' => 'free',
-                'requires_prescription' => false,
-                'stock_quantity' => 45,
-                'sales_count' => 280,
-            ],
-            [
-                'sku' => 'CAM-0003',
-                'ean' => '7891317464219',
-                'label' => 'Amoxicilina 500mg Genérico Eurofarma - 21 Cápsulas',
-                'fabricator' => 'Eurofarma',
-                'active_ingredient' => 'Amoxicilina Tri-hidratada',
-                'dosage' => '500mg',
-                'description' => 'Antibiótico penicilânico indicado para infecções bacterianas. Venda sob retenção de receita médica (RDC 20/2011).',
-                'price' => 38.50,
-                'promotion_price' => 26.90,
-                'image' => '/images/products/amoxicilina.png',
-                'category' => 'laboratory',
-                'stripe_type' => 'red_retained',
-                'requires_prescription' => true, // Aciona o componente PrescriptionUpload!
-                'stock_quantity' => 60,
-                'sales_count' => 195,
-            ],
-            [
-                'sku' => 'CAM-0004',
-                'ean' => '7896004714158',
-                'label' => 'Azitromicina Di-hidratada 500mg EMS - 5 Comprimidos',
-                'fabricator' => 'EMS',
-                'active_ingredient' => 'Azitromicina',
-                'dosage' => '500mg',
-                'description' => 'Antibiótico indicado em infecções do trato respiratório. Exige retenção de receita médica.',
-                'price' => 29.90,
-                'promotion_price' => 18.50,
-                'image' => '/images/products/azitromicina.png',
-                'category' => 'laboratory',
-                'stripe_type' => 'red_retained',
-                'requires_prescription' => true, // Aciona o componente PrescriptionUpload!
-                'stock_quantity' => 85,
-                'sales_count' => 210,
-            ],
-            [
-                'sku' => 'CAM-0005',
-                'ean' => '7891058003421',
-                'label' => 'Anticoncepcional Yasmin 3mg + 0,03mg Bayer - 21 Comprimidos',
-                'fabricator' => 'Bayer',
-                'active_ingredient' => 'Drospirenona + Etinilestradiol',
-                'dosage' => '3mg + 0,03mg',
-                'description' => 'Contraceptivo oral combinado de baixa dosagem.',
-                'price' => 84.90,
-                'promotion_price' => 69.90,
-                'image' => '/images/products/yasmin.png',
-                'category' => 'contraceptive',
-                'stripe_type' => 'red',
-                'requires_prescription' => false,
-                'stock_quantity' => 40,
-                'sales_count' => 150,
-            ],
-            [
-                'sku' => 'CAM-0006',
-                'ean' => '7891010567890',
-                'label' => 'Fralda Pampers Confort Sec Tamanho G - 70 Unidades',
-                'fabricator' => 'P&G',
-                'active_ingredient' => null,
-                'dosage' => 'Tam G (9-12,5kg)',
-                'description' => 'Canais de ar para uma pele arejada e sequinha por até 12 horas.',
-                'price' => 119.90,
-                'promotion_price' => 94.90,
-                'image' => '/images/products/pampers.png',
-                'category' => 'infantile',
-                'stripe_type' => 'free',
-                'requires_prescription' => false,
-                'stock_quantity' => 30,
-                'sales_count' => 310,
-            ],
-            [
-                'sku' => 'CAM-0007',
-                'ean' => '3337875597388',
-                'label' => 'Gel de Limpeza Facial CeraVe Pele Normal a Oleosa 354ml',
-                'fabricator' => 'CeraVe',
-                'active_ingredient' => '3 Ceramidas Essenciais + Ácido Hialurônico',
-                'dosage' => '354ml',
-                'description' => 'Limpa profundamente e remove a oleosidade sem alterar a barreira protetora da pele.',
-                'price' => 89.90,
-                'promotion_price' => 74.90,
-                'image' => '/images/products/cerave.png',
-                'category' => 'dermocosmetics',
-                'stripe_type' => 'free',
-                'requires_prescription' => false,
-                'stock_quantity' => 55,
-                'sales_count' => 265,
-            ],
-            [
-                'sku' => 'CAM-0008',
-                'ean' => '7891106912341',
-                'label' => 'Tiras Reagentes Accu-Chek Active - 50 Unidades',
-                'fabricator' => 'Roche',
-                'active_ingredient' => null,
-                'dosage' => '50 tiras',
-                'description' => 'Tiras para determinação quantitativa de glicemia capilar.',
-                'price' => 109.00,
-                'promotion_price' => 88.90,
-                'image' => '/images/products/accu-chek.png',
-                'category' => 'diabetes',
-                'stripe_type' => 'free',
-                'requires_prescription' => false,
-                'stock_quantity' => 40,
-                'sales_count' => 175,
-            ],
-        ];
-
-        foreach ($products as $product) {
+        // 3. CATÁLOGO DE PRODUTOS (Cobrindo os filtros da Home, Busca Dinâmica e casos ANVISA)
+        foreach (Product::defaultCatalogProducts() as $product) {
             Product::updateOrCreate(['sku' => $product['sku']], $product);
+        }
+
+        // 4. CUPONS DE DESCONTO
+        foreach (Coupon::defaultCoupons() as $coupon) {
+            Coupon::updateOrCreate(['code' => $coupon['code']], $coupon);
         }
     }
 }

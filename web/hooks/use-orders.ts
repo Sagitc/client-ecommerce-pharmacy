@@ -25,6 +25,8 @@ export function useOrders() {
             queryClient.invalidateQueries({ queryKey: ["cart"] });
             queryClient.invalidateQueries({ queryKey: ["orders"] });
             queryClient.invalidateQueries({ queryKey: ["products"] });
+            queryClient.invalidateQueries({ queryKey: ["my-coupons"] });
+            queryClient.invalidateQueries({ queryKey: ["available-coupons"] });
         },
     });
 

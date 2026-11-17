@@ -10,18 +10,21 @@ export function useCart() {
         queryKey: ["cart"],
         queryFn: fetchCart,
         staleTime: 1000 * 60 * 5,
+        refetchOnMount: true,
     });
 
     const addToCartMutation = useMutation({
         mutationFn: updateCartRequest,
-        onSuccess: () => {
+        onSuccess: (updatedCart) => {
+            queryClient.setQueryData(["cart"], updatedCart);
             queryClient.invalidateQueries({ queryKey: ["cart"] });
         },
     });
 
     const removeFromCartMutation = useMutation({
         mutationFn: removeFromCartRequest,
-        onSuccess: () => {
+        onSuccess: (updatedCart) => {
+            queryClient.setQueryData(["cart"], updatedCart);
             queryClient.invalidateQueries({ queryKey: ["cart"] });
         },
     });

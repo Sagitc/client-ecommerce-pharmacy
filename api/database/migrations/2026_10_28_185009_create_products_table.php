@@ -26,6 +26,8 @@ return new class extends Migration
 
             $table->string('image')->nullable();
             $table->string('category')->index();
+            $table->string('subgroup')->nullable()->index();
+            $table->json('metadata')->nullable();
 
             $table->enum('stripe_type', ['free', 'red', 'red_retained'])->default('free');
             $table->boolean('requires_prescription')->default(false);

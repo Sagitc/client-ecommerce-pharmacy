@@ -77,4 +77,34 @@ class ProductTest extends TestCase
         $this->assertEquals(50, $fresh->stock_quantity);
         $this->assertEquals(0, $fresh->sales_count);
     }
+
+    public function test_product_relates_to_category_subgroup_and_metadata_models_and_reflects_updates(): void
+    {
+        $product = Product::create([
+            'label' => 'Dipirona Gotas 500mg/ml',
+            'fabricator' => 'EMS',
+            'price' => 10.50,
+            'category' => 'laboratory',
+            'subgroup' => 'Analgésicos e Antitérmicos',
+            'metadata' => [
+                'Forma Farmacêutica' => 'Gotas',
+                'Dosagem' => '500mg/ml',
+            ],
+        ]);
+
+        $this->assertNotNull($product->category_id);
+        $this->assertNotNull($product->subgroup_id);
+        $this->assertEquals('laboratory', $product->categoryRelation->slug);
+        $this->assertEquals('Analgésicos e Antitérmicos', $product->subgroupRelation->name);
+        $this->assertCount(2, $product->metadataItems);
+
+        // Quando o Subgrupo ou um Metadado é renomeado no Model separado, o Produto reflete a mudança imediatamente
+        $product->subgroupRelation->update(['name' => 'Dor e Febre']);
+        $formaMeta = $product->metadataItems()->where('name', 'Forma Farmacêutica')->first();
+        $formaMeta->update(['value' => 'Solução Oral (Gotas)']);
+
+        $freshProduct = $product->fresh(['categoryRelation', 'subgroupRelation', 'metadataItems']);
+        $this->assertEquals('Dor e Febre', $freshProduct->subgroup);
+        $this->assertEquals('Solução Oral (Gotas)', $freshProduct->metadata['Forma Farmacêutica']);
+    }
 }

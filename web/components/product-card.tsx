@@ -2,6 +2,7 @@ import { useState, MouseEvent } from "react";
 import { ProductData } from "@/data/product-data";
 import { ProductType } from "@/types/product-type";
 import { useFavorites } from "@/hooks/use-favorites";
+import { useProductDetail } from "@/hooks/use-product";
 import { useCart } from "@/hooks/use-cart";
 import { toast } from "sonner";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -15,7 +16,9 @@ type Props = {
 };
 
 export function ProductCard({ product: propProduct, productId, parentStyle }: Props) {
-    const product = propProduct || (productId ? ProductData.find((p) => p.id === productId) : undefined);
+    const { data: fetchedProduct } = useProductDetail(!propProduct && productId ? productId : 0);
+    const staticFallback = !propProduct && !fetchedProduct && productId ? ProductData.find((p) => p.id === productId) : undefined;
+    const product = propProduct || fetchedProduct || staticFallback;
 
     if (!product) {
         return null;
@@ -55,11 +58,12 @@ export function ProductCard({ product: propProduct, productId, parentStyle }: Pr
 export function ProductFavIcon({ product: propProduct, productId, parentStyle }: Props) {
     
     const { favoriteIds, toggleFavorite } = useFavorites();
-    const id = propProduct?.id ?? productId;
+    const rawId = propProduct?.id ?? productId;
+    const id = rawId !== undefined ? Number(rawId) : 0;
 
     if (!id) return null;
 
-    const isFavorited = favoriteIds.data?.includes(id);
+    const isFavorited = Boolean(favoriteIds.data?.some((favId) => Number(favId) === id));
 
     const handleFavorite = (e: MouseEvent) => {
         e.preventDefault();
@@ -83,7 +87,10 @@ export function ProductFavIcon({ product: propProduct, productId, parentStyle }:
                         dismissible: true,
                     });
                 }
-            }
+            },
+            onError: () => {
+                toast.error("Não foi possível atualizar os favoritos.");
+            },
         });
     };
 
@@ -102,8 +109,8 @@ export function ProductFavIcon({ product: propProduct, productId, parentStyle }:
                     className={buttonVariants({ variant: "ghost", size: "icon" }) + " p-4"}
                 >
                     <Heart 
-                        className={`size-5 transition-colors duration-300 text-red-500 ${
-                            isFavorited ? "fill-red-500" : "text-foreground"
+                        className={`size-5 transition-colors duration-300 ${
+                            isFavorited ? "fill-red-500 text-red-500" : "text-gray-600 hover:text-red-500"
                         }`}
                     />
                 </TooltipTrigger>

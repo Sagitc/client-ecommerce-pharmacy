@@ -26,6 +26,11 @@ class ProductFactory extends Factory
             'promotion_price' => null,
             'image' => 'https://via.placeholder.com/300',
             'category' => fake()->randomElement(['medicamentos', 'higiene', 'dermocosmeticos', 'mamae-e-bebe', 'suplementos']),
+            'subgroup' => fake()->randomElement(['Analgésicos e Antitérmicos', 'Antibióticos', 'Limpeza Facial', 'Imunidade e Energia']),
+            'metadata' => [
+                'Forma Farmacêutica' => 'Comprimido',
+                'Dosagem' => '500mg',
+            ],
             'stripe_type' => 'free',
             'requires_prescription' => false,
             'in_stock' => true,

@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
     fetchAdminPrescriptionsRequest,
@@ -26,6 +26,17 @@ export default function AdminPrescriptionsPage() {
     const [statusFilter, setStatusFilter] = useState<string>("pending");
     const [rejectingId, setRejectingId] = useState<number | null>(null);
     const [rejectionReason, setRejectionReason] = useState<string>("");
+
+    useEffect(() => {
+        if (rejectingId === null) return;
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "Escape") {
+                setRejectingId(null);
+            }
+        };
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [rejectingId]);
 
     const { data: prescriptions, isLoading, isError } = useQuery({
         queryKey: ["admin-prescriptions", statusFilter],

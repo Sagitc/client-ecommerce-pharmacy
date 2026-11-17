@@ -1,295 +1,265 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { EditableProfileAvatar } from "@/components/editable-profile-avatar";
 import { useUser } from "@/contexts/user-context";
-import { OrderType } from "@/types/order-type";
-import { UserType } from "@/types/user-type";
-import { Edit, HeartCrack } from "lucide-react";
+import { useOrders } from "@/hooks/use-orders";
+import { useAddresses } from "@/hooks/use-addresses";
+import { Edit, HeartCrack, MapPin, Package } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-// const USER = useUser();
-
-function Container({ children, sectionStyle, containerStyle }: { children: React.ReactNode; sectionStyle?: string; containerStyle?: string }) {
+function Container({
+    children,
+    sectionStyle,
+    containerStyle,
+}: {
+    children: React.ReactNode;
+    sectionStyle?: string;
+    containerStyle?: string;
+}) {
     return (
-        <section className={`bg-background h-70 rounded-lg shadow-sm p-4 ${sectionStyle || ''}`}>
-            <div className={`container mx-auto h-full flex flex-col gap-4 ${containerStyle || ''}`}>
+        <section className={`bg-background rounded-lg border shadow-sm p-5 ${sectionStyle || ""}`}>
+            <div className={`h-full flex flex-col gap-4 ${containerStyle || ""}`}>
                 {children}
             </div>
         </section>
-    )
+    );
 }
 
-function LastOrders({parentStyle}: {parentStyle?: string}) {
+const STATUS_LABELS: Record<string, string> = {
+    pending: "Pendente",
+    awaiting_prescription_review: "Aguardando Receita",
+    processing: "Em separação",
+    ready_for_pickup: "Pronto p/ retirada",
+    out_for_delivery: "Saiu p/ entrega",
+    completed: "Concluído",
+    cancelled: "Cancelado",
+};
 
-    // SIMULANDO UMA REQUISIÇÃO PARA PEGAR OS ÚLTIMOS PEDIDOS DO USUÁRIO NO DB
+function LastOrders({ parentStyle }: { parentStyle?: string }) {
+    const { orders, isLoadingOrders } = useOrders();
+    const [selectedYear, setSelectedYear] = useState<string>("all");
 
-    const lastOrders: OrderType[] = [
-        {
-            id: "1",
-            date: "2023-01-01",
-            receiver: {
-                name: "João",
-                lastName: "Silva",
-                email: "joao.silva@example.com",
-                phone: "123456789"
-            },
-            address: {
-                id: 1,
-                receiver: "João Silva",
-                street: "Rua Exemplo",
-                number: "123",
-                complement: "Apto 456",
-                neighborhood: "Bairro Exemplo",
-                city: "Cidade Exemplo",
-                state: "Estado Exemplo",
-                zipCode: "12345-678",
-                isDefault: true
-            },
-            paymentMethod: "credit_card",
-            total: "R$ 100,00",
-            status: "delivered",
-            items: [
-                {
-                    id: 1,
-                    label: "Produto 1",
-                    fabricator: "Fabricante 1",
-                    image: "/images/produto-1.jpg",
-                    quantity: 2,
-                    price: 100
-                }
-            ]
-        }, {
-            id: "2",
-            date: "2023-02-01",
-            receiver: {
-                name: "Maria",
-                lastName: "Souza",
-                email: "maria.souza@example.com",
-                phone: "987654321"
-            },
-            address: {
-                id: 2,
-                receiver: "Maria Souza",
-                street: "Rua Exemplo 2",
-                number: "456",
-                complement: "Apto 789",
-                neighborhood: "Bairro Exemplo 2",
-                city: "Cidade Exemplo 2",
-                state: "Estado Exemplo 2",
-                zipCode: "54321-876",
-                isDefault: false
-            },
-            paymentMethod: "pix",
-            total: "R$ 200,00",
-            status: "delivered",
-            items: [
-                {
-                    id: 2,
-                    label: "Produto 2",
-                    fabricator: "Fabricante 2",
-                    image: "/images/produto-2.jpg",
-                    quantity: 1,
-                    price: 200
-                }
-            ]
-        },
-        {
-            id: "3",
-            date: "2023-03-01",
-            receiver: {
-                name: "Carlos",
-                lastName: "Oliveira",
-                email: "carlos.oliveira@example.com",
-                phone: "111222333"
-            },
-            address: {
-                id: 3,
-                receiver: "Carlos Oliveira",
-                street: "Rua Exemplo 3",
-                number: "789",
-                complement: "Apto 123",
-                neighborhood: "Bairro Exemplo 3",
-                city: "Cidade Exemplo 3",
-                state: "Estado Exemplo 3",
-                zipCode: "98765-432",
-                isDefault: false
-            },
-            paymentMethod: "boleto",
-            total: "R$ 300,00",
-            status: "delivered",
-            items: [
-                {
-                    id: 3,
-                    label: "Produto 3",
-                    fabricator: "Fabricante 3",
-                    image: "/images/produto-3.jpg",
-                    price: 300,
-                    quantity: 1
-                }
-            ]
-        }
-    ];
+    const availableYears: number[] = Array.from(
+        new Set<number>(
+            orders.map((ord: any) =>
+                new Date(ord.created_at || Date.now()).getFullYear()
+            )
+        )
+    ).sort((a, b) => b - a);
+
+    const filteredOrders = orders.filter((ord: any) => {
+        if (selectedYear === "all") return true;
+        const year = new Date(ord.created_at || Date.now()).getFullYear();
+        return String(year) === selectedYear;
+    });
 
     return (
         <Container sectionStyle={parentStyle}>
-            <div className="flex justify-between">
-                <h2 className=" font-bold text-lg">Últimas compras</h2>
-                <select className="bg-background border rounded-md px-3 py-1 text-sm">
-                    <option value="2026">2026</option>
+            <div className="flex justify-between items-center">
+                <h2 className="font-bold text-lg flex items-center gap-2">
+                    <Package className="size-5 text-primary" />
+                    Últimas compras
+                </h2>
+                <select
+                    value={selectedYear}
+                    onChange={(e) => setSelectedYear(e.target.value)}
+                    className="bg-background border rounded-md px-3 py-1 text-sm"
+                >
+                    <option value="all">Todos</option>
+                    {availableYears.map((yr) => (
+                        <option key={yr} value={String(yr)}>
+                            {yr}
+                        </option>
+                    ))}
                 </select>
             </div>
             <Separator />
-            {lastOrders.length === 0
-                ? (<div className="flex-1 flex flex-col gap-2 items-center justify-center rounded-md bg-accent">
+            {isLoadingOrders ? (
+                <div className="flex-1 flex items-center justify-center py-8 text-sm text-muted-foreground">
+                    Carregando seus pedidos...
+                </div>
+            ) : filteredOrders.length === 0 ? (
+                <div className="flex-1 flex flex-col gap-2 items-center justify-center rounded-md bg-accent py-8">
+                    <HeartCrack className="size-10 text-muted-foreground" />
+                    <p className="text-muted-foreground text-center text-sm">
+                        Você ainda não realizou <br />
+                        nenhuma compra.
+                    </p>
+                </div>
+            ) : (
+                <div className="flex-1 overflow-y-auto max-h-80 pr-1">
+                    <ul className="space-y-2">
+                        {filteredOrders.slice(0, 5).map((order: any) => {
+                            const formattedDate = order.created_at
+                                ? new Date(order.created_at).toLocaleDateString("pt-BR")
+                                : "";
+                            const totalFormatted = Number(order.total ?? 0)
+                                .toFixed(2)
+                                .replace(".", ",");
 
-                    <HeartCrack className="size-10 text-gray-600" />
-
-                    <p className="text-gray-600 text-center">Você ainda não realizou <br />
-                        nenhuma compra.</p>
-                </div>)
-                : (<div className="flex-1 overflow-y-scroll scrollbar-none">
-                    <ul className="">
-                        {lastOrders.map((order) => (
-                            <li key={order.id} className="py-1">
-                                <Link
-                                    href={`/profile/orders/${order.id}`}
-                                    className="block transition-transform hover:scale-[1.01]"
-                                >
-                                    <div className="flex justify-between items-center bg-accent rounded-lg p-4">
-                                        <div>
-                                            <p className="font-medium text-gray-900">Pedido #{order.id}</p>
-                                            <p className="text-sm text-gray-500">{order.date}</p>
+                            return (
+                                <li key={order.id}>
+                                    <Link
+                                        href={`/profile/orders/${order.id}`}
+                                        className="block transition-transform hover:scale-[1.01]"
+                                    >
+                                        <div className="flex justify-between items-center bg-accent rounded-lg p-4">
+                                            <div>
+                                                <p className="font-semibold text-foreground">
+                                                    Pedido #{order.order_number || order.id}
+                                                </p>
+                                                <p className="text-xs text-muted-foreground">
+                                                    {formattedDate} • {STATUS_LABELS[order.status] || order.status}
+                                                </p>
+                                            </div>
+                                            <div className="text-right">
+                                                <p className="text-sm font-bold text-foreground">
+                                                    R$ {totalFormatted}
+                                                </p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p className="text-sm text-gray-900">{order.total}</p>
-                                        </div>
-                                    </div>
-                                </Link>
-                            </li>
-                        ))}
+                                    </Link>
+                                </li>
+                            );
+                        })}
                     </ul>
-                </div>)
-            }
+                </div>
+            )}
+            <Link href="/profile/orders" className="mt-auto text-sm text-primary font-medium hover:underline">
+                Ver todos os pedidos
+            </Link>
         </Container>
-    )
+    );
 }
 
 function MainAddress() {
+    const { addresses, isLoadingAddresses } = useAddresses();
+    const userCtx = useUser();
 
-    // SIMULANDO UMA REQUISIÇÃO PARA PEGAR O ENDEREÇO PRINCIPAL DO USUÁRIO NO DB
-
-    const mainAddress: NonNullable<UserType["addresses"]>[number] = {
-        id: 1,
-        street: "Rua Exemplo",
-        number: "123",
-        complement: "Apto 456",
-        neighborhood: "Bairro Exemplo",
-        city: "Cidade Exemplo",
-        state: "Estado Exemplo",
-        zipCode: "12345-678",
-        receiver: "Sagitc",
-        isDefault: true
-    };
+    const mainAddress =
+        addresses.find((a: any) => a.is_default) || addresses[0] || null;
 
     return (
-        <Container sectionStyle="h-60!" containerStyle="gap-2!">
-            <h2 className="font-bold text-lg">Endereço principal</h2>
-            <div className="flex-1 flex flex-col justify-evenly gap-2 bg-accent p-4 rounded-md">
-                <span className="text-lg font-semibold text-gray-900">{mainAddress.receiver}</span>
-                <span className="text-gray-900 font-light text-base">
-                    {mainAddress.street}, {mainAddress.number}<br/>
-                    {mainAddress.city} - {mainAddress.state}
-                </span>
-            </div>
-            <span className="flex flex-row items-center underline gap-2">
-                Alterar <Edit className="size-4 text-primary" />
-            </span>
+        <Container containerStyle="gap-3">
+            <h2 className="font-bold text-lg flex items-center gap-2">
+                <MapPin className="size-5 text-primary" />
+                Endereço principal
+            </h2>
+
+            {isLoadingAddresses ? (
+                <div className="bg-accent p-4 rounded-md text-sm text-muted-foreground">
+                    Carregando endereço...
+                </div>
+            ) : mainAddress ? (
+                <div className="flex-1 flex flex-col justify-evenly gap-1 bg-accent p-4 rounded-md">
+                    <span className="text-base font-semibold text-foreground">
+                        {mainAddress.label || userCtx?.user?.fullName || "Endereço"}
+                    </span>
+                    <span className="text-muted-foreground text-sm">
+                        {mainAddress.street}, {mainAddress.number}
+                        {mainAddress.complement ? ` - ${mainAddress.complement}` : ""}
+                        <br />
+                        {mainAddress.neighborhood} - {mainAddress.city}/{mainAddress.state}
+                        <br />
+                        CEP: {mainAddress.cep}
+                    </span>
+                </div>
+            ) : (
+                <div className="bg-accent p-4 rounded-md text-sm text-muted-foreground">
+                    Nenhum endereço cadastrado ainda.
+                </div>
+            )}
+
+            <Link
+                href="/profile/addresses"
+                className="inline-flex flex-row items-center text-sm font-medium text-primary hover:underline gap-1.5"
+            >
+                {mainAddress ? "Gerenciar endereços" : "Cadastrar endereço"}
+                <Edit className="size-4" />
+            </Link>
         </Container>
-    )
+    );
 }
 
-function MainPaymentMethod() {
-
-    // SIMULANDO UMA REQUISIÇÃO PARA PEGAR O MÉTODO DE PAGAMENTO PRINCIPAL DO USUÁRIO NO DB
-
-    const mainPaymentMethod: NonNullable<UserType["paymentMethods"]>[number] = {
-        id: 1,
-        cardNumber: "**** **** **** 1234",
-        cardHolder: "João Silva",
-        expirationDate: "12/25",
-        cvv: "123",
-        isDefault: true
-    };
+function AccountInfoSummary() {
+    const userCtx = useUser();
+    const currentUser = userCtx?.user;
 
     return (
-        <Container sectionStyle="h-60!">
-            <h2 className="font-bold text-lg">Cartão principal</h2>
-            <div className="flex-1 flex flex-col justify-evenly gap-2 bg-accent p-4 rounded-md">
-                <span className="text-lg font-semibold text-gray-900">{mainPaymentMethod.cardHolder}</span>
-                <span className="text-lg font-semibold text-gray-900">{mainPaymentMethod.cardNumber}</span>
-                <div className="text-lg font-semibold text-gray-900 w-full flex justify-between">
-                    <span>{mainPaymentMethod.expirationDate}</span>
-                    <span>{mainPaymentMethod.cvv}</span>
-                </div>
+        <Container containerStyle="gap-3">
+            <h2 className="font-bold text-lg">Meus dados</h2>
+            <div className="bg-accent p-4 rounded-md space-y-1 text-sm">
+                <p>
+                    <span className="text-muted-foreground">E-mail: </span>
+                    <span className="font-medium">{currentUser?.email || "-"}</span>
+                </p>
+                <p>
+                    <span className="text-muted-foreground">CPF: </span>
+                    <span className="font-medium">{currentUser?.cpf || "Não informado"}</span>
+                </p>
+                <p>
+                    <span className="text-muted-foreground">Telefone: </span>
+                    <span className="font-medium">{currentUser?.phone || "Não informado"}</span>
+                </p>
+            </div>
+            <div className="flex gap-4 text-sm">
+                <Link href="/profile/edit" className="text-primary font-medium hover:underline">
+                    Editar dados
+                </Link>
+                <Link href="/profile/change-password" className="text-primary font-medium hover:underline">
+                    Alterar senha
+                </Link>
             </div>
         </Container>
-    )
+    );
 }
 
 export default function ResumePage() {
-
-    const user = useUser();
+    const userCtx = useUser();
+    const currentUser = userCtx?.user;
     const router = useRouter();
 
     return (
         <div className="container mx-auto flex flex-col gap-6">
-
-            <div className="hidden md:flex justify-between bg-background/80 backdrop-blur-md p-4 rounded-lg shadow-sm">
+            <div className="hidden md:flex justify-between bg-background/80 backdrop-blur-md p-5 rounded-lg border shadow-sm">
                 <div className="items-center justify-center md:flex gap-6">
-                    <div className="rounded-full">
-                        <Avatar className="w-28 h-28">
-                            <AvatarImage src="https://github.com/maxleiter.png" alt="Avatar" />
-                            <AvatarFallback>User</AvatarFallback>
-                        </Avatar>
-                    </div>
+                    <EditableProfileAvatar />
                     <div>
-                        <span className="text-3xl">Olá, <br/></span>
+                        <span className="text-2xl">
+                            Olá, <br />
+                        </span>
                         <span className="font-bold self-center text-3xl">
-                            {user?.user?.name} {user?.user?.lastName}
+                            {currentUser?.name} {currentUser?.lastName}
                         </span>
                     </div>
                 </div>
-                <Button 
-                    variant="outline" 
-                    className="self-center px-4 py-5 "
-                    onClick={() => router.push("/profile/edit")}
-                >
-                    Editar perfil
-                </Button>
-            </div>
-
-            <div className="md:hidden flex flex-col gap-6">
-                <LastOrders />
-
-                <MainAddress />
-
-                <MainPaymentMethod />
-            </div>
-
-            <div className="hidden md:flex gap-6 w-full">
-                <div className="flex-1">
-                    <LastOrders parentStyle="h-full" />
+                <div className="flex items-center gap-3">
+                    <Button
+                        variant="outline"
+                        onClick={() => router.push("/profile/edit")}
+                    >
+                        Editar perfil
+                    </Button>
+                    <Button
+                        variant="secondary"
+                        onClick={() => router.push("/profile/change-password")}
+                    >
+                        Trocar senha
+                    </Button>
                 </div>
-                <div className="flex-1 flex flex-col gap-4">
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+                <LastOrders parentStyle="h-full" />
+                <div className="flex flex-col gap-6">
                     <MainAddress />
-
-                    <MainPaymentMethod />
+                    <AccountInfoSummary />
                 </div>
             </div>
-
         </div>
     );
 }

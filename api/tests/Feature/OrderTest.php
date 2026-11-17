@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Address;
+use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\PharmacyUnit;
 use App\Models\Product;
@@ -265,5 +266,97 @@ class OrderTest extends TestCase
         $response = $this->getJson("/api/orders/{$orderOfUser2->id}");
 
         $response->assertStatus(404);
+    }
+
+    public function test_user_can_create_order_with_valid_coupon_and_increments_usage(): void
+    {
+        $user = User::factory()->create();
+        $address = Address::factory()->create(['user_id' => $user->id]);
+        $product = Product::factory()->create([
+            'price' => 100.00,
+            'promotion_price' => null,
+            'requires_prescription' => false,
+        ]);
+        $coupon = Coupon::factory()->percentage(10.00)->create([
+            'code' => 'CAMARGO10',
+            'used_count' => 0,
+            'max_uses_per_user' => 1,
+        ]);
+
+        Sanctum::actingAs($user);
+
+        // Resgata o cupom para o inventário do usuário antes de usá-lo
+        $this->postJson('/api/coupons/redeem', ['code' => 'CAMARGO10'])->assertCreated();
+
+        $response = $this->postJson('/api/orders', [
+            'shipping_method' => 'delivery',
+            'address_id' => $address->id,
+            'shipping_cost' => 10.00,
+            'payment_method' => 'pix',
+            'coupon_code' => 'camargo10',
+            'items' => [
+                ['id' => $product->id, 'quantity' => 1],
+            ],
+        ]);
+
+        $response->assertCreated()
+                 ->assertJsonPath('coupon_code', 'CAMARGO10')
+                 ->assertJsonPath('subtotal', 100)
+                 ->assertJsonPath('discount', 10)
+                 ->assertJsonPath('total', 100); // 100 + 10 - 10
+
+        $this->assertEquals(1, $coupon->fresh()->used_count);
+        // Como max_uses_per_user = 1, após usar 1x o cupom sai do inventário
+        $this->assertDatabaseMissing('user_coupons', [
+            'user_id' => $user->id,
+            'coupon_id' => $coupon->id,
+        ]);
+    }
+
+    public function test_order_creation_fails_when_coupon_not_in_user_inventory(): void
+    {
+        $user = User::factory()->create();
+        $unit = PharmacyUnit::factory()->create();
+        $product = Product::factory()->create(['price' => 50.00, 'requires_prescription' => false]);
+        Coupon::factory()->percentage(10.00)->create(['code' => 'NAORESGATADO']);
+
+        Sanctum::actingAs($user);
+
+        $this->postJson('/api/orders', [
+            'shipping_method' => 'pickup',
+            'pharmacy_unit_id' => $unit->id,
+            'shipping_cost' => 0,
+            'payment_method' => 'pix',
+            'coupon_code' => 'NAORESGATADO',
+            'items' => [['id' => $product->id, 'quantity' => 1]],
+        ])->assertStatus(422)->assertJsonValidationErrors(['coupon_code']);
+    }
+
+    public function test_order_creation_fails_with_nonexistent_or_invalid_coupon(): void
+    {
+        $user = User::factory()->create();
+        $unit = PharmacyUnit::factory()->create();
+        $product = Product::factory()->create(['price' => 50.00, 'requires_prescription' => false]);
+        Coupon::factory()->expired()->create(['code' => 'EXPIRADO10']);
+
+        Sanctum::actingAs($user);
+
+        $this->postJson('/api/orders', [
+            'shipping_method' => 'pickup',
+            'pharmacy_unit_id' => $unit->id,
+            'shipping_cost' => 0,
+            'payment_method' => 'pix',
+            'coupon_code' => 'INEXISTENTE',
+            'items' => [['id' => $product->id, 'quantity' => 1]],
+        ])->assertStatus(422)->assertJsonValidationErrors(['coupon_code']);
+
+        $this->postJson('/api/orders', [
+            'shipping_method' => 'pickup',
+            'pharmacy_unit_id' => $unit->id,
+            'shipping_cost' => 0,
+            'payment_method' => 'pix',
+            'coupon_code' => 'EXPIRADO10',
+            'items' => [['id' => $product->id, 'quantity' => 1]],
+        ])->assertStatus(422)->assertJsonValidationErrors(['coupon_code']);
     }
 }

@@ -10,6 +10,7 @@ export interface CreateOrderPayload {
     pharmacy_unit_id?: number | null;
     shipping_cost: number;
     payment_method: "pix" | "credit_card" | "debit_card" | "cash_on_delivery";
+    coupon_code?: string;
     notes?: string;
     items: {
         id: number;
@@ -32,6 +33,9 @@ export async function createOrderRequest(payload: CreateOrderPayload) {
     }
     if (payload.pharmacy_unit_id) {
         formData.append("pharmacy_unit_id", String(payload.pharmacy_unit_id));
+    }
+    if (payload.coupon_code) {
+        formData.append("coupon_code", payload.coupon_code);
     }
     if (payload.notes) {
         formData.append("notes", payload.notes);
@@ -67,15 +71,21 @@ export async function createOrderRequest(payload: CreateOrderPayload) {
 
 export async function fetchOrdersRequest() {
     const token = getAuthToken();
-    const res = await fetch(`${API_URL}/orders`, {
-        headers: {
-            "Accept": "application/json",
-            "Authorization": `Bearer ${token}`,
-        },
-    });
+    if (!token) return [];
 
-    if (!res.ok) throw new Error("Erro ao carregar histórico de pedidos.");
-    return res.json();
+    try {
+        const res = await fetch(`${API_URL}/orders`, {
+            headers: {
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+        });
+
+        if (!res.ok) return [];
+        return await res.json();
+    } catch {
+        return [];
+    }
 }
 
 export async function fetchOrderByIdRequest(id: string | number) {

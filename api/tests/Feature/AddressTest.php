@@ -148,4 +148,55 @@ class AddressTest extends TestCase
         $response->assertStatus(404);
         $this->assertDatabaseHas('addresses', ['id' => $addressOfUser2->id]);
     }
+
+    public function test_user_can_set_existing_address_as_default(): void
+    {
+        $user = User::factory()->create();
+        $addr1 = Address::factory()->default()->create(['user_id' => $user->id]);
+        $addr2 = Address::factory()->create(['user_id' => $user->id, 'is_default' => false]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->patchJson("/api/addresses/{$addr2->id}/default");
+
+        $response->assertOk()
+                 ->assertJsonPath('is_default', true);
+
+        $this->assertFalse((bool) $addr1->fresh()->is_default);
+        $this->assertTrue((bool) $addr2->fresh()->is_default);
+    }
+
+    public function test_first_address_added_is_automatically_default(): void
+    {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        $response = $this->postJson('/api/addresses', [
+            'label' => 'Primeiro Endereço',
+            'cep' => '21625-001',
+            'street' => 'Rua Inicial',
+            'number' => '10',
+            'neighborhood' => 'Anchieta',
+            'city' => 'Rio de Janeiro',
+            'is_default' => false,
+        ]);
+
+        $response->assertCreated()
+                 ->assertJsonPath('is_default', true);
+    }
+
+    public function test_deleting_default_address_promotes_another_address_to_default(): void
+    {
+        $user = User::factory()->create();
+        $defaultAddr = Address::factory()->default()->create(['user_id' => $user->id]);
+        $secondAddr = Address::factory()->create(['user_id' => $user->id, 'is_default' => false]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->deleteJson("/api/addresses/{$defaultAddr->id}");
+        $response->assertOk();
+
+        $this->assertDatabaseMissing('addresses', ['id' => $defaultAddr->id]);
+        $this->assertTrue((bool) $secondAddr->fresh()->is_default);
+    }
 }

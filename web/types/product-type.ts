@@ -18,6 +18,8 @@ export type ProductType = {
     promotionPrice?: number;
     image?: string;
     category: string;
+    subgroup?: string;
+    metadata?: Record<string, string | string[]>;
     stripeType?: "free" | "red" | "red_retained";
     requiresPrescription?: boolean;
     inStock?: boolean;
@@ -46,3 +48,21 @@ export const ProductFilters = [
     { label: "Diabétes", value: "diabetes" },
     { label: "Lançamentos", value: "release" }
 ] as const;
+
+export const CATEGORY_LABELS: Record<string, string> = {
+    suplement: "Vitaminas e suplementos",
+    sunscreen: "Protetores solares",
+    laboratory: "Medicamentos e Laboratório",
+    contraceptive: "Anticoncepcionais",
+    infantile: "Infantil e Bebê",
+    dermocosmetics: "Dermocosméticos",
+    diabetes: "Diabetes",
+    hygiene: "Higiene pessoal",
+    "hair-care": "Produtos capilares",
+    "winter-care": "Cuidados no inverno",
+    medicamentos: "Medicamentos",
+};
+
+export function getCategoryLabel(category: string): string {
+    return CATEGORY_LABELS[category] || category;
+}

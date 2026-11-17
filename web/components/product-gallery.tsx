@@ -260,7 +260,7 @@ export function ProductView({ product, images = [] }: ProductGalleryProps) {
 
                     {/* Botões de compra adicionados ao Desktop */}
                     <div className="flex flex-col gap-2 pt-2 border-t border-border">
-                        <Button size="lg" className="w-full text-base" onClick={handleBuyNow}>
+                        <Button size="lg" className="w-full" onClick={handleBuyNow}>
                             Comprar agora
                         </Button>
                         <Button variant="secondary" className="w-full" onClick={handleAddToCart}>

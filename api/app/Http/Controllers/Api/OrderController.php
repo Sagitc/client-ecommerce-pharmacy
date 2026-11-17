@@ -4,11 +4,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Product;
 use App\Services\SecuritySanitizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -31,7 +33,14 @@ class OrderController extends Controller
         $order = $request->user()
             ->orders()
             ->with(['items.product', 'prescriptions', 'address', 'pharmacyUnit'])
-            ->findOrFail($id);
+            ->where(function ($query) use ($id) {
+                if (is_numeric($id)) {
+                    $query->where('id', $id);
+                } else {
+                    $query->where('order_number', $id);
+                }
+            })
+            ->firstOrFail();
 
         return response()->json($order);
     }
@@ -52,6 +61,7 @@ class OrderController extends Controller
             ],
             'shipping_cost' => 'required|numeric|min:0|max:500',
             'payment_method' => 'required|in:pix,credit_card,debit_card,cash_on_delivery',
+            'coupon_code' => 'nullable|string|max:64',
             'notes' => 'nullable|string|max:500',
             'items' => 'required|array|min:1|max:50',
             'items.*.id' => 'required|integer|distinct|exists:products,id',
@@ -102,10 +112,72 @@ class OrderController extends Controller
             }
 
             $shippingCost = $validated['shipping_method'] === 'pickup' ? 0 : $validated['shipping_cost'];
-            $total = $subtotal + $shippingCost;
+            $discount = 0.0;
+            $couponId = null;
+            $couponCode = null;
+
+            if (! empty($validated['coupon_code'])) {
+                $normalizedCode = Coupon::normalizeCode(SecuritySanitizer::clean($validated['coupon_code']));
+
+                if ($normalizedCode === '') {
+                    throw ValidationException::withMessages([
+                        'coupon_code' => ['Cupom inexistente'],
+                    ]);
+                }
+
+                if (! Coupon::ensureSchemaReady()) {
+                    throw ValidationException::withMessages([
+                        'coupon_code' => ['Não foi possível validar o cupom no momento.'],
+                    ]);
+                }
+
+                $coupon = Coupon::where('code', $normalizedCode)->lockForUpdate()->first();
+
+                if (! $coupon) {
+                    throw ValidationException::withMessages([
+                        'coupon_code' => ['Cupom inexistente'],
+                    ]);
+                }
+
+                $user = $request->user();
+                $couponError = $coupon->getValidationError($subtotal, $user);
+                if ($couponError !== null) {
+                    throw ValidationException::withMessages([
+                        'coupon_code' => [$couponError],
+                    ]);
+                }
+
+                $userCoupon = $user->userCoupons()
+                    ->where('coupon_id', $coupon->id)
+                    ->lockForUpdate()
+                    ->first();
+
+                if (! $userCoupon || $userCoupon->uses_remaining <= 0) {
+                    throw ValidationException::withMessages([
+                        'coupon_code' => ['Você precisa resgatar este cupom no seu inventário antes de utilizá-lo.'],
+                    ]);
+                }
+
+                $discount = $coupon->calculateDiscount($subtotal);
+                $couponId = $coupon->id;
+                $couponCode = $coupon->code;
+                $coupon->increment('used_count');
+
+                $remaining = (int) $userCoupon->uses_remaining - 1;
+                if ($remaining <= 0) {
+                    $userCoupon->delete();
+                } else {
+                    $userCoupon->update([
+                        'uses_remaining' => $remaining,
+                        'used_count' => (int) $userCoupon->used_count + 1,
+                    ]);
+                }
+            }
+
+            $total = max(0.0, round($subtotal + $shippingCost - $discount, 2));
 
             // 3. Cria o Pedido com sanitização de campos de texto
-            $order = Order::create([
+            $orderPayload = [
                 'order_number' => 'CAM-' . date('Y') . '-' . strtoupper(Str::random(6)),
                 'user_id' => $request->user()->id,
                 'shipping_method' => $validated['shipping_method'],
@@ -113,16 +185,30 @@ class OrderController extends Controller
                 'pharmacy_unit_id' => $validated['pharmacy_unit_id'] ?? null,
                 'subtotal' => $subtotal,
                 'shipping_cost' => $shippingCost,
-                'discount' => 0,
+                'discount' => $discount,
                 'total' => $total,
                 'payment_method' => $validated['payment_method'],
                 'payment_status' => 'pending',
                 'status' => $requiresPrescription ? 'awaiting_prescription_review' : 'pending',
                 'notes' => !empty($validated['notes']) ? SecuritySanitizer::clean($validated['notes']) : null,
-            ]);
+            ];
+
+            if (Schema::hasColumn('orders', 'coupon_id')) {
+                $orderPayload['coupon_id'] = $couponId;
+            }
+            if (Schema::hasColumn('orders', 'coupon_code')) {
+                $orderPayload['coupon_code'] = $couponCode;
+            }
+
+            $order = Order::create($orderPayload);
 
             // 4. Salva os Itens do Pedido
             $order->items()->createMany($orderItemsData);
+
+            // Limpa o carrinho da conta do usuário após concluir o pedido
+            if (Schema::hasTable('cart_items')) {
+                $request->user()->cartItems()->delete();
+            }
 
             // 5. Salva os arquivos de Receita Médica (se enviados)
             if ($request->hasFile('prescriptions')) {

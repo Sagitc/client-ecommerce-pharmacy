@@ -15,6 +15,8 @@ class Order extends Model
         'shipping_method',
         'address_id',
         'pharmacy_unit_id',
+        'coupon_id',
+        'coupon_code',
         'subtotal',
         'shipping_cost',
         'discount',
@@ -55,5 +57,10 @@ class Order extends Model
     public function pharmacyUnit()
     {
         return $this->belongsTo(PharmacyUnit::class);
+    }
+
+    public function coupon()
+    {
+        return $this->belongsTo(Coupon::class);
     }
 }

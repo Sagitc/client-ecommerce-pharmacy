@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { Lock } from "lucide-react";
+import { Suspense } from "react";
+import Header from "@/components/header";
 
 export default function CheckoutLayout({
   children,
@@ -7,32 +7,14 @@ export default function CheckoutLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen flex flex-col bg-background">
-      
-      <header className="bg-primary border-b py-4 shadow-sm dark:bg-gray-800">
-        <div className="container max-w-6xl mx-auto px-4 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold ">
-            <img src="/images/logos/camargo-white.svg" alt="Logo" className="w-auto h-auto max-w-42" />
-          </Link>
-          
-          <div className="flex items-center gap-2 text-white">
-            <Lock className="w-4 h-4" />
-            <span className="text-sm font-medium">Pagamento Seguro</span>
-          </div>
-        </div>
-      </header>
+    <div className="h-dvh overflow-hidden flex flex-col bg-accent">
+      <Suspense fallback={<div className="w-full h-16 bg-primary shrink-0" />}>
+        <Header />
+      </Suspense>
 
-      <main className="flex-1 bg-accent">
+      <main className="flex-1 w-full flex items-center justify-center overflow-hidden p-4">
         {children}
       </main>
-      
-      <footer className="bg-white py-6">
-        <div className="container max-w-5xl mx-auto px-4 text-center text-sm text-gray-500">
-          <p>© {new Date().getFullYear()} Drogarias Camargo. Todos os direitos reservados.</p>
-          <p className="mt-1">Ambiente 100% seguro protegido por criptografia de ponta a ponta.</p>
-        </div>
-      </footer>
-      
     </div>
   );
 }
